@@ -1,7 +1,8 @@
 {
  "allow_copy": 0, 
  "allow_import": 0, 
- "allow_rename": 0, 
+ "allow_rename": 0,
+ "autoname": "",
  "beta": 0, 
  "creation": "2017-03-03 10:58:59.487271", 
  "custom": 0, 
@@ -89,10 +90,12 @@
  "permissions": [], 
  "quick_entry": 1, 
  "read_only": 0, 
- "read_only_onload": 0, 
+ "read_only_onload": 0,
+ "search_fields": "", 
  "show_name_in_global_search": 0, 
  "sort_field": "modified", 
- "sort_order": "DESC", 
+ "sort_order": "DESC",
+ "title_field": "",
  "track_changes": 1, 
  "track_seen": 0
 }
