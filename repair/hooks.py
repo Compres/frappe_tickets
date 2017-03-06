@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from . import __version__ as app_version
+from frappe import _
 
 app_name = "repair"
 app_title = "Repair"
@@ -49,6 +50,21 @@ app_license = "MIT"
 
 # automatically create page for each record of this doctype
 # website_generators = ["Web Page"]
+
+# Website Route Rules
+website_route_rules = [
+	{"from_route": "/repair_issues", "to_route": "Repair Issue"},
+	{"from_route": "/repair_issues/<path:name>", "to_route": "update-repair-issue",
+		"defaults": {
+			"doctype": "Repair Issue",
+			"parents": [{"title": _("Repair Issues"), "name": "repair_issues"}]
+		}
+	},
+]
+
+portal_menu_items = [
+	{"title": _("Repair Issues"), "route": "/repair_issues", "reference_doctype": "Repair Issue", "role": "Repair User"}
+]
 
 # Installation
 # ------------
