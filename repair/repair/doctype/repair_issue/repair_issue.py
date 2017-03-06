@@ -29,7 +29,7 @@ def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, ord
 		from `tabRepair Issue` issue, `tabRepair GroupUser` group_user, `tabRepair SiteGroup` site_group
 		where (issue.site = site_group.parent
 			and site_group.group = group_user.parent 
-			and group_user.user = %(user)s)
+			and group_user.repair_user = %(user)s)
 			order by issue.{0}
 			limit {1}, {2}
 		'''.format(order_by, limit_start, limit_page_length),
