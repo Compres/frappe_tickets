@@ -3,7 +3,7 @@
 
 frappe.ui.form.on('Repair Group', {
 	setup: function(frm) {
-		frm.fields_dict.items.grid.get_field('repair_user').get_query = function(){
+		frm.fields_dict["user_list"].grid.get_field('repair_user').get_query = function(){
 			return {
 				filters: {"ignore_user_type": 1}
 			};
