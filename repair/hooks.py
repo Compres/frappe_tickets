@@ -66,11 +66,6 @@ portal_menu_items = [
 	{"title": _("Repair Issues"), "route": "/repair_issues", "reference_doctype": "Repair Issue", "role": "Repair User"}
 ]
 
-# Website Default User Role
-default_roles = [
-	{'role': 'Repair User', 'doctype':'Repair User', 'email_field': 'email_id'},
-]
-
 # Installation
 # ------------
 
