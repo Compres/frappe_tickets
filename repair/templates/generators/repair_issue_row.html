@@ -9,12 +9,12 @@
 					</div>
 			</div>
 			<div class='col-xs-3'>
-				<a class="no-decoration repair-issue-link {{ doc.css_seen }}" href="/repair_issues/{{ doc.name }}">
-					Edit
-				</a>
+				 {{ doc.price }}
 			</div>
 			<div class='col-xs-3'>
-				 {{ doc.price }}
+				<a class="no-decoration repair-issue-link {{ doc.css_seen }}" href="/repair_issues/{{ doc.name }}">
+					<button class="btn btn-primary">{{_("Edit")}}</button>
+				</a>
 			</div>
 		</div>
 	</div>
