@@ -8,12 +8,6 @@ frappe.ui.form.on('Repair Group', {
 				filters: {"ignore_user_type": 1}
 			};
 		};
-
-		frm.fields_dict["user_list"].get_query = function(){
-			return {
-				filters: {"ignore_user_type": 1}
-			};
-		};
 	},
 	refresh: function(frm) {
 
