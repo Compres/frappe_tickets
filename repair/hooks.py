@@ -98,6 +98,12 @@ has_website_permission = {
 # ---------------
 # Hook on document methods and events
 
+doc_events = {
+	"User": {
+		"after_insert": "repair.controllers.user_hooks.after_insert",
+	},
+}
+
 # doc_events = {
 # 	"*": {
 # 		"on_update": "method",
