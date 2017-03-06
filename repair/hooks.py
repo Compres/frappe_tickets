@@ -90,6 +90,10 @@ portal_menu_items = [
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
 # }
 
+has_website_permission = {
+	"Repair Issue": "repair.repair.doctype.repair_issues.repair_issues.has_website_permission"
+}
+
 # Document Events
 # ---------------
 # Hook on document methods and events
