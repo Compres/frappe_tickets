@@ -15,7 +15,7 @@ class RepairIssue(Document):
 		if self.fixed_by == user:
 			return True
 
-		groups = [d[0] for d in frappe.db.get_values('Repair SiteGroup', {"parent": self.name}, "group")]
+		groups = [d[0] for d in frappe.db.get_values('Repair SiteGroup', {"parent": self.site}, "group")]
 
 		for g in groups:
 			if frappe.get_value('Repair GroupUser', {"parent": g, "user": user}):
