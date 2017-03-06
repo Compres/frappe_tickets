@@ -18,7 +18,7 @@ class RepairIssue(Document):
 		groups = [d[0] for d in frappe.db.get_values('Repair SiteGroup', {"parent": self.site}, "group")]
 
 		for g in groups:
-			if frappe.get_value('Repair GroupUser', {"parent": g, "user": user}):
+			if frappe.get_value('Repair GroupUser', {"parent": g, "repair_user": user}):
 				return True
 
 		return False
