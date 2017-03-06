@@ -1,24 +1,24 @@
 <div class="web-list-item">
 	<div class='enterprise'>
-		<div class='row repair-issue-item'>
-			<div class='col-xs-6'>
-				<span class="indicator {{ "green" if doc.docstatus else "darkgrey" }}" title="{{ doc.docstatus }}"  > {{ doc.issue_name }}</span>
-					<div class="small text-muted item-timestamp"
-						title="{{ frappe.utils.pretty_date(doc.modified) }}">
-						modified {{ frappe.utils.pretty_date(doc.modified) }}
-					</div>
+		<a class="no-decoration repair-issue-link {{ doc.css_seen }}" href="/repair_issues/{{ doc.name }}">
+			<div class='row repair-issue-item'>
+				<div class='col-xs-6'>
+					<span class="indicator {{ "green" if doc.docstatus else "darkgrey" }}" title="{{ doc.docstatus }}"  > {{ doc.issue_name }}</span>
+						<div class="small text-muted item-timestamp"
+							title="{{ frappe.utils.pretty_date(doc.modified) }}">
+							modified {{ frappe.utils.pretty_date(doc.modified) }}
+						</div>
+				</div>
+				<div class='col-xs-3'>
+					 {{ doc.price }}
+				</div>
+				<div class='col-xs-3'>
+						<button class="btn btn-info">{{_("Edit")}}</button>
+					<a class="no-decoration repair-issue-link {{ doc.css_seen }}" href="/repair_issues/{{ doc.name }}">
+						<button class="btn btn-primary">{{_("Get It")}}</button>
+					</a>
+				</div>
 			</div>
-			<div class='col-xs-3'>
-				 {{ doc.price }}
-			</div>
-			<div class='col-xs-3'>
-				<a class="no-decoration repair-issue-link {{ doc.css_seen }}" href="/repair_issues/{{ doc.name }}">
-					<button class="btn btn-info">{{_("Edit")}}</button>
-				</a>
-				<a class="no-decoration repair-issue-link {{ doc.css_seen }}" href="/repair_issues/{{ doc.name }}">
-					<button class="btn btn-primary">{{_("Get It")}}</button>
-				</a>
-			</div>
-		</div>
+		</a>
 	</div>
 </div>
