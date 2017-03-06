@@ -159,7 +159,7 @@
   {
    "allow_on_submit": 0, 
    "bold": 0, 
-   "collapsible": 1, 
+   "collapsible": 0, 
    "columns": 0, 
    "fieldname": "user_settings", 
    "fieldtype": "Section Break", 
@@ -228,7 +228,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2017-03-03 11:09:23.524093", 
+ "modified": "2017-03-03 11:26:57.946804", 
  "modified_by": "Administrator", 
  "module": "Repair", 
  "name": "Repair Group", 
