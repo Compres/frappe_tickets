@@ -1,8 +1,9 @@
 {
  "allow_copy": 0, 
+ "allow_guest_to_view": 0, 
  "allow_import": 1, 
  "allow_rename": 1, 
- "autoname": "field:group_name", 
+ "autoname": "RGRP.########", 
  "beta": 0, 
  "creation": "2017-03-02 18:49:36.766894", 
  "custom": 0, 
@@ -216,6 +217,7 @@
    "unique": 0
   }
  ], 
+ "has_web_view": 0, 
  "hide_heading": 0, 
  "hide_toolbar": 0, 
  "icon": "icon-edit", 
@@ -228,7 +230,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2017-03-03 11:26:57.946804", 
+ "modified": "2017-03-06 15:43:59.171461", 
  "modified_by": "Administrator", 
  "module": "Repair", 
  "name": "Repair Group", 

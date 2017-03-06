@@ -1,8 +1,9 @@
 {
  "allow_copy": 0, 
+ "allow_guest_to_view": 0, 
  "allow_import": 0, 
  "allow_rename": 0, 
- "autoname": "field:site_name", 
+ "autoname": "RSITE.######", 
  "beta": 0, 
  "creation": "2017-03-02 18:54:03.391323", 
  "custom": 0, 
@@ -188,6 +189,7 @@
    "unique": 0
   }
  ], 
+ "has_web_view": 0, 
  "hide_heading": 0, 
  "hide_toolbar": 0, 
  "idx": 0, 
@@ -198,7 +200,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2017-03-03 11:24:42.591567", 
+ "modified": "2017-03-06 15:44:28.692556", 
  "modified_by": "Administrator", 
  "module": "Repair", 
  "name": "Repair Site", 
