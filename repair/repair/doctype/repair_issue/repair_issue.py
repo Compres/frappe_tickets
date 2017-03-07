@@ -12,6 +12,7 @@ class RepairIssue(Document):
 
 	def has_website_permission(self, ptype, verbose=False):
 		user = frappe.session.user
+		print('has_website_permission', self.name, user)
 		if self.fixed_by == user:
 			return True
 
@@ -25,7 +26,11 @@ class RepairIssue(Document):
 
 
 def has_permission(doc, user):
+	print('has_permission', doc.name, user)
 	if doc.owner == user:
+		return True
+
+	if 'Repair Manager' in frappe.get_roles(user):
 		return True
 
 	teams = [d[0] for d in frappe.db.get_values('Repair SiteTeam', {'parent': doc.site}, 'team')]
