@@ -6,5 +6,10 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 
+
 class RepairTeam(Document):
-	pass
+
+	def autoname(self):
+		"""set name as [self.parent].<name>"""
+		self.team_name = self.team_name.strip()
+		self.name = '[' + self.enterprise + '].' + self.team_name

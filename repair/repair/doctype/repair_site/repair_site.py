@@ -8,6 +8,12 @@ from frappe.model.document import Document
 
 
 class RepairSite(Document):
+
+	def autoname(self):
+		"""set name as [self.parent].<name>"""
+		self.site_name = self.site_name.strip()
+		self.name = '[' + self.enterprise + '].' + self.site_name
+
 	def has_website_permission(self, ptype, verbose=False):
 		print('has_website_permission', self.name)
 		return True
