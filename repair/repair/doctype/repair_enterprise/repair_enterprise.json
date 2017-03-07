@@ -3,12 +3,13 @@
  "allow_guest_to_view": 0, 
  "allow_import": 0, 
  "allow_rename": 0, 
+ "autoname": "field:ent_name", 
  "beta": 0, 
  "creation": "2017-03-07 11:29:10.913606", 
  "custom": 0, 
  "docstatus": 0, 
  "doctype": "DocType", 
- "document_type": "", 
+ "document_type": "Document", 
  "editable_grid": 1, 
  "engine": "InnoDB", 
  "fields": [
@@ -82,11 +83,11 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2017-03-07 11:29:10.913606", 
+ "modified": "2017-03-07 14:43:59.760874", 
  "modified_by": "Administrator", 
  "module": "Repair", 
  "name": "Repair Enterprise", 
- "name_case": "", 
+ "name_case": "Title Case", 
  "owner": "Administrator", 
  "permissions": [
   {
@@ -113,9 +114,11 @@
  "quick_entry": 1, 
  "read_only": 0, 
  "read_only_onload": 0, 
+ "search_fields": "ent_name", 
  "show_name_in_global_search": 0, 
  "sort_field": "modified", 
  "sort_order": "DESC", 
+ "title_field": "ent_name", 
  "track_changes": 1, 
  "track_seen": 0
 }
