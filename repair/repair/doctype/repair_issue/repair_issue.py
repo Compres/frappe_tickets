@@ -34,10 +34,12 @@ def has_permission(doc, user):
 		return True
 
 	teams = [d[0] for d in frappe.db.get_values('Repair SiteTeam', {'parent': doc.site}, 'team')]
+	print('has_permission teams', teams)
 	for team in teams:
 		if frappe.get_value('Repair TeamUser', {'parent': team, 'user': user}):
 			return True
 
+	print('has_permission failed')
 	return False
 
 
