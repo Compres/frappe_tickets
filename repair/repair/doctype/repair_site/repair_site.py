@@ -9,4 +9,5 @@ from frappe.model.document import Document
 
 class RepairSite(Document):
 	def has_website_permission(self, ptype, verbose=False):
+		print('has_website_permission', self.name)
 		return True
