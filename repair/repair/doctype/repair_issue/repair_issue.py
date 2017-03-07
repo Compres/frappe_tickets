@@ -15,10 +15,10 @@ class RepairIssue(Document):
 		if self.fixed_by == user:
 			return True
 
-		groups = [d[0] for d in frappe.db.get_values('Repair SiteGroup', {"parent": self.site}, "group")]
+		teams = [d[0] for d in frappe.db.get_values('Repair SiteTeam', {"parent": self.site}, "team")]
 
-		for g in groups:
-			if frappe.get_value('Repair GroupUser', {"parent": g, "repair_user": user}):
+		for team in teams:
+			if frappe.get_value('Repair TeamUser', {"parent": team, "user": user}):
 				return True
 
 		return False
@@ -26,10 +26,10 @@ class RepairIssue(Document):
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
 	return frappe.db.sql('''select distinct issue.*
-		from `tabRepair Issue` issue, `tabRepair GroupUser` group_user, `tabRepair SiteGroup` site_group
-		where (issue.site = site_group.parent
-			and site_group.group = group_user.parent 
-			and group_user.repair_user = %(user)s)
+		from `tabRepair Issue` issue, `tabRepair TeamUser` team_user, `tabRepair SiteTeam` site_team
+		where (issue.site = site_team.parent
+			and site_team.team = team_user.parent 
+			and team_user.user = %(user)s)
 			order by issue.{0}
 			limit {1}, {2}
 		'''.format(order_by, limit_start, limit_page_length),
