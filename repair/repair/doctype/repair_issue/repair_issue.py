@@ -24,6 +24,19 @@ class RepairIssue(Document):
 		return False
 
 
+def has_permission(doc, user):
+	if doc.owner == user:
+		return True
+
+	teams = [d[0] for d in frappe.db.get_values('Repair SiteTeam', {'parent': doc.site}, 'team')]
+	for team in teams:
+		if frappe.get_value('Repair TeamUser', {'parent': team, 'user': user}):
+			return True
+
+	return False
+
+
+"""
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
 	return frappe.db.sql('''select distinct issue.*
 		from `tabRepair Issue` issue, `tabRepair TeamUser` team_user, `tabRepair SiteTeam` site_team
@@ -47,3 +60,4 @@ def get_list_context(context=None):
 		"get_list": get_issue_list,
 		"row_template": "templates/generators/repair_issue_row.html",
 	}
+"""

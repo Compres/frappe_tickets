@@ -89,6 +89,9 @@ portal_menu_items = [
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
 # }
+has_permission = {
+	"Repair Issue": "repair.repair.doctype.repair_issue.repair_issue.has_permission",
+}
 
 # Document Events
 # ---------------
