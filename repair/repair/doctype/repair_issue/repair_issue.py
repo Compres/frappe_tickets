@@ -25,7 +25,6 @@ class RepairIssue(Document):
 		return False
 
 
-"""
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
 	return frappe.db.sql('''select distinct issue.*
 		from `tabRepair Issue` issue, `tabRepair TeamUser` team_user, `tabRepair SiteTeam` site_team
@@ -49,4 +48,3 @@ def get_list_context(context=None):
 		"get_list": get_issue_list,
 		"row_template": "templates/generators/repair_issue_row.html",
 	}
-"""
