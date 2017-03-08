@@ -63,11 +63,14 @@ def list_user_sites(user=None):
 
 
 def get_permission_query_conditions(user):
+	print('get_permission_query_conditions')
 	if 'Repair Manager' in frappe.get_roles(user):
 		return ""
 
 	else:
-		return """(`tabUser`.site in ({user_sites}))""".format(
+		print("""(`tabRepair Issue`.site in ({user_sites}))""".format(
+			user_sites='"' + '", "'.join(list_user_sites(user)) + '"'))
+		return """(`tabRepair Issue`.site in ({user_sites}))""".format(
 			user_sites='"' + '", "'.join(list_user_sites(user)) + '"')
 
 

@@ -91,11 +91,11 @@ portal_menu_items = [
 # }
 
 permission_query_conditions = {
-	"Event": "repair.repair.doctype.repaire_issue.repaire_issue.get_permission_query_conditions",
+	"Repair Issue": "repair.repair.doctype.repair_issue.repair_issue.get_permission_query_conditions",
 }
 
 has_permission = {
-	"Event": "repair.repair.doctype.repaire_issue.repaire_issue.has_permission",
+	"Repair Issue": "repair.repair.doctype.repair_issue.repair_issue.has_permission",
 }
 
 # Document Events
