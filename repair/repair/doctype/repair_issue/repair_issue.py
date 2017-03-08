@@ -50,7 +50,6 @@ def get_list_context(context=None):
 	}
 
 
-@frappe.whitelist()
 def list_user_sites(user=None):
 	if not user:
 		user = frappe.session.user
@@ -60,4 +59,29 @@ def list_user_sites(user=None):
 	for team in teams:
 		sites.append(d[0] for d in frappe.db.get_values('Repair SiteTeam', {'team': team}, "parent"))
 
-	return teams
+	return sites
+
+
+def get_permission_query_conditions(user):
+	if 'Repair Manager' in frappe.get_roles(user):
+		return ""
+
+	else:
+		return """(`tabUser`.site in ({user_sites}))""".format(
+			user_sites='"' + '", "'.join(list_user_sites(user)) + '"')
+
+
+def has_permission(doc, user):
+	if 'Repair Manager' in frappe.get_roles(user):
+		return True
+
+	if doc.fixed_by == user:
+		return True
+
+	teams = [d[0] for d in frappe.db.get_values('Repair SiteTeam', {"parent": doc.site}, "team")]
+
+	for team in teams:
+		if frappe.get_value('Repair TeamUser', {"parent": team, "user": user}):
+			return True
+
+	return False
