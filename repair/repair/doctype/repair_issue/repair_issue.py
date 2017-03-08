@@ -10,20 +10,13 @@ from frappe import _
 
 class RepairIssue(Document):
 
-	def on_update(self):
-		self.update_fixed_by(frappe.session.user, frappe.utils.data.now())
-
-	def update_fixed_by(self, user, dt):
+	def validate(self):
 		if self.status == 'Closed':
 			self.fixed_by = frappe.session.user
-			self.fixed_date = dt
-			#self.set('fixed_by', frappe.session.user)
-			#self.set('fixed_date', dt)
+			self.fixed_date = frappe.utils.data.now()
 		else:
-			self.fixed_by = ''
-			self.fixed_date = ''
-			#self.set('fixed_by', '')
-			#self.set('fixed_date', '')
+			self.fixed_by = None
+			self.fixed_date = None
 
 	def has_website_permission(self, ptype, verbose=False):
 		user = frappe.session.user
