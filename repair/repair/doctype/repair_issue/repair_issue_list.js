@@ -23,7 +23,7 @@ frappe.listview_settings['Repair Issue'] = {
 
 			me.filter_list.add_filter(me.doctype, "owner", '=', user);
 			me.run();
-		}, ".created-to-me");
+		}, ".assigned-to-me");
 	},
 	add_fields: ["issue_source_type", "issue_source"],
 }
