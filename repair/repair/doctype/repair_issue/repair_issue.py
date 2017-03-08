@@ -11,7 +11,7 @@ from frappe import _
 class RepairIssue(Document):
 
 	def on_update(self):
-		self.update_fixed_by(frappe.session.user, frappe.utils.now())
+		self.update_fixed_by(frappe.session.user, frappe.utils.data.now())
 
 	def update_fixed_by(self, user, dt):
 		if self.status == 'Closed':
