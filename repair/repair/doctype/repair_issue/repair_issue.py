@@ -12,7 +12,6 @@ class RepairIssue(Document):
 
 	def has_website_permission(self, ptype, verbose=False):
 		user = frappe.session.user
-		print('has_website_permission', self.name, user)
 		if self.fixed_by == user:
 			return True
 
@@ -69,8 +68,6 @@ def get_permission_query_conditions(user):
 		return ""
 
 	else:
-		print("""(`tabRepair Issue`.site in ({user_sites}))""".format(
-			user_sites='"' + '", "'.join(list_user_sites(user)) + '"'))
 		return """(`tabRepair Issue`.site in ({user_sites}))""".format(
 			user_sites='"' + '", "'.join(list_user_sites(user)) + '"')
 
