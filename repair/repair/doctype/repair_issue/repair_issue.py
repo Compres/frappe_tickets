@@ -57,7 +57,8 @@ def list_user_sites(user=None):
 	teams = [d[0] for d in frappe.db.get_values('Repair TeamUser', {"user": user}, "parent")]
 	sites = []
 	for team in teams:
-		sites.append(d[0] for d in frappe.db.get_values('Repair SiteTeam', {'team': team}, "parent"))
+		for d in frappe.db.get_values('Repair SiteTeam', {'team': team}, "parent"):
+			sites.append(d[0])
 
 	return sites
 
