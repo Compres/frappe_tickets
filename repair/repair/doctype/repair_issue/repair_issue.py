@@ -15,8 +15,10 @@ class RepairIssue(Document):
 
 	def update_fixed_by(self, user, dt):
 		if self.status == 'Closed':
-			self.set('fixed_by', frappe.session.user)
-			self.set('fixed_date', dt)
+			self.fixed_by = frappe.session.user
+			self.fixed_date = dt
+			#self.set('fixed_by', frappe.session.user)
+			#self.set('fixed_date', dt)
 		else:
 			self.fixed_by = ''
 			self.fixed_date = ''
