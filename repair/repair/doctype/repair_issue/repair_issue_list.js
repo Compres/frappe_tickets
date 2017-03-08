@@ -1,7 +1,6 @@
 frappe.listview_settings['Repair Issue'] = {
 	onload: function(me) {
 		frappe.route_options = {
-			"owner": user,
 			"status": "Open"
 		};
 	},
