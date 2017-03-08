@@ -4,13 +4,6 @@ frappe.listview_settings['Repair Issue'] = {
 			"owner": user,
 			"status": "Open"
 		};
-		frappe.call({
-			method: "repair.doctype.repair_issue.repair_issue.list_user_sites",
-			args: { "user": user },
-			callback: function(r) {
-				frappe.route_options['sites'] = r.message;
-			}
-		})
 	},
 	refresh: function(me) {
 		// add created by me
