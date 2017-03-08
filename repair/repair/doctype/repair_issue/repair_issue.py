@@ -48,3 +48,16 @@ def get_list_context(context=None):
 		"get_list": get_issue_list,
 		"row_template": "templates/generators/repair_issue_row.html",
 	}
+
+
+@frappe.whitelist()
+def list_user_sites(user=None):
+	if not user:
+		user = frappe.session.user
+
+	teams = [d[0] for d in frappe.db.get_values('Repair TeamUser', {"user": user}, "parent")]
+	sites = []
+	for team in teams:
+		sites.append(d[0] for d in frappe.db.get_values('Repair SiteTeam', {'team': team}, "parent"))
+
+	return teams
