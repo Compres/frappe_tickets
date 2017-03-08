@@ -8,10 +8,7 @@ frappe.listview_settings['Repair Issue'] = {
 			method: "repair.doctype.repair_issue.repair_issue.list_user_sites",
 			args: { "user": user },
 			callback: function(r) {
-				refresh_field('roles')
-				frm.roles_editor.show()
-				frappe.msgprint(__("Successfully Updated"))
-				frm.reload_doc()
+				frappe.route_options['sites'] = r.message;
 			}
 		})
 	},
