@@ -18,8 +18,10 @@ class RepairIssue(Document):
 			self.set('fixed_by', frappe.session.user)
 			self.set('fixed_date', dt)
 		else:
-			self.set('fixed_by', '')
-			self.set('fixed_date', '')
+			self.fixed_by = ''
+			self.fixed_date = ''
+			#self.set('fixed_by', '')
+			#self.set('fixed_date', '')
 
 	def has_website_permission(self, ptype, verbose=False):
 		user = frappe.session.user
