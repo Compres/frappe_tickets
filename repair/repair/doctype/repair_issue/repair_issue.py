@@ -94,3 +94,29 @@ def has_permission(doc, user):
 			return True
 
 	return False
+
+
+def wechat_notify():
+	"""Sends WeChat notifications if there are un-notified issues
+		and `wechat_sent` is set as true."""
+
+	for issue in frappe.get_all("Repair Issue", "name", filters={"wechat_notify": 1, "wechat_sent": 0}):
+		issue_doc = frappe.get_doc("Repair Issue", issue.name)
+		if issue_doc.status in ["New", "Open"]:
+			# Get all teams for that site
+			for st in frappe.db.get_values("Repair SiteTeam", "team", filters={
+					"parent": issue_doc.site,
+				}):
+				team = frappe.get_doc("Communication", st.team)
+				for user in frappe.db.get_values("Repair TeamUser", "user", filters={
+						"parent": issue_doc.site,
+					}):
+					print("Send wechat notify to ", user.user)
+					"""
+					frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
+						content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
+						name=comm.reference_name)
+					"""
+
+		# update flag
+		issue_doc.set("wechat_sent", 1)

@@ -137,6 +137,12 @@ doc_events = {
 # 	]
 # }
 
+scheduler_events = {
+	"all": [
+		"repair.repair.doctype.repair_issue.repair_issue.wechat_notify",
+	],
+}
+
 # Testing
 # -------
 
