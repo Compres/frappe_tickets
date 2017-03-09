@@ -104,13 +104,8 @@ def wechat_notify():
 		issue_doc = frappe.get_doc("Repair Issue", issue.name)
 		if issue_doc.status in ["New", "Open"]:
 			# Get all teams for that site
-			for st in frappe.db.get_values("Repair SiteTeam", "team", filters={
-					"parent": issue_doc.site,
-				}):
-				team = frappe.get_doc("Communication", st.team)
-				for user in frappe.db.get_values("Repair TeamUser", "user", filters={
-						"parent": team,
-					}):
+			for st in frappe.db.get_values("Repair SiteTeam", "team", filters={"parent": issue_doc.site}):
+				for user in frappe.db.get_values("Repair TeamUser", "user", filters={"parent": st.team}):
 					print("Send wechat notify to ", user.user)
 					"""
 					frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
