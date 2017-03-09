@@ -4,6 +4,7 @@
 
 from __future__ import unicode_literals
 import frappe
+import json
 from frappe.model.document import Document
 from frappe import _
 
@@ -101,7 +102,6 @@ def has_permission(doc, user):
 	return False
 
 
-
 def wechat_notify_by_issue_name(issue_name):
 	issue_doc = frappe.get_doc("Repair Issue", issue_name)
 	if issue_doc.wechat_sent == 1:
@@ -110,13 +110,13 @@ def wechat_notify_by_issue_name(issue_name):
 	if issue_doc.status in ["New", "Open"]:
 		# Get all teams for that site
 		for st in frappe.db.get_values("Repair SiteTeam", {"parent": issue_doc.site}, "team"):
-			for user in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user"):
-				print("Send wechat notify : {0} to user {1} ".format(issue_doc.name, user[0]))
-				"""
-				frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
-					content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
-					name=comm.reference_name)
-				"""
+			users = [d[0] for d in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user")]
+			print("Send wechat notify : {0} to users {1} ".format(json.dump(issue_doc), users))
+			"""
+			frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
+				content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
+				name=comm.reference_name)
+			"""
 
 	# update flag
 	issue_doc.db_set("wechat_sent", 1)
