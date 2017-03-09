@@ -33,7 +33,7 @@ frappe.ready(function() {
 					var sites = r.message;
 					for (var i in sites) {
 						pt = new BMap.Point(sites[i].longitude, sites[i].latitude);
-						var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
+						var myIcon = new BMap.Icon("/files/logo71569c.png", new BMap.Size(70,20));
 						var marker = new BMap.Marker(pt,{icon:myIcon});
 						/*
 						var content = "<a href='/repair_sites/" + sites[i].name + "'>" +
