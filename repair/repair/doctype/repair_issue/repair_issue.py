@@ -70,7 +70,7 @@ def get_permission_query_conditions(user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return ""
 
-	if 'Repair Enterprise Admin' not in frappe.get_roles(user):
+	if 'Repair Enterprise Admin' in frappe.get_roles(user):
 		sites = []
 		enterprises = list_user_enterpries(user)
 		for enterprise in enterprises:
@@ -88,7 +88,7 @@ def has_permission(doc, user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return True
 
-	if 'Repair Enterprise Admin' not in frappe.get_roles(user):
+	if 'Repair Enterprise Admin' in frappe.get_roles(user):
 		sites = []
 		enterprises = list_user_enterpries(user)
 		for enterprise in enterprises:
