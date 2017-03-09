@@ -39,6 +39,16 @@ class RepairIssue(Document):
 
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
+	cq = get_permission_query_conditions(frappe.session.user)
+	return frappe.db.sql('''select distinct `tabRepair Issue`.*
+		where %(cq)s
+			order by issue.{0}
+			limit {1}, {2}
+		'''.format(order_by, limit_start, limit_page_length),
+			{'cq': cq},
+			as_dict=True,
+			update={'doctype': 'Repair Issue'})
+	"""
 	return frappe.db.sql('''select distinct issue.*
 		from `tabRepair Issue` issue, `tabRepair TeamUser` team_user, `tabRepair SiteTeam` site_team
 		where (issue.site = site_team.parent
@@ -50,6 +60,7 @@ def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, ord
 			{'user':frappe.session.user},
 			as_dict=True,
 			update={'doctype':'Repair Issue'})
+	"""
 
 
 def get_list_context(context=None):
