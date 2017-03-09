@@ -83,7 +83,7 @@ frappe.ready(function() {
 						marker.setTop(true);
 
 						map.addOverlay(marker);
-						map.centerAndZoom(pt, 10);
+						map.centerAndZoom(pt, 12);
 					}
 				}
 			} else {
