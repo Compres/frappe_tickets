@@ -1,7 +1,7 @@
 frappe.ready(function() {
 	var map = new BMap.Map("baiduMap");
-	map.centerAndZoom(new BMap.Point(116.404, 39.915), 4);
 	map.enableScrollWheelZoom();
+	map.centerAndZoom(new BMap.Point(116.3252, 40.045103), 4);
 
 	var opts = {
 		width : 250,     // 信息窗口宽度
@@ -33,7 +33,8 @@ frappe.ready(function() {
 					var sites = r.message;
 					for (var i in sites) {
 						pt = new BMap.Point(sites[i].longitude, sites[i].latitude);
-						var marker = new BMap.Marker(pt);
+						var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
+						var marker = new BMap.Marker(pt,{icon:myIcon});
 						var content = "<a href='/iot_sites/" + sites[i].name + "'>" +
 							"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" +
 							sites[i].site_name + "</h4></a>" +
