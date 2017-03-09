@@ -63,7 +63,8 @@ website_route_rules = [
 ]
 
 portal_menu_items = [
-	{"title": _("Repair Issues"), "route": "/repair_issues", "reference_doctype": "Repair Issue", "role": "Repair User"}
+	{"title": _("Repair Issues"), "route": "/repair_issues", "reference_doctype": "Repair Issue", "role": "Repair User"},
+	{"title": _("Repair Sites Map"), "route": "/repair_site_map", "role": "Repair User"}
 ]
 
 # Installation
