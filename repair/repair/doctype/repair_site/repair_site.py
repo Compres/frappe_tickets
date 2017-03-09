@@ -19,10 +19,25 @@ class RepairSite(Document):
 		return True
 
 
+def list_user_sites(user=None):
+	if not user:
+		user = frappe.session.user
+
+	teams = [d[0] for d in frappe.db.get_values('Repair TeamUser', {"user": user}, "parent")]
+	sites = []
+	for team in teams:
+		for d in frappe.db.get_values('Repair SiteTeam', {'team': team}, "parent"):
+			sites.append(d[0])
+
+	return sites
+
+
 @frappe.whitelist()
 def list_site_map():
-	sites = frappe.get_all('Repair Site',
-							 fields=["name", "site_name", "longitude", "latitude", "address", "enterprise"])
+	sites = list_user_sites(frappe.session.user)
+
+	sites = frappe.get_all('Repair Site', filters={"name": ["in", sites]},
+							fields=["name", "site_name", "longitude", "latitude", "address", "enterprise"])
 	for dev in sites:
 		if not dev.longitude:
 			dev.longitude = '116.3252'
