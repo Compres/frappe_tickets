@@ -127,3 +127,13 @@ def wechat_notify():
 
 	for issue in frappe.get_all("Repair Issue", "name", filters={"wechat_notify": 1, "wechat_sent": 0}):
 		wechat_notify_by_issue_name(issue.name)
+
+
+@frappe.whitelist()
+def list_site_map():
+	issues = frappe.get_all('Repair Issue',
+							 fields=["name", "issue_name", "site", "priority", "price", "status"])
+	for issue in issues:
+		issue.longitude = frappe.get_value('Repair Site', issue.site, "longitude") or 116.3252
+		issue.latitude = frappe.get_value('Repair Site', issue.site, "latitude") or '40.045103'
+	return issues

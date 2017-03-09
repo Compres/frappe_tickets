@@ -35,7 +35,7 @@ frappe.ready(function() {
 						pt = new BMap.Point(sites[i].longitude, sites[i].latitude);
 						var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
 						var marker = new BMap.Marker(pt,{icon:myIcon});
-						var content = "<a href='/iot_sites/" + sites[i].name + "'>" +
+						var content = "<a href='/repair_sites/" + sites[i].name + "'>" +
 							"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" +
 							sites[i].site_name + "</h4></a>" +
 							"<p> Address : " + sites[i].address + "</p>" +
@@ -58,23 +58,23 @@ frappe.ready(function() {
 
 	frappe.call({
 		type: "GET",
-		method: "repair.repair.doctype.repair_site.repair_site.list_site_map",
+		method: "repair.repair.doctype.repair_issue.repair_issue.list_issue_map",
 		callback: function(r) {
 			if(!r.exc) {
 				if(r._server_messages)
 					frappe.msgprint(r._server_messages);
 				else {
-					var sites = r.message;
-					for (var i in sites) {
-						pt = new BMap.Point(sites[i].longitude, sites[i].latitude);
-						var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300, 157));
-						var marker = new BMap.Marker(pt, {icon: myIcon});
+					var issues = r.message;
+					for (var i in issues) {
+						pt = new BMap.Point(issues[i].longitude, issues[i].latitude);
+						var marker = new BMap.Marker(pt);
 						marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-						var content = "<a href='/iot_sites/" + sites[i].name + "'>" +
+						var content = "<a href='/repair_issues/" + issues[i].name + "'>" +
 							"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" +
-							sites[i].site_name + "</h4></a>" +
-							"<p> Address : " + sites[i].address + "</p>" +
-							"<p> Enterprise : " + sites[i].enterprise + "</p>";
+							issues[i].issue_name + "</h4></a>" +
+							"<p> Priority : " + issues[i].priority + "</p>" +
+							"<p> Status : " + issues[i].status + "</p>" +
+							"<p> Price : " + issues[i].price + "</p>";
 
 						addClickHandler(content, marker);
 
