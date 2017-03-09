@@ -13,8 +13,10 @@ class RepairEnterprise(Document):
 		if org_admin != self.admin:
 			user = frappe.get_doc('User', org_admin)
 			user.remove_roles('Repair Enterprise Admin')
+			user.add_roles('Repair User')
 		user = frappe.get_doc('User', self.admin)
 		user.add_roles('Repair Enterprise Admin')
+		user.remove_roles('Repair User')
 
 
 def list_user_enterpries(user=None):
