@@ -7,6 +7,7 @@ import frappe
 import json
 from frappe.model.document import Document
 from frappe import _
+from repair.repair.doctype.repair_site.repair_site import list_user_sites
 
 
 class RepairIssue(Document):
@@ -64,26 +65,12 @@ def get_list_context(context=None):
 	}
 
 
-def list_user_sites(user=None):
-	if not user:
-		user = frappe.session.user
-
-	teams = [d[0] for d in frappe.db.get_values('Repair TeamUser', {"user": user}, "parent")]
-	sites = []
-	for team in teams:
-		for d in frappe.db.get_values('Repair SiteTeam', {'team': team}, "parent"):
-			sites.append(d[0])
-
-	return sites
-
-
 def get_permission_query_conditions(user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return ""
 
-	else:
-		return """(`tabRepair Issue`.site in ({user_sites}))""".format(
-			user_sites='"' + '", "'.join(list_user_sites(user)) + '"')
+	return """(`tabRepair Issue`.site in ({user_sites}))""".format(
+		user_sites='"' + '", "'.join(list_user_sites(user)) + '"')
 
 
 def has_permission(doc, user):

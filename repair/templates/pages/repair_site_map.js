@@ -1,7 +1,7 @@
 frappe.ready(function() {
 	var map = new BMap.Map("baiduMap");
 	map.enableScrollWheelZoom();
-	map.centerAndZoom(new BMap.Point(116.3252, 40.045103), 4);
+	map.centerAndZoom(new BMap.Point(116.3252, 40.045103), 12);
 
 	var opts = {
 		width : 250,     // 信息窗口宽度

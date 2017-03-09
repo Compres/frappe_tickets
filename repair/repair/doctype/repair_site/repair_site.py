@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
+from repair.repair.doctype.repair_enterprise.repair_enterprise import list_user_enterpries
 
 
 class RepairSite(Document):
@@ -30,6 +31,24 @@ def list_user_sites(user=None):
 			sites.append(d[0])
 
 	return sites
+
+
+def get_permission_query_conditions(user):
+	if 'Repair Manager' in frappe.get_roles(user):
+		return ""
+
+	return """(`tabRepair Site`.enterprise in ({ent_list}))""".format(
+		ent_list='"' + '", "'.join(list_user_enterpries(user)) + '"')
+
+
+def has_permission(doc, user):
+	if 'Repair Manager' in frappe.get_roles(user):
+		return True
+
+	if frappe.get_value('Repair Enterprise', {'admin': user, 'name': doc.enterprise}):
+		return True
+
+	return False
 
 
 @frappe.whitelist()
