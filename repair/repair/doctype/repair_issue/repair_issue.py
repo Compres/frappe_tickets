@@ -18,6 +18,11 @@ class RepairIssue(Document):
 			self.fixed_by = None
 			self.fixed_date = None
 
+	def on_update(self):
+		if self.wechat_notify == 1 and self.wechat_sent != 1:
+			frappe.enqueue('repair.doctype.repair_issue.repair_issue.wechat_notify_by_issue_name',
+							issue_name = self.name)
+
 	def has_website_permission(self, ptype, verbose=False):
 		user = frappe.session.user
 		if self.fixed_by == user:
@@ -96,22 +101,30 @@ def has_permission(doc, user):
 	return False
 
 
+
+def wechat_notify_by_issue_name(issue_name):
+	issue_doc = frappe.get_doc("Repair Issue", issue_name)
+	if issue_doc.wechat_sent == 1:
+		return
+
+	if issue_doc.status in ["New", "Open"]:
+		# Get all teams for that site
+		for st in frappe.db.get_values("Repair SiteTeam", {"parent": issue_doc.site}, "team"):
+			for user in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user"):
+				print("Send wechat notify : {0} to user {1} ".format(issue_doc.name, user[0]))
+				"""
+				frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
+					content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
+					name=comm.reference_name)
+				"""
+
+	# update flag
+	issue_doc.db_set("wechat_sent", 1)
+
+
 def wechat_notify():
 	"""Sends WeChat notifications if there are un-notified issues
 		and `wechat_sent` is set as true."""
 
 	for issue in frappe.get_all("Repair Issue", "name", filters={"wechat_notify": 1, "wechat_sent": 0}):
-		issue_doc = frappe.get_doc("Repair Issue", issue.name)
-		if issue_doc.status in ["New", "Open"]:
-			# Get all teams for that site
-			for st in frappe.db.get_values("Repair SiteTeam", {"parent": issue_doc.site}, "team"):
-				for user in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user"):
-					print("Send wechat notify : {0} to user {1} ".format(issue_doc.name, user[0]))
-					"""
-					frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
-						content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
-						name=comm.reference_name)
-					"""
-
-		# update flag
-		issue_doc.db_set("wechat_sent", 1)
+		wechat_notify_by_issue_name(issue.name)
