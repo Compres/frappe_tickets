@@ -109,7 +109,7 @@ def wechat_notify():
 				}):
 				team = frappe.get_doc("Communication", st.team)
 				for user in frappe.db.get_values("Repair TeamUser", "user", filters={
-						"parent": issue_doc.site,
+						"parent": team,
 					}):
 					print("Send wechat notify to ", user.user)
 					"""
