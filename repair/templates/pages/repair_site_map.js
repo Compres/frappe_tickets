@@ -34,9 +34,7 @@ frappe.ready(function() {
 					for (var i in sites) {
 						pt = new BMap.Point(sites[i].longitude, sites[i].latitude);
 						var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
-						//var marker = new BMap.Marker(pt,{icon:myIcon});
-						var marker = new BMap.Marker(pt);
-						marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+						var marker = new BMap.Marker(pt,{icon:myIcon});
 						var content = "<a href='/iot_sites/" + sites[i].name + "'>" +
 							"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" +
 							sites[i].site_name + "</h4></a>" +
@@ -48,6 +46,12 @@ frappe.ready(function() {
 					}
 					//最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
 					var markerClusterer = new BMapLib.MarkerClusterer(map, {markers: markers});
+
+					var point = new BMap.Point(116.404, 39.915);
+					map.centerAndZoom(point, 15);
+					var marker = new BMap.Marker(point);  // 创建标注
+					map.addOverlay(marker);               // 将标注添加到地图中
+					marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 				}
 			} else {
 				if(r._server_messages)
