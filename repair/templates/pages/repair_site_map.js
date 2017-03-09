@@ -79,6 +79,7 @@ frappe.ready(function() {
 							"<p> Price : " + issues[i].price + "</p>";
 
 						addClickHandler(content, marker);
+						marker.setTop(true);
 
 						map.addOverlay(marker);
 					}
