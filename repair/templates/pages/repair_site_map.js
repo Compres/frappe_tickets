@@ -34,7 +34,8 @@ frappe.ready(function() {
 					for (var i in sites) {
 						pt = new BMap.Point(sites[i].longitude, sites[i].latitude);
 						var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
-						var marker = new BMap.Marker(pt,{icon:myIcon});
+						//var marker = new BMap.Marker(pt,{icon:myIcon});
+						var marker = new BMap.Marker(pt);
 						marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 						var content = "<a href='/iot_sites/" + sites[i].name + "'>" +
 							"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" +
