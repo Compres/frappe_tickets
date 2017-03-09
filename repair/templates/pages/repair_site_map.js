@@ -33,7 +33,7 @@ frappe.ready(function() {
 					var sites = r.message;
 					for (var i in sites) {
 						pt = new BMap.Point(sites[i].longitude, sites[i].latitude);
-						var myIcon = new BMap.Icon("/files/logo71569c.png", new BMap.Size(70,20));
+						var myIcon = new BMap.Icon("/files/light_tower.png", new BMap.Size(64,64));
 						var marker = new BMap.Marker(pt,{icon:myIcon});
 						/*
 						var content = "<a href='/repair_sites/" + sites[i].name + "'>" +
@@ -69,7 +69,8 @@ frappe.ready(function() {
 					var issues = r.message;
 					for (var i in issues) {
 						pt = new BMap.Point(issues[i].longitude, issues[i].latitude);
-						var marker = new BMap.Marker(pt);
+						var myIcon = new BMap.Icon("/files/bullet-question-d-r.png", new BMap.Size(32,32));
+						var marker = new BMap.Marker(pt,{icon:myIcon});
 						marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 						var content = "<a href='/repair_issues/" + issues[i].name + "'>" +
 							"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" +
