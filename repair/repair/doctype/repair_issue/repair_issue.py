@@ -114,5 +114,4 @@ def wechat_notify():
 					"""
 
 		# update flag
-		issue_doc.set("wechat_sent", 1)
-		issue_doc.save()
+		issue_doc.db_set("wechat_sent", 1)
