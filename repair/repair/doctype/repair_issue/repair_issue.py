@@ -7,7 +7,8 @@ import frappe
 import json
 from frappe.model.document import Document
 from frappe import _
-from repair.repair.doctype.repair_site.repair_site import list_user_sites
+from repair.repair.doctype.repair_site.repair_site import list_user_sites, list_enterprise_sites
+from repair.repair.doctype.repair_enterprise.repair_enterprise import list_user_enterpries
 
 
 class RepairIssue(Document):
@@ -69,6 +70,16 @@ def get_permission_query_conditions(user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return ""
 
+	if 'Repair Enterprise Admin' not in frappe.get_roles(user):
+		sites = []
+		enterprises = list_user_enterpries(user)
+		for enterprise in enterprises:
+			for site in list_enterprise_sites(enterprise):
+				sites.append(site)
+
+		return """(`tabRepair Issue`.site in ({user_sites}))""".format(
+			user_sites='"' + '", "'.join(sites) + '"')
+
 	return """(`tabRepair Issue`.site in ({user_sites}))""".format(
 		user_sites='"' + '", "'.join(list_user_sites(user)) + '"')
 
@@ -76,6 +87,15 @@ def get_permission_query_conditions(user):
 def has_permission(doc, user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return True
+
+	if 'Repair Enterprise Admin' not in frappe.get_roles(user):
+		sites = []
+		enterprises = list_user_enterpries(user)
+		for enterprise in enterprises:
+			for site in list_enterprise_sites(enterprise):
+				sites.append(site)
+
+		return doc.site in sites
 
 	if doc.fixed_by == user:
 		return True

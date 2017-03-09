@@ -33,6 +33,10 @@ def list_user_sites(user=None):
 	return sites
 
 
+def list_enterprise_sites(enterprise):
+	return [d[0] for d in frappe.db.get_values('Repair Site', {"enterprise": enterprise}, "name")]
+
+
 def get_permission_query_conditions(user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return ""
