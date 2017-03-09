@@ -35,6 +35,7 @@ frappe.ready(function() {
 						pt = new BMap.Point(sites[i].longitude, sites[i].latitude);
 						var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
 						var marker = new BMap.Marker(pt,{icon:myIcon});
+						/*
 						var content = "<a href='/repair_sites/" + sites[i].name + "'>" +
 							"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" +
 							sites[i].site_name + "</h4></a>" +
@@ -42,6 +43,7 @@ frappe.ready(function() {
 							"<p> Enterprise : " + sites[i].enterprise + "</p>";
 
 						addClickHandler(content, marker);
+						*/
 						markers.push(marker);
 					}
 					//最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
