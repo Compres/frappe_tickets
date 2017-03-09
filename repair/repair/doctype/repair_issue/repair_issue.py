@@ -77,7 +77,6 @@ def list_user_sites(user=None):
 
 
 def get_permission_query_conditions(user):
-	print('get_permission_query_conditions')
 	if 'Repair Manager' in frappe.get_roles(user):
 		return ""
 
@@ -111,7 +110,7 @@ def wechat_notify_by_issue_name(issue_name):
 		# Get all teams for that site
 		for st in frappe.db.get_values("Repair SiteTeam", {"parent": issue_doc.site}, "team"):
 			users = [d[0] for d in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user")]
-			print("Send wechat notify : {0} to users {1} ".format(json.dump(issue_doc), users))
+			print("Send wechat notify : {0} to users {1} ".format(json.dumps(issue_doc), users))
 			"""
 			frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
 				content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
