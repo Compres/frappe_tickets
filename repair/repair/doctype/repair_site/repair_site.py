@@ -17,3 +17,15 @@ class RepairSite(Document):
 	def has_website_permission(self, ptype, verbose=False):
 		print('has_website_permission', self.name)
 		return True
+
+
+@frappe.whitelist()
+def list_site_map():
+	sites = frappe.get_all('Repair Site',
+							 fields=["name", "site_name", "longitude", "latitude", "address", "enterprise"])
+	for dev in sites:
+		if not dev.longitude:
+			dev.longitude = '116.3252'
+		if not dev.latitude:
+			dev.latitude = '40.045103'
+	return sites
