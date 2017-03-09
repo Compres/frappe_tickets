@@ -41,7 +41,7 @@ class RepairIssue(Document):
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
 	return frappe.db.sql('''select distinct issue.*
 		from `tabRepair Issue` issue, `tabRepair TeamUser` team_user, `tabRepair SiteTeam` site_team
-		where (issue.status in ({'New', 'Open'})
+		where (issue.status in ("New", "Open")
 			and issue.site = site_team.parent
 			and site_team.team = team_user.parent 
 			and team_user.user = %(user)s)
