@@ -74,7 +74,7 @@ frappe.ready(function() {
 						var content = "<a href='/repair_issues/" + issues[i].name + "'>" +
 							"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" +
 							issues[i].issue_name + "</h4></a>" +
-							"<p> Priority : " + issues[i].priority + </p>" +
+							"<p> Priority : " + issues[i].priority + "</p>" +
 							"<p> Status : " + issues[i].status + "</p>" +
 							"<p> Price : " + issues[i].price + "</p>";
 
