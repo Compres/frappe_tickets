@@ -7,7 +7,14 @@ import frappe
 from frappe.model.document import Document
 
 class RepairEnterprise(Document):
-	pass
+
+	def on_update(self):
+		org_admin = frappe.db.get_value("Repair Enterprise", {"name": self.name}, "admin")
+		if org_admin != self.admin:
+			user = frappe.get_doc('User', org_admin)
+			user.remove_roles('Repair Enterprise Admin')
+		user = frappe.get_doc('User', self.admin)
+		user.add_roles('Repair Enterprise Admin')
 
 
 def list_user_enterpries(user=None):
