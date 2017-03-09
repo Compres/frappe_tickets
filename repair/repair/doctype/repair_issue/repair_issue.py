@@ -40,7 +40,8 @@ class RepairIssue(Document):
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
 	cq = get_permission_query_conditions(frappe.session.user)
-	return frappe.db.sql('''select distinct `tabRepair Issue`.*
+	return frappe.db.sql('''select distinct issue.*
+		from `tabRepair Issue` issue
 		where %(cq)s
 			order by issue.{0}
 			limit {1}, {2}
