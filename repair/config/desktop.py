@@ -7,7 +7,7 @@ def get_data():
 		{
 			"module_name": "Repair",
 			"color": "orange",
-			"icon": "octicon octicon-file-directory",
+			"icon": "fa fa-gavel",
 			"type": "module",
 			"label": _("Repair")
 		}
