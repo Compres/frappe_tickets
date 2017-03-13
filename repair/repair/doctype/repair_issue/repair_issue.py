@@ -24,7 +24,7 @@ class RepairIssue(Document):
 	def on_update(self):
 		if self.wechat_notify == 1 and self.wechat_sent != 1:
 			frappe.enqueue('repair.repair.doctype.repair_issue.repair_issue.wechat_notify_by_issue_name',
-							issue_name = self.name)
+							issue_name = self.name, issue_doc=self)
 
 	def has_website_permission(self, ptype, verbose=False):
 		user = frappe.session.user
@@ -109,8 +109,8 @@ def has_permission(doc, user):
 	return False
 
 
-def wechat_notify_by_issue_name(issue_name):
-	issue_doc = frappe.get_doc("Repair Issue", issue_name)
+def wechat_notify_by_issue_name(issue_name, issue_doc=None):
+	issue_doc = issue_doc or frappe.get_doc("Repair Issue", issue_name)
 	if issue_doc.wechat_sent == 1:
 		return
 
