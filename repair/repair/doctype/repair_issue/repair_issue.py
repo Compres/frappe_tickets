@@ -123,9 +123,10 @@ def wechat_notify_by_issue_name(issue_name):
 			if not app:
 				app = frappe.db.get_single_value("Repair Settings", "default_wechat_app")
 			if app:
-				if not user_list[app]:
+				if not user_list.has_key(app):
 					user_list[app] = []
-				user_list[app].append(d[0] for d in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user"))
+				for d in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user"):
+					user_list[app].append(d[0])
 				"""
 				frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
 					content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
