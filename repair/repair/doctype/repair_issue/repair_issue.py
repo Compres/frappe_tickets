@@ -115,20 +115,24 @@ def wechat_notify_by_issue_name(issue_name):
 		return
 
 	if issue_doc.status in ["New", "Open"]:
+		user_list = {}
 		# Get all teams for that site
 		for st in frappe.db.get_values("Repair SiteTeam", {"parent": issue_doc.site}, "team"):
-			ent = frappe.db.get_value("Repair Team", st, "enterprise")
+			ent = frappe.db.get_value("Repair Team", st[0], "enterprise")
 			app = frappe.db.get_value("Repair Enterprise", ent, "wechat_app")
 			if not app:
 				app = frappe.db.get_single_value("Repair Settings", "default_wechat_app")
 			if app:
-				users = [d[0] for d in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user")]
-				print("Send wechat notify : {0} to users {1} via app {2}".format(issue_doc.as_json(), users, app))
+				if not user_list[app]:
+					user_list[app] = []
+				user_list[app].append(d[0] for d in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user"))
 				"""
 				frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
 					content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
 					name=comm.reference_name)
 				"""
+		for app in user_list:
+			print("Send wechat notify : {0} to users {1} via app {2}".format(issue_doc.as_json(), user_list[app], app))
 
 	# update flag
 	issue_doc.db_set("wechat_sent", 1)
