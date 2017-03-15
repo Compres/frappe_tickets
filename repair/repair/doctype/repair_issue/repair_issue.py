@@ -141,7 +141,7 @@ def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 				"sn": issue_doc.name,
 				"name": issue_doc.issue_name,
 				"time": issue_doc.modified,
-				"remark": "站点: " + issue_doc.site
+				"remark": "站点: {0}\n价格: {1}\n详细: {2}".format(issue_doc.site, issue_doc.price, issue_doc.issue_desc)
 			}
 			send_repair_issue(app, user_list[app], issue)
 
