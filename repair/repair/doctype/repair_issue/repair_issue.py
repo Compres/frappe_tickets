@@ -138,10 +138,10 @@ def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 			issue = {
 				"title": "有新的工单",
 				"url": "/update-repair-issue?name=" + issue_doc.name,
+				"sn": issue_doc.name,
 				"name": issue_doc.issue_name,
 				"time": issue_doc.modified,
-				"content": issue_doc.site,
-				"remark": "LLFASLDJLAS",
+				"remark": "站点: " + issue_doc.site
 			}
 			send_repair_issue(app, user_list[app], issue)
 
