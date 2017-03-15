@@ -137,9 +137,10 @@ def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 			from wechat.api import send_repair_issue
 			issue = {
 				"title": "有新的工单",
+				"name": issue_doc.name,
 				"device_name": issue_doc.site,
 				"time": issue_doc.modified,
-				"content": issue_doc.name,
+				"content": issue_doc.issue_name,
 				"remark": "LLFASLDJLAS",
 			}
 			send_repair_issue(app, user_list[app], issue)
