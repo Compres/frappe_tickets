@@ -133,7 +133,7 @@ def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 					name=comm.reference_name)
 				"""
 		for app in user_list:
-			print("Send wechat notify : {0} to users {1} via app {2}".format(issue_doc.as_json(), user_list[app], app))
+			#print("Send wechat notify : {0} to users {1} via app {2}".format(issue_doc.as_json(), user_list[app], app))
 			from wechat.api import send_repair_issue
 			issue = {
 				"title": _("有新的工单"),
