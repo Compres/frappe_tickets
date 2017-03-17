@@ -39,6 +39,32 @@ class RepairIssue(Document):
 
 		return False
 
+	def wechat_tmsg_data(self):
+		return {
+			"first": {
+				"value": _("有新的工单"),
+				"color": "red"
+			},
+			"keyword1": {
+				"value": self.name,  # 编号
+				"color": "blue"
+			},
+			"keyword2": {
+				"value": self.issue_name,  # 标题
+				"color": "blue"
+			},
+			"keyword3": {
+				"value": self.modified,  # 时间
+				"color": "green",
+			},
+			"remark": {
+				"value": _("站点: {0}\n价格: {1}\n详情: {2}").format(self.site, self.price, self.issue_desc)
+			}
+		}
+
+	def wechat_tmsg_url(self):
+		return "/update-repair-issue?name=" + self.name
+
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
 	return frappe.db.sql('''select distinct issue.*
@@ -134,16 +160,8 @@ def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 				"""
 		for app in user_list:
 			#print("Send wechat notify : {0} to users {1} via app {2}".format(issue_doc.as_json(), user_list[app], app))
-			from wechat.api import send_repair_issue
-			issue = {
-				"title": _("有新的工单"),
-				"url": "/update-repair-issue?name=" + issue_doc.name,
-				"sn": issue_doc.name,
-				"name": issue_doc.issue_name,
-				"time": issue_doc.modified,
-				"remark": _("站点: {0}\n价格: {1}\n详情: {2}").format(issue_doc.site, issue_doc.price, issue_doc.issue_desc)
-			}
-			send_repair_issue(app, user_list[app], issue)
+			from wechat.api import send_doc
+			send_doc(app, issue_doc, user_list[app])
 
 	# update flag
 	issue_doc.db_set("wechat_sent", 1)
@@ -162,7 +180,6 @@ def list_issue_map():
 	sites = list_user_sites(frappe.session.user)
 	issues = frappe.get_all('Repair Issue', filters={"status": ["in",["New", "Open"]], "site": ["in", sites]},
 							fields=["name", "issue_name", "site", "priority", "price", "status"])
-
 
 	for issue in issues:
 		issue.longitude = frappe.get_value('Repair Site', issue.site, "longitude") or '116.3252'
