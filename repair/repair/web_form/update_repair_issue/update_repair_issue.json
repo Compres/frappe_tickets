@@ -17,7 +17,7 @@
  "is_standard": 1, 
  "login_required": 1, 
  "max_attachment_size": 0, 
- "modified": "2017-03-09 13:44:58.285001", 
+ "modified": "2017-03-17 16:43:41.825885", 
  "modified_by": "Administrator", 
  "module": "Repair", 
  "name": "update-repair-issue", 
@@ -75,7 +75,7 @@
   }, 
   {
    "fieldname": "issue_desc", 
-   "fieldtype": "Text", 
+   "fieldtype": "Text Editor", 
    "hidden": 0, 
    "label": "Issue Description", 
    "max_length": 0, 
