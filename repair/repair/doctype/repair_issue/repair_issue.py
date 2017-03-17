@@ -7,6 +7,7 @@ import frappe
 import json
 from frappe.model.document import Document
 from frappe import _
+from frappe.utils.data import format_datetime
 from repair.repair.doctype.repair_site.repair_site import list_user_sites, list_enterprise_sites
 from repair.repair.doctype.repair_enterprise.repair_enterprise import list_user_enterpries
 
@@ -54,7 +55,7 @@ class RepairIssue(Document):
 				"color": "blue"
 			},
 			"keyword3": {
-				"value": self.modified,  # 时间
+				"value": format_datetime(self.modified),  # 时间
 				"color": "green",
 			},
 			"remark": {
