@@ -173,7 +173,8 @@ def wechat_notify():
 		and `wechat_sent` is set as true."""
 
 	for issue in frappe.get_all("Repair Issue", "name", filters={"wechat_notify": 1, "wechat_sent": 0}):
-		wechat_notify_by_issue_name(issue.name)
+		frappe.enqueue('repair.repair.doctype.repair_issue.repair_issue.wechat_notify_by_issue_name',
+						issue_name=issue.name)
 
 
 @frappe.whitelist()
