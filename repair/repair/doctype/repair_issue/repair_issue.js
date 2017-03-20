@@ -8,13 +8,13 @@ frappe.ui.form.on('Repair Issue', {
 				filters: {"ignore_user_type": 1}
 			};
 		};
-		frm.fields_dict["issue_source_type"].get_query = function(){
+		/* frm.fields_dict["issue_source_type"].get_query = function(){
 			return {
 				filters: {
 					"name": ["in","IOT Device Error,Repair Issue,IOT Device"]
 				}
 			}
-		};
+		}; */
 	},
 	refresh: function(frm) {
 
