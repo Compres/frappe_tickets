@@ -1,12 +1,12 @@
 frappe.listview_settings['Repair Issue'] = {
-	get_indicator: function(doc) {
+	/*get_indicator: function(doc) {
 		colour = {'New': 'red', 'Open': 'orange', 'Fixed': 'blue', 'Closed': 'darkgrey'};
 		return [__(doc.status), colour[doc.status], "status,=," + doc.status];
-	},
+	},*/
 	onload: function(me) {
-		frappe.route_options = {
+		/*frappe.route_options = {
 			"status": ['in', "New,Open"]
-		};
+		};*/
 	},
 	refresh: function(me) {
 		// add created by me
