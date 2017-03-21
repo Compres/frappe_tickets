@@ -17,6 +17,14 @@ frappe.ui.form.on('Repair Issue', {
 		}; */
 	},
 	refresh: function(frm) {
-
+		if(frm.doc.docstatus == 1) {
+			frm.add_custom_button(__("Create Ticket"), function() {
+				 frappe.model.with_doctype('Repair Ticket', function() {
+					var mr = frappe.model.get_new_doc('Repair Ticket');
+					doc.issue = frm.doc.name
+					frappe.set_route('Form', 'Repair Ticket', mr.name);
+				});
+			});
+		}
 	}
 });
