@@ -21,8 +21,8 @@ frappe.ui.form.on('Repair Issue', {
 			frm.add_custom_button(__("Create Ticket"), function() {
 				 frappe.model.with_doctype('Repair Ticket', function() {
 					var mr = frappe.model.get_new_doc('Repair Ticket');
-					doc.issue = frm.doc.name
-					//frappe.set_route('Form', 'Repair Ticket', mr.name);
+					mr.issue = frm.doc.name
+					frappe.set_route('Form', mr.doctype, mr.name);
 				});
 			});
 			frm.custom_buttons[__("Create Ticket")].removeClass("btn-default");
