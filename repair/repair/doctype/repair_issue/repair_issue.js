@@ -24,7 +24,9 @@ frappe.ui.form.on('Repair Issue', {
 					doc.issue = frm.doc.name
 					frappe.set_route('Form', 'Repair Ticket', mr.name);
 				});
-			}, null, "btn-primary");
+			});
+			frm.custom_buttons[__("Create Ticket")].removeClass("btn-default");
+			frm.custom_buttons[__("Create Ticket")].addClass("btn-primary");
 		}
 	}
 });
