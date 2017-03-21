@@ -22,8 +22,8 @@ class RepairIssue(Document):
 			self.fixed_by = None
 			self.fixed_date = None
 
-	def on_update(self):
-		if self.wechat_notify == 1 and self.wechat_sent != 1:
+	def on_submit(self):
+		if self.wechat_notify == 1:
 			frappe.enqueue('repair.repair.doctype.repair_issue.repair_issue.wechat_notify_by_issue_name',
 							issue_name = self.name, issue_doc=self)
 
@@ -138,8 +138,6 @@ def has_permission(doc, user):
 
 def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 	issue_doc = issue_doc or frappe.get_doc("Repair Issue", issue_name)
-	if issue_doc.wechat_sent == 1:
-		return
 
 	if issue_doc.status in ["New", "Open"]:
 		user_list = {}
@@ -163,18 +161,6 @@ def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 			#print("Send wechat notify : {0} to users {1} via app {2}".format(issue_doc.as_json(), user_list[app], app))
 			from wechat.api import send_doc
 			send_doc(app, 'Repair Issue', issue_doc.name, user_list[app])
-
-	# update flag
-	issue_doc.db_set("wechat_sent", 1)
-
-
-def wechat_notify():
-	"""Sends WeChat notifications if there are un-notified issues
-		and `wechat_sent` is set as true."""
-
-	for issue in frappe.get_all("Repair Issue", "name", filters={"wechat_notify": 1, "wechat_sent": 0}):
-		frappe.enqueue('repair.repair.doctype.repair_issue.repair_issue.wechat_notify_by_issue_name',
-						issue_name=issue.name)
 
 
 @frappe.whitelist()
