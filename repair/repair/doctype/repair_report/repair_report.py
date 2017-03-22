@@ -7,4 +7,10 @@ import frappe
 from frappe.model.document import Document
 
 class RepairReport(Document):
-	pass
+	def on_submit(self):
+		ticket = frappe.get_doc("Repair Ticket", self.ticket)
+		ticket.append_reports(self)
+
+	def on_cancel(self):
+		ticket = frappe.get_doc("Repair Ticket", self.ticket)
+		ticket.remove_reports(self)

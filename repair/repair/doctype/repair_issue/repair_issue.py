@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 import json
 from frappe.model.document import Document
-from frappe import _
+from frappe import throw, _
 from frappe.utils.data import format_datetime
 from repair.repair.doctype.repair_site.repair_site import list_user_sites, list_enterprise_sites
 from repair.repair.doctype.repair_enterprise.repair_enterprise import list_user_enterpries
@@ -59,6 +59,8 @@ class RepairIssue(Document):
 		return "/update-repair-issue?name=" + self.name
 
 	def submit_ticket_cost(self, cost):
+		if self.docstatus != 1:
+			throw(_("Cannot submit cost on un-submitted issue"))
 		self.total_cost += cost
 		self.save()
 
