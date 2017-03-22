@@ -12,11 +12,11 @@ frappe.ui.form.on('Repair Ticket', {
 		}
 		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixing' && frm.doc.assigned_to_user==user) {
 			frm.add_custom_button(__("Create Report"), function() {
-				 frappe.model.with_doctype('Repair Ticket Result', function() {
-					var mr = frappe.model.get_new_doc('Repair Ticket Result');
+				 frappe.model.with_doctype('Repair Report', function() {
+					var mr = frappe.model.get_new_doc('Repair Report');
 					mr.ticket = frm.doc.name;
 					mr.naming_series = 'ISR-';
-					mr.title = __("Result for") + frm.doc.name;
+					mr.title = __("Report for") + frm.doc.name;
 					frappe.set_route('Form', mr.doctype, mr.name);
 				});
 			});
