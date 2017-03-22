@@ -8,6 +8,8 @@ frappe.ui.form.on('Repair Ticket', {
 				 frappe.model.with_doctype('Repair Ticket Result', function() {
 					var mr = frappe.model.get_new_doc('Repair Ticket Result');
 					mr.ticket = frm.doc.name;
+					mr.naming_series = 'ISR-';
+					mr.title = __("Result for") + frm.doc.name;
 					frappe.set_route('Form', mr.doctype, mr.name);
 				});
 			});
