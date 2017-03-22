@@ -8,8 +8,10 @@ import json
 from frappe.model.document import Document
 from frappe import throw, _
 from frappe.utils.data import format_datetime
-from repair.repair.doctype.repair_site.repair_site import list_user_sites, list_enterprise_sites
-from repair.repair.doctype.repair_enterprise.repair_enterprise import list_user_enterpries
+from repair.repair.doctype.repair_site.repair_site import list_user_sites, list_company_sites
+from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_user_groups
+from cloud.cloud.doctype.cloud_company.cloud_company import list_admin_companies
+
 
 
 class RepairIssue(Document):
@@ -35,7 +37,7 @@ class RepairIssue(Document):
 	def wechat_tmsg_data(self):
 		return {
 			"first": {
-				"value": _("有新的工单"),
+				"value": _("New Issue Created"),
 				"color": "red"
 			},
 			"keyword1": {
@@ -51,7 +53,7 @@ class RepairIssue(Document):
 				"color": "green",
 			},
 			"remark": {
-				"value": _("站点: {0}\n价格: {1}\n详情: {2}").format(self.site, self.total_cost, self.issue_desc)
+				"value": _("Site: {0}\nPrioirty: {1}\nInfo: {2}").format(self.site, self.total_cost, self.issue_desc)
 			}
 		}
 
@@ -90,16 +92,16 @@ class RepairIssue(Document):
 
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
+	user_groups='"' + '", "'.join(list_user_groups(frappe.session.user)) + '"'
 	return frappe.db.sql('''select distinct issue.*
-		from `tabRepair Issue` issue, `tabRepair TeamUser` team_user, `tabRepair SiteTeam` site_team
+		from `tabRepair Issue` issue, `tabRepair SiteTeam` site_team
 		where issue.docstatus != 2
 			and issue.site = site_team.parent
-			and site_team.team = team_user.parent 
-			and team_user.user = %(user)s)
+			and site_team.team in %(groups)s)
 			order by issue.{0}
 			limit {1}, {2}
 		'''.format(order_by, limit_start, limit_page_length),
-			{'user':frappe.session.user},
+			{'groups':user_groups},
 			as_dict=True,
 			update={'doctype':'Repair Issue'})
 
@@ -119,43 +121,33 @@ def get_permission_query_conditions(user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return ""
 
-	if 'Repair Enterprise Admin' in frappe.get_roles(user):
-		sites = []
-		enterprises = list_user_enterpries(user)
-		for enterprise in enterprises:
-			for site in list_enterprise_sites(enterprise):
-				sites.append(site)
+	sites = []
+	companies = list_admin_companies(user)
+	for company in companies:
+		for site in list_company_sites(company):
+			sites.append(site)
 
-		return """(`tabRepair Issue`.site in ({user_sites}))""".format(
-			user_sites='"' + '", "'.join(sites) + '"')
+	for site in list_user_sites(user):
+		sites.append(site)
 
-	return """(`tabRepair Issue`.site in ({user_sites}))""".format(
-		user_sites='"' + '", "'.join(list_user_sites(user)) + '"')
+	return """(`tabRepair Issue`.site in ({sites}))""".format(
+		sites='"' + '", "'.join(sites) + '"')
 
 
-def has_permission(doc, user):
+def has_permission(doc, ptype, user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return True
 
-	if 'Repair Enterprise Admin' in frappe.get_roles(user):
-		sites = []
-		enterprises = list_user_enterpries(user)
-		for enterprise in enterprises:
-			for site in list_enterprise_sites(enterprise):
-				sites.append(site)
+	sites = []
+	companies = list_admin_companies(user)
+	for company in companies:
+		for site in list_company_sites(company):
+			sites.append(site)
 
-		return doc.site in sites
+	for site in list_user_sites(user):
+		sites.append(site)
 
-	if doc.fixed_by == user:
-		return True
-
-	teams = [d[0] for d in frappe.db.get_values('Repair SiteTeam', {"parent": doc.site}, "team")]
-
-	for team in teams:
-		if frappe.get_value('Repair TeamUser', {"parent": team, "user": user}):
-			return True
-
-	return False
+	return doc.site in sites
 
 
 def wechat_notify_by_issue_name(issue_name, issue_doc=None):

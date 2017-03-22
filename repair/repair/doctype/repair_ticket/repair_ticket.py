@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import throw, _
+from frappe.utils.data import format_datetime
 from frappe.model.document import Document
 
 class RepairTicket(Document):
@@ -110,3 +111,74 @@ class RepairTicket(Document):
 		self.save()
 
 		frappe.msgprint(_("Ticket Fix Rejected"))
+
+	def wechat_tmsg_data(self):
+		return {
+			"first": {
+				"value": _("New Ticket Created"),
+				"color": "red"
+			},
+			"keyword1": {
+				"value": self.name,  # 编号
+				"color": "blue"
+			},
+			"keyword2": {
+				"value": self.ticket_name,  # 标题
+				"color": "blue"
+			},
+			"keyword3": {
+				"value": format_datetime(self.planned_end_date),  # 时间
+				"color": "green",
+			},
+			"remark": {
+				"value": _("Issue: {0}\nPrice: {1}\nInfo: {2}").format(self.issue, self.cost, self.issue_info)
+			}
+		}
+
+	def wechat_tmsg_url(self):
+		return "/update-repair-issue?name=" + self.name
+
+
+def get_permission_query_conditions(user):
+	if 'Repair User' in frappe.get_roles(user):
+		return """(`tabRepair Issue`.site in ({user_sites}))""".format(
+		user_sites='"' + '", "'.join(list_user_sites(user)) + '"')
+
+	return ""
+
+
+def has_permission(doc, ptype, user):
+	issue = frappe.get_doc("Repair Issue", doc.issue)
+	if frappe.has_permission(issue, ptype, user):
+		if 'Repair User' not in frappe.get_roles(user):
+			return True
+		if doc.docstatus == 1:
+			return True
+
+	return False
+
+
+def wechat_notify_by_ticket_name(issue_name, issue_doc=None):
+	issue_doc = issue_doc or frappe.get_doc("Repair Issue", issue_name)
+
+	user_list = {}
+	# Get all teams for that site
+	for st in frappe.db.get_values("Repair SiteTeam", {"parent": issue_doc.site}, "team"):
+		ent = frappe.db.get_value("Repair Team", st[0], "enterprise")
+		app = frappe.db.get_value("Repair Enterprise", ent, "wechat_app")
+		if not app:
+			app = frappe.db.get_single_value("Repair Settings", "default_wechat_app")
+		if app:
+			if not user_list.has_key(app):
+				user_list[app] = []
+			for d in frappe.db.get_values("Repair TeamUser", {"parent": st[0]}, "user"):
+				user_list[app].append(d[0])
+			"""
+			frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
+				content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
+				name=comm.reference_name)
+			"""
+	for app in user_list:
+		#print("Send wechat notify : {0} to users {1} via app {2}".format(issue_doc.as_json(), user_list[app], app))
+		from wechat.api import send_doc
+		send_doc(app, 'Repair Issue', issue_doc.name, user_list[app])

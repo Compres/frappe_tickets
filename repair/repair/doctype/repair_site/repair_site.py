@@ -5,15 +5,10 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-from repair.repair.doctype.repair_enterprise.repair_enterprise import list_user_enterpries
+from cloud.cloud.doctype.cloud_company.cloud_company import list_admin_companies
 
 
 class RepairSite(Document):
-
-	def autoname(self):
-		"""set name as [self.parent].<name>"""
-		self.site_name = self.site_name.strip()
-		self.name = '[' + self.enterprise + '].' + self.site_name
 
 	def has_website_permission(self, ptype, verbose=False):
 		print('has_website_permission', self.name)
@@ -33,26 +28,24 @@ def list_user_sites(user=None):
 	return sites
 
 
-def list_enterprise_sites(enterprise):
-	return [d[0] for d in frappe.db.get_values('Repair Site', {"enterprise": enterprise}, "name")]
+def list_company_sites(company):
+	return [d[0] for d in frappe.db.get_values('Repair Site', {"company": company}, "name")]
 
 
 def get_permission_query_conditions(user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return ""
 
-	return """(`tabRepair Site`.enterprise in ({ent_list}))""".format(
-		ent_list='"' + '", "'.join(list_user_enterpries(user)) + '"')
+	return """(`tabRepair Site`.company in ({clist}))""".format(
+		clist='"' + '", "'.join(list_admin_companies(user)) + '"')
 
 
 def has_permission(doc, user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return True
 
-	if frappe.get_value('Repair Enterprise', {'admin': user, 'name': doc.enterprise}):
-		return True
-
-	return False
+	companies = list_admin_companies(user)
+	return doc.company in companies
 
 
 @frappe.whitelist()
