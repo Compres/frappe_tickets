@@ -23,7 +23,7 @@ class RepairTicket(Document):
 		for report in reports:
 			if report.name in current_reports:
 				continue
-			self.append("reports", report)
+			self.append("reports", report.name)
 
 		self.save()
 
