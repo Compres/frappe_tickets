@@ -25,5 +25,5 @@ def get_permission_query_conditions(user):
 
 	# [frappe.db.escape(r) for r in frappe.get_roles(user)]
 
-	return """(`tabRepair Ticket`.site in ({sites}))""".format(
+	return """(`tabRepair Report`.site in ({sites}))""".format(
 		sites='"' + '", "'.join(sites) + '"')

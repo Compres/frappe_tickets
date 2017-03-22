@@ -16,7 +16,7 @@ class RepairTicket(Document):
 
 	def on_cancel(self):
 		issue = frappe.get_doc("Repair Issue", self.issue)
-		issue.append_tickets(self)
+		issue.remove_tickets(self)
 
 	def remove_all_reports(self):
 		self.set("reports", list())
