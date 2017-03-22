@@ -94,6 +94,8 @@ portal_menu_items = [
 permission_query_conditions = {
 	"Repair Issue": "repair.repair.doctype.repair_issue.repair_issue.get_permission_query_conditions",
 	"Repair Site": "repair.repair.doctype.repair_site.repair_site.get_permission_query_conditions",
+	"Repair Ticket": "repair.repair.doctype.repair_ticket.repair_ticket.get_permission_query_conditions",
+	"Repair Report": "repair.repair.doctype.repair_report.repair_report.get_permission_query_conditions",
 }
 
 # Document Events

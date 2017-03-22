@@ -7,6 +7,7 @@ import frappe
 from frappe import throw, _
 from frappe.utils.data import format_datetime
 from frappe.model.document import Document
+from repair.repair.doctype.repair_site.repair_site import list_sites
 
 class RepairTicket(Document):
 	def on_submit(self):
@@ -140,22 +141,16 @@ class RepairTicket(Document):
 
 
 def get_permission_query_conditions(user):
-	if 'Repair User' in frappe.get_roles(user):
-		return """(`tabRepair Issue`.site in ({user_sites}))""".format(
-		user_sites='"' + '", "'.join(list_user_sites(user)) + '"')
+	if 'Repair Manager' in frappe.get_roles(user):
+		return ""
 
-	return ""
+	sites = list_sites(user)
 
+	# [frappe.db.escape(r) for r in frappe.get_roles(user)]
 
-def has_permission(doc, ptype, user):
-	issue = frappe.get_doc("Repair Issue", doc.issue)
-	if frappe.has_permission(issue, ptype, user):
-		if 'Repair User' not in frappe.get_roles(user):
-			return True
-		if doc.docstatus == 1:
-			return True
+	return """(`tabRepair Ticket`.site in ({sites}))""".format(
+		sites='"' + '", "'.join(sites) + '"')
 
-	return False
 
 
 def wechat_notify_by_ticket_name(issue_name, issue_doc=None):
