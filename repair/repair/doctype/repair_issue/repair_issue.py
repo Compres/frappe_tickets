@@ -58,7 +58,7 @@ class RepairIssue(Document):
 	def wechat_tmsg_url(self):
 		return "/update-repair-issue?name=" + self.name
 
-	def update_cost(self, cost):
+	def update_cost(self):
 		tickets = self.get("tickets")
 		self.total_cost = 0
 		for ticket in tickets:
