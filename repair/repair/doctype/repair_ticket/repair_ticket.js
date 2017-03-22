@@ -54,7 +54,7 @@ frappe.ui.form.on('Repair Ticket', {
 			callback: function(r) {
 				if(!r.exc)
 					frm.refresh_fields();
-					frm.refresh(frm);
+					frm.events.refresh(frm);
 			}
 		})
 	},
