@@ -104,6 +104,10 @@ doc_events = {
 	"User": {
 		"after_insert": "repair.controllers.user_hooks.after_insert",
 	},
+	"Cloud Company": {
+		"on_admin_insert": "repair.controllers.company_hooks.on_admin_insert",
+		"on_admin_remove": "repair.controllers.company_hooks.on_admin_remove",
+	}
 }
 
 # doc_events = {
