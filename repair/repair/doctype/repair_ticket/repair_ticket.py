@@ -10,7 +10,11 @@ from frappe.model.document import Document
 class RepairTicket(Document):
 	def on_submit(self):
 		issue = frappe.get_doc("Repair Issue", self.issue)
-		issue.submit_ticket_cost(self.cost)
+		issue.append_tickets(self)
+
+	def on_cancel(self):
+		issue = frappe.get_doc("Repair Issue", self.issue)
+		issue.append_tickets(self)
 
 	def remove_all_reports(self):
 		self.set("reports", list())
@@ -18,7 +22,7 @@ class RepairTicket(Document):
 	def append_reports(self, *reports):
 		if self.docstatus != 1:
 			throw(_("Cannot append reports on un-submitted ticket"))
-		"""Add reports to user"""
+
 		current_reports = [d.report for d in self.get("reports")]
 		for report in reports:
 			if report.name in current_reports:

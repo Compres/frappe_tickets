@@ -58,11 +58,35 @@ class RepairIssue(Document):
 	def wechat_tmsg_url(self):
 		return "/update-repair-issue?name=" + self.name
 
-	def submit_ticket_cost(self, cost):
-		if self.docstatus != 1:
-			throw(_("Cannot submit cost on un-submitted issue"))
-		self.total_cost += cost
+	def update_cost(self, cost):
+		tickets = self.get("tickets")
+		self.total_cost = 0
+		for ticket in tickets:
+			self.total_cost += frappe.get_value("Repair Ticket", ticket.ticket, "cost")
 		self.save()
+
+	def append_tickets(self, *tickets):
+		if self.docstatus != 1:
+			throw(_("Cannot append tickets on un-submitted issue"))
+			
+		current_tickets = [d.ticket for d in self.get("tickets")]
+		for ticket in tickets:
+			if ticket.name in current_tickets:
+				continue
+			self.append("tickets", {"ticket": ticket.name})
+
+		self.update_cost()
+
+	def remove_tickets(self, *tickets):
+		if self.docstatus != 1:
+			throw(_("Cannot append tickets on un-submitted issue"))
+
+		existing_tickets = dict((d.ticket, d) for d in self.get("tickets"))
+		for ticket in tickets:
+			if ticket.name in existing_tickets:
+				self.get("tickets").remove(existing_tickets[ticket.name])
+
+		self.update_cost()
 
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
