@@ -8,9 +8,7 @@ import json
 from frappe.model.document import Document
 from frappe import throw, _
 from frappe.utils.data import format_datetime
-from repair.repair.doctype.repair_site.repair_site import list_user_sites, list_company_sites
-from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_user_groups
-from cloud.cloud.doctype.cloud_company.cloud_company import list_admin_companies
+from repair.repair.doctype.repair_site.repair_site import list_sites
 
 
 
@@ -121,14 +119,7 @@ def get_permission_query_conditions(user):
 	if 'Repair Manager' in frappe.get_roles(user):
 		return ""
 
-	sites = []
-	companies = list_admin_companies(user)
-	for company in companies:
-		for site in list_company_sites(company):
-			sites.append(site)
-
-	for site in list_user_sites(user):
-		sites.append(site)
+	sites = list_sites(user)
 
 	return """(`tabRepair Issue`.site in ({sites}))""".format(
 		sites='"' + '", "'.join(sites) + '"')
@@ -162,7 +153,7 @@ def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 
 @frappe.whitelist()
 def list_issue_map():
-	sites = list_user_sites(frappe.session.user)
+	sites = list_sites(frappe.session.user)
 	issues = frappe.get_all('Repair Issue', filters={"docstatus": ["in",[1, 2]], "site": ["in", sites]},
 							fields=["name", "issue_name", "site", "priority", "total_cost", "status"])
 
