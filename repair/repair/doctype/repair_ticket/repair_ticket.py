@@ -19,11 +19,11 @@ class RepairTicket(Document):
 		if self.docstatus != 1:
 			throw(_("Cannot append reports on un-submitted ticket"))
 		"""Add reports to user"""
-		current_reports = [d.ticket for d in self.get("reports")]
+		current_reports = [d.report for d in self.get("reports")]
 		for report in reports:
 			if report.name in current_reports:
 				continue
-			self.append("reports", report.name)
+			self.append("reports", {"report": report.name})
 
 		self.save()
 
@@ -31,7 +31,7 @@ class RepairTicket(Document):
 		if self.docstatus != 1:
 			throw(_("Cannot append reports on un-submitted ticket"))
 
-		existing_reports = dict((d.ticket, d) for d in self.get("reports"))
+		existing_reports = dict((d.report, d) for d in self.get("reports"))
 		for report in reports:
 			if report.name in existing_reports:
 				self.get("reports").remove(existing_reports[report.name])
