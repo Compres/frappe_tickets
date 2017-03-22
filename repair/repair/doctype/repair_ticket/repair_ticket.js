@@ -3,7 +3,7 @@
 
 frappe.ui.form.on('Repair Ticket', {
 	refresh: function(frm) {
-		if(frm.doc.docstatus == 1) {
+		if(frm.doc.docstatus == 1 && frm.doc.workflow_state != 'Closed') {
 			frm.add_custom_button(__("Get It"), function() {
 				 frappe.model.with_doctype('Repair Ticket Result', function() {
 					var mr = frappe.model.get_new_doc('Repair Ticket Result');
