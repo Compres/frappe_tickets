@@ -17,6 +17,7 @@ frappe.ui.form.on('Repair Ticket', {
 					var mr = frappe.model.get_new_doc('Repair Report');
 					mr.ticket = frm.doc.name;
 					mr.title = __("Report for ") + frm.doc.name;
+					mr.site = frm.doc.site;
 					frappe.set_route('Form', mr.doctype, mr.name);
 				});
 			});
