@@ -92,17 +92,8 @@ portal_menu_items = [
 # }
 
 permission_query_conditions = {
-	"Repair Enterprise": "repair.repair.doctype.repair_enterprise.repair_enterprise.get_permission_query_conditions",
 	"Repair Issue": "repair.repair.doctype.repair_issue.repair_issue.get_permission_query_conditions",
 	"Repair Site": "repair.repair.doctype.repair_site.repair_site.get_permission_query_conditions",
-	"Repair Team": "repair.repair.doctype.repair_team.repair_team.get_permission_query_conditions",
-}
-
-has_permission = {
-	"Repair Enterprise": "repair.repair.doctype.repair_enterprise.repair_enterprise.has_permission",
-	"Repair Issue": "repair.repair.doctype.repair_issue.repair_issue.has_permission",
-	"Repair Site": "repair.repair.doctype.repair_site.repair_site.has_permission",
-	"Repair Team": "repair.repair.doctype.repair_team.repair_team.has_permission",
 }
 
 # Document Events

@@ -134,22 +134,6 @@ def get_permission_query_conditions(user):
 		sites='"' + '", "'.join(sites) + '"')
 
 
-def has_permission(doc, ptype, user):
-	if 'Repair Manager' in frappe.get_roles(user):
-		return True
-
-	sites = []
-	companies = list_admin_companies(user)
-	for company in companies:
-		for site in list_company_sites(company):
-			sites.append(site)
-
-	for site in list_user_sites(user):
-		sites.append(site)
-
-	return doc.site in sites
-
-
 def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 	issue_doc = issue_doc or frappe.get_doc("Repair Issue", issue_name)
 

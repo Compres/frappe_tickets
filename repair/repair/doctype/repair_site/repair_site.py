@@ -40,14 +40,6 @@ def get_permission_query_conditions(user):
 		clist='"' + '", "'.join(list_admin_companies(user)) + '"')
 
 
-def has_permission(doc, user):
-	if 'Repair Manager' in frappe.get_roles(user):
-		return True
-
-	companies = list_admin_companies(user)
-	return doc.company in companies
-
-
 @frappe.whitelist()
 def list_site_map():
 	sites = list_user_sites(frappe.session.user)
