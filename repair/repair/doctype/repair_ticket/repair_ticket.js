@@ -3,7 +3,7 @@
 
 frappe.ui.form.on('Repair Ticket', {
 	refresh: function(frm) {
-		if(frm.doc.docstatus == 1 && frm.doc.status=='New' && frm.doc.assigned_to_user==user) {
+		if(frm.doc.docstatus == 1 && frm.doc.status=='New') {
 			frm.add_custom_button(__("Get It"), function() {
 				frm.events.ticket_get(frm);
 			});
