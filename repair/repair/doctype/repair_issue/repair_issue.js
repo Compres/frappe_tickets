@@ -28,6 +28,23 @@ frappe.ui.form.on('Repair Issue', {
 			});
 			frm.custom_buttons[__("Create Ticket")].removeClass("btn-default");
 			frm.custom_buttons[__("Create Ticket")].addClass("btn-primary");
+
+			frm.add_custom_button(__("Update Cost"), function() {
+				frm.events.update_cost(frm);
+			});
+			frm.custom_buttons[__("Update Cost")].removeClass("btn-default");
+			frm.custom_buttons[__("Update Cost")].addClass("btn-warning");
 		}
-	}
+	},
+
+	update_cost: function(frm) {
+		return frappe.call({
+			doc: frm.doc,
+			method: "update_cost",
+			freeze: true,
+			callback: function(r) {
+				if(!r.exc) frm.refresh_fields();
+			}
+		})
+	},
 });
