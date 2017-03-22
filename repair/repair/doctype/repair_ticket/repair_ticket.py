@@ -56,6 +56,22 @@ class RepairTicket(Document):
 
 		frappe.msgprint(_("Cost Updated"))
 
+	def ticket_get(self):
+		if self.docstatus == 2:
+			return
+		if self.status != 'New':
+			throw(_("Current ticket is not in new state"))
+
+		if self.assigned_to_user and self.asigned_to_user != frappe.session.user:
+			throw(_("This ticket is assigned to {1}").format(self.assigned_to_user))
+		else:
+			self.assigned_to_user = frappe.session.user
+
+		self.set('status', 'Fixing')
+		self.save()
+
+		frappe.msgprint(_("Your Got This Ticket"))
+
 	def ticket_fixed(self):
 		if self.docstatus == 2:
 			return
@@ -68,3 +84,25 @@ class RepairTicket(Document):
 		self.save()
 
 		frappe.msgprint(_("Ticket Fixed"))
+
+	def ticket_close(self):
+		if self.docstatus == 2:
+			return
+		if self.status != 'Fixed':
+			throw(_("Current ticket is not in fixed state"))
+
+		self.set('status', 'Closed')
+		self.save()
+
+		frappe.msgprint(_("Ticket Closed"))
+
+	def ticket_reject(self):
+		if self.docstatus == 2:
+			return
+		if self.status != 'Fixed':
+			throw(_("Current ticket is not in fixed state"))
+
+		self.set('status', 'Rejected')
+		self.save()
+
+		frappe.msgprint(_("Ticket Fix Rejected"))
