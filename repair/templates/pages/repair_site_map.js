@@ -40,7 +40,7 @@ frappe.ready(function() {
 							"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" +
 							sites[i].site_name + "</h4></a>" +
 							"<p> Address : " + sites[i].address + "</p>" +
-							"<p> Enterprise : " + sites[i].enterprise + "</p>";
+							"<p> Company : " + sites[i].company + "</p>";
 
 						addClickHandler(content, marker);
 						*/

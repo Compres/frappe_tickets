@@ -9,7 +9,8 @@ from frappe.model.document import Document
 from frappe import throw, _
 from frappe.utils.data import format_datetime
 from repair.repair.doctype.repair_site.repair_site import list_sites
-
+from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
+from cloud.cloud.doctype.cloud_company_group.cloud_company import list_user_groups
 
 
 class RepairIssue(Document):
@@ -90,7 +91,8 @@ class RepairIssue(Document):
 
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
-	user_groups='"' + '", "'.join(list_user_groups(frappe.session.user)) + '"'
+	groups = [d.group for d in list_user_groups(frappe.session.user)]
+	user_groups='"' + '", "'.join(groups) + '"'
 	return frappe.db.sql('''select distinct issue.*
 		from `tabRepair Issue` issue, `tabRepair SiteTeam` site_team
 		where issue.docstatus != 2
@@ -131,10 +133,7 @@ def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 	user_list = {}
 	# Get all teams for that site
 	for st in frappe.db.get_values("Repair SiteTeam", {"parent": issue_doc.site}, "team"):
-		ent = frappe.db.get_value("Repair Team", st[0], "enterprise")
-		app = frappe.db.get_value("Repair Enterprise", ent, "wechat_app")
-		if not app:
-			app = frappe.db.get_single_value("Repair Settings", "default_wechat_app")
+		app = get_wechat_app(frappe.db.get_value("Repair Team", st[0], "company"))
 		if app:
 			if not user_list.has_key(app):
 				user_list[app] = []

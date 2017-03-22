@@ -58,7 +58,7 @@ def list_site_map():
 	sites = list_user_sites(frappe.session.user)
 
 	sites = frappe.get_all('Repair Site', filters={"name": ["in", sites]},
-							fields=["name", "site_name", "longitude", "latitude", "address", "enterprise"])
+							fields=["name", "site_name", "longitude", "latitude", "address", "company"])
 	for dev in sites:
 		if not dev.longitude:
 			dev.longitude = '116.3252'
