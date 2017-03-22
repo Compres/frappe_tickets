@@ -68,7 +68,7 @@ class RepairIssue(Document):
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
 	return frappe.db.sql('''select distinct issue.*
 		from `tabRepair Issue` issue, `tabRepair TeamUser` team_user, `tabRepair SiteTeam` site_team
-		where (issue.workflow_state in ("New", "Open")
+		where issue.docstatus != 2
 			and issue.site = site_team.parent
 			and site_team.team = team_user.parent 
 			and team_user.user = %(user)s)
@@ -163,8 +163,8 @@ def wechat_notify_by_issue_name(issue_name, issue_doc=None):
 @frappe.whitelist()
 def list_issue_map():
 	sites = list_user_sites(frappe.session.user)
-	issues = frappe.get_all('Repair Issue', filters={"workflow_state": ["in",["New", "Open"]], "site": ["in", sites]},
-							fields=["name", "issue_name", "site", "priority", "total_cost", "workflow_state"])
+	issues = frappe.get_all('Repair Issue', filters={"docstatus": ["in",[1, 2]], "site": ["in", sites]},
+							fields=["name", "issue_name", "site", "priority", "total_cost", "status"])
 
 	for issue in issues:
 		issue.longitude = frappe.get_value('Repair Site', issue.site, "longitude") or '116.3252'

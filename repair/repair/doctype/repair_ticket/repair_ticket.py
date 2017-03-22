@@ -37,3 +37,34 @@ class RepairTicket(Document):
 				self.get("reports").remove(existing_reports[report.name])
 
 		self.save()
+
+	def update_cost(self):
+		if self.docstatus == 2:
+			return
+
+		for d in self.get("items"):
+			rate = self.get_bom_material_detail({'item_code': d.item_code, 'bom_no': d.bom_no,
+				'qty': d.qty})["rate"]
+			if rate:
+				d.rate = rate
+
+		if self.docstatus == 1:
+			self.flags.ignore_validate_update_after_submit = True
+			self.calculate_cost()
+		self.save()
+		self.update_exploded_items()
+
+		frappe.msgprint(_("Cost Updated"))
+
+	def ticket_fixed(self):
+		if self.docstatus == 2:
+			return
+		if self.status != 'Fixing':
+			throw(_("Current ticket is not in fixing state"))
+
+		if self.assigned_to_user != frappe.session.user:
+			throw(_("This ticket is assigned to {1}").format(self.assigned_to_user))
+		self.set('status', 'Fixed')
+		self.save()
+
+		frappe.msgprint(_("Ticket Fixed"))
