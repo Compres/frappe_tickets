@@ -7,4 +7,6 @@ import frappe
 from frappe.model.document import Document
 
 class RepairTicket(Document):
-	pass
+	def on_submit(self):
+		issue = frappe.get_doc("Repair Issue", self.issue)
+		issue.submit_ticket_cost(self.cost)

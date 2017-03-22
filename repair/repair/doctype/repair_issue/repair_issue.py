@@ -58,6 +58,10 @@ class RepairIssue(Document):
 	def wechat_tmsg_url(self):
 		return "/update-repair-issue?name=" + self.name
 
+	def submit_ticket_cost(self, cost):
+		self.total_cost += cost
+		self.save()
+
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
 	return frappe.db.sql('''select distinct issue.*
