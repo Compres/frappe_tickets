@@ -91,7 +91,7 @@ class RepairIssue(Document):
 
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
-	groups = [d.group for d in list_user_groups(frappe.session.user)]
+	groups = [d.name for d in list_user_groups(frappe.session.user)]
 	user_groups='"' + '", "'.join(groups) + '"'
 	return frappe.db.sql('''select distinct issue.*
 		from `tabRepair Issue` issue, `tabRepair SiteTeam` site_team
