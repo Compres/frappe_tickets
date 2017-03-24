@@ -5,7 +5,6 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-from cloud.cloud.doctype.cloud_company.cloud_company import list_admin_companies
 
 
 class RepairSite(Document):
@@ -33,6 +32,8 @@ def list_company_sites(company):
 
 
 def list_sites(user):
+	from cloud.cloud.doctype.cloud_company.cloud_company import list_admin_companies
+
 	sites = []
 	companies = list_admin_companies(user)
 	for company in companies:
