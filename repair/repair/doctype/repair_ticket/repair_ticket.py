@@ -8,7 +8,6 @@ from frappe import throw, _
 from frappe.utils.data import format_datetime
 from frappe.model.document import Document
 from repair.repair.doctype.repair_site.repair_site import list_sites
-from cloud.cloud.doctype.cloud_company.cloud_compay import get_wechat_app
 
 class RepairTicket(Document):
 	def on_submit(self):
@@ -155,6 +154,8 @@ def get_permission_query_conditions(user):
 
 
 def wechat_notify_by_ticket_name(issue_name, issue_doc=None):
+	from cloud.cloud.doctype.cloud_company.cloud_compay import get_wechat_app
+
 	issue_doc = issue_doc or frappe.get_doc("Repair Issue", issue_name)
 
 	user_list = {}

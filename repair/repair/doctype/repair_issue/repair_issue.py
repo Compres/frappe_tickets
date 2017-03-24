@@ -9,8 +9,6 @@ from frappe.model.document import Document
 from frappe import throw, _
 from frappe.utils.data import format_datetime
 from repair.repair.doctype.repair_site.repair_site import list_sites
-from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
-from cloud.cloud.doctype.cloud_company_group.cloud_company import list_user_groups
 
 
 class RepairIssue(Document):
@@ -91,6 +89,7 @@ class RepairIssue(Document):
 
 
 def get_issue_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
+	from cloud.cloud.doctype.cloud_company_group.cloud_company import list_user_groups
 	groups = [d.name for d in list_user_groups(frappe.session.user)]
 	user_groups='"' + '", "'.join(groups) + '"'
 	return frappe.db.sql('''select distinct issue.*
@@ -128,6 +127,8 @@ def get_permission_query_conditions(user):
 
 
 def wechat_notify_by_issue_name(issue_name, issue_doc=None):
+	from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
+
 	issue_doc = issue_doc or frappe.get_doc("Repair Issue", issue_name)
 
 	user_list = {}
