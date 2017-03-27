@@ -49,6 +49,14 @@ def get_permission_query_conditions(user):
 		sites='"' + '", "'.join(list_admin_sites(user)) + '"')
 
 
+def query_team(doctype, txt, searchfield, start, page_len, filters):
+	return frappe.db.sql("""select name from `tabCloud Company Group`
+		where enabled = 1 and group_name = %s
+		and %s like %s order by name limit %s, %s""" %
+		("%s", searchfield, "%s", "%s", "%s"),
+		(filters["group_name"], "%%%s%%" % txt, start, page_len), as_list=1)
+
+
 @frappe.whitelist()
 def list_site_map():
 	sites = list_user_sites(frappe.session.user)
