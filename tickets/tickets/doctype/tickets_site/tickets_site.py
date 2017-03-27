@@ -29,33 +29,24 @@ def list_user_sites(user=None):
 	return sites
 
 
-def list_company_sites(company):
-	return [d[0] for d in frappe.db.get_values('Tickets Site', {"company": company}, "name")]
+def list_sites(user, check_enable=True):
+	from cloud.cloud.doctype.cloud_project_site.cloud_project_site import list_admin_sites
 
-
-def list_sites(user):
-	from cloud.cloud.doctype.cloud_company.cloud_company import list_admin_companies
-
-	sites = []
-	companies = list_admin_companies(user)
-	for company in companies:
-		for site in list_company_sites(company):
-			sites.append(site)
-
-	for site in list_user_sites(user):
-		sites.append(site)
-
-	return sites
+	sites = list_admin_sites(user)
+	filters = {"site": ["in", sites]}
+	if check_enable:
+		filters["enabled"] = 1
+	return [d[0] for d in frappe.db.get_values("Ticket Site", filters=filters)]
 
 
 def get_permission_query_conditions(user):
-	from cloud.cloud.doctype.cloud_company.cloud_company import list_admin_companies
+	from cloud.cloud.doctype.cloud_project_site.cloud_project_site import list_admin_sites
 
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
-	return """(`tabTickets Site`.company in ({clist}))""".format(
-		clist='"' + '", "'.join(list_admin_companies(user)) + '"')
+	return """(`tabTickets Site`.site in ({sites}))""".format(
+		sites='"' + '", "'.join(list_admin_sites(user)) + '"')
 
 
 @frappe.whitelist()
