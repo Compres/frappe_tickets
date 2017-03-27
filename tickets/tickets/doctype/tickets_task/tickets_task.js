@@ -21,6 +21,7 @@ frappe.ui.form.on('Tickets Task', {
 			frm.add_custom_button(__("Create Ticket"), function() {
 				 frappe.model.with_doctype('Tickets Ticket', function() {
 					var mr = frappe.model.get_new_doc('Tickets Ticket');
+					mr.ticket_name = frm.doc.task_name;
 					mr.task = frm.doc.name;
 					mr.task_info = frm.doc.task_desc;
 					mr.task_type = frm.doc.task_type;
