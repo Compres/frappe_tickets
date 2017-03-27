@@ -49,6 +49,8 @@ def list_sites(user):
 
 
 def get_permission_query_conditions(user):
+	from cloud.cloud.doctype.cloud_company.cloud_company import list_admin_companies
+
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
