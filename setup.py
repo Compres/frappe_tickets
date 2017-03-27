@@ -3,19 +3,19 @@ from setuptools import setup, find_packages
 from pip.req import parse_requirements
 import re, ast
 
-# get version from __version__ variable in repair/__init__.py
+# get version from __version__ variable in tickets/__init__.py
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
 
-with open('repair/__init__.py', 'rb') as f:
+with open('tickets/__init__.py', 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
 requirements = parse_requirements("requirements.txt", session="")
 
 setup(
-	name='repair',
+	name='tickets',
 	version=version,
-	description='Repair Suppliers',
+	description='Project Suppliers',
 	author='Dirk Chang',
 	author_email='dirk.chang@symid.com',
 	packages=find_packages(),
