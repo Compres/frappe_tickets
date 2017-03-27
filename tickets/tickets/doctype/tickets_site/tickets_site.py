@@ -36,7 +36,9 @@ def list_sites(user, check_enable=True):
 	filters = {"site": ["in", sites]}
 	if check_enable:
 		filters["enabled"] = 1
-	return [d[0] for d in frappe.db.get_values("Ticket Site", filters=filters)]
+	return [d[0] for d in frappe.db.get_values("Tickets Site", filters=filters)]
+	return [d[0] for d in frappe.db.get_values("Tickets Site", filters=filters)]
+	return [d[0] for d in frappe.db.get_values("Tickets Site", filters=filters)]
 
 
 def get_permission_query_conditions(user):
