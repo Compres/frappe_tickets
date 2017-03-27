@@ -8,6 +8,8 @@ from frappe.model.document import Document
 
 
 class TicketsSite(Document):
+	def validate(self):
+		self.site_name = frappe.get_value("Cloud Project Site", self.site, 'site_name')
 
 	def has_website_permission(self, ptype, verbose=False):
 		print('has_website_permission', self.name)
