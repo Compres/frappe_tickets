@@ -53,7 +53,7 @@ def query_team(doctype, txt, searchfield, start, page_len, filters):
 	return frappe.db.sql("""select name from `tabCloud Company Group`
 		where enabled = 1
 		and %s like %s order by name limit %s, %s""" %
-		("%s", searchfield, "%s", "%s", "%s"),
+		(searchfield, "%s", "%s", "%s"),
 		("%%%s%%" % txt, start, page_len), as_list=1)
 
 
