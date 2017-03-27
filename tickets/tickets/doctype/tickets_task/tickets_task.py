@@ -72,7 +72,7 @@ class TicketsTask(Document):
 		for ticket in tickets:
 			if ticket.name in current_tickets:
 				continue
-			self.append("tickets", {"tickets": ticket.name})
+			self.append("tickets", {"ticket": ticket.name})
 
 		self.update_cost()
 
