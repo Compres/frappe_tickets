@@ -23,6 +23,7 @@ frappe.ui.form.on('Tickets Task', {
 					var mr = frappe.model.get_new_doc('Tickets Ticket');
 					mr.task = frm.doc.name;
 					mr.task_info = frm.doc.task_desc;
+					mr.task_type = frm.doc.task_type;
 					mr.site = frm.doc.site;
 					frappe.set_route('Form', mr.doctype, mr.name);
 				});
