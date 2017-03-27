@@ -50,7 +50,7 @@ def get_permission_query_conditions(user):
 
 
 def query_team(doctype, txt, searchfield, start, page_len, filters):
-	return frappe.db.sql("""select name from `tabCloud Company Group`
+	return frappe.db.sql("""select name, group_name from `tabCloud Company Group`
 		where enabled = 1
 		and %s like %s order by name limit %s, %s""" %
 		(searchfield, "%s", "%s", "%s"),
