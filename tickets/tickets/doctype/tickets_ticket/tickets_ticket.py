@@ -158,6 +158,7 @@ def get_permission_query_conditions(user):
 
 def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 	from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
+	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_users
 
 	ticket_doc = ticket_doc or frappe.get_doc("Tickets Ticket", ticket_name)
 
@@ -168,8 +169,8 @@ def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 		if app:
 			if not user_list.has_key(app):
 				user_list[app] = []
-			for d in frappe.db.get_values("Cloud Employee", {"parent": st[0]}, "user"):
-				user_list[app].append(d[0])
+			for d in list_users(st[0]):
+				user_list[app].append(d)
 			"""
 			frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
 				content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
