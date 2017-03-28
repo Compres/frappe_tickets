@@ -13,11 +13,6 @@ from tickets.tickets.doctype.tickets_site.tickets_site import list_sites
 
 class TicketsTask(Document):
 
-	def on_submit(self):
-		if self.wechat_notify == 1:
-			frappe.enqueue('tickets.tickets.doctype.tickets_task.tickets_task.wechat_notify_by_task_name',
-							task_name = self.name, task_doc=self)
-
 	def has_website_permission(self, ptype, verbose=False):
 		user = frappe.session.user
 		if self.fixed_by == user:
@@ -124,31 +119,6 @@ def get_permission_query_conditions(user):
 
 	return """(`tabTickets Task`.site in ({sites}))""".format(
 		sites='"' + '", "'.join(sites) + '"')
-
-
-def wechat_notify_by_task_name(task_name, task_doc=None):
-	from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
-
-	task_doc = task_doc or frappe.get_doc("Tickets Task", task_name)
-
-	user_list = {}
-	# Get all teams for that site
-	for st in frappe.db.get_values("Tickets SiteTeam", {"parent": task_doc.site}, "team"):
-		app = get_wechat_app(frappe.db.get_value("Tickets Team", st[0], "company"))
-		if app:
-			if not user_list.has_key(app):
-				user_list[app] = []
-			for d in frappe.db.get_values("Tickets TeamUser", {"parent": st[0]}, "user"):
-				user_list[app].append(d[0])
-			"""
-			frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
-				content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
-				name=comm.reference_name)
-			"""
-	for app in user_list:
-		#print("Send wechat notify : {0} to users {1} via app {2}".format(task_doc.as_json(), user_list[app], app))
-		from wechat.api import send_doc
-		send_doc(app, 'Tickets Task', task_doc.name, user_list[app])
 
 
 @frappe.whitelist()

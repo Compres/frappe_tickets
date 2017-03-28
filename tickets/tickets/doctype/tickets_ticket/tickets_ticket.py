@@ -13,6 +13,9 @@ class TicketsTicket(Document):
 	def on_submit(self):
 		task = frappe.get_doc("Tickets Task", self.task)
 		task.append_tickets(self)
+		if self.wechat_notify == 1:
+			frappe.enqueue('tickets.tickets.doctype.tickets_ticket.tickets_ticket.wechat_notify_by_ticket_name',
+							ticket_name = self.name, ticket_doc=self)
 
 	def on_cancel(self):
 		task = frappe.get_doc("Tickets Task", self.task)
@@ -153,14 +156,14 @@ def get_permission_query_conditions(user):
 
 
 
-def wechat_notify_by_ticket_name(task_name, task_doc=None):
+def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 	from cloud.cloud.doctype.cloud_company.cloud_compay import get_wechat_app
 
-	task_doc = task_doc or frappe.get_doc("Tickets Task", task_name)
+	ticket_doc = ticket_doc or frappe.get_doc("Tickets Task", ticket_name)
 
 	user_list = {}
 	# Get all teams for that site
-	for st in frappe.db.get_values("Tickets SiteTeam", {"parent": task_doc.site}, "team"):
+	for st in frappe.db.get_values("Tickets SiteTeam", {"parent": ticket_doc.site, "type": ticket_doc.task_type}, "team"):
 		app = get_wechat_app(frappe.db.get_value("Tickets Team", st[0], "company"))
 		if app:
 			if not user_list.has_key(app):
@@ -175,4 +178,4 @@ def wechat_notify_by_ticket_name(task_name, task_doc=None):
 	for app in user_list:
 		#print("Send wechat notify : {0} to users {1} via app {2}".format(task_doc.as_json(), user_list[app], app))
 		from wechat.api import send_doc
-		send_doc(app, 'Tickets Task', task_doc.name, user_list[app])
+		send_doc(app, 'Tickets Task', ticket_doc.name, user_list[app])
