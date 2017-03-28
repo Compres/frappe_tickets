@@ -157,7 +157,7 @@ def get_permission_query_conditions(user):
 
 
 def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
-	from cloud.cloud.doctype.cloud_company.cloud_compay import get_wechat_app
+	from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
 
 	ticket_doc = ticket_doc or frappe.get_doc("Tickets Task", ticket_name)
 
