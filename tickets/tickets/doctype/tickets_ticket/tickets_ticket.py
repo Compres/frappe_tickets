@@ -170,7 +170,7 @@ def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 			if not user_list.has_key(app):
 				user_list[app] = []
 			for d in list_users(st[0]):
-				user_list[app].append(d)
+				user_list[app].append(d.name)
 			"""
 			frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
 				content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
