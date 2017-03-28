@@ -159,16 +159,16 @@ def get_permission_query_conditions(user):
 def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 	from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
 
-	ticket_doc = ticket_doc or frappe.get_doc("Tickets Task", ticket_name)
+	ticket_doc = ticket_doc or frappe.get_doc("Tickets Ticket", ticket_name)
 
 	user_list = {}
 	# Get all teams for that site
 	for st in frappe.db.get_values("Tickets SiteTeam", {"parent": ticket_doc.site, "type": ticket_doc.task_type}, "team"):
-		app = get_wechat_app(frappe.db.get_value("Tickets Team", st[0], "company"))
+		app = get_wechat_app(frappe.db.get_value("Cloud Company Group", st[0], "company"))
 		if app:
 			if not user_list.has_key(app):
 				user_list[app] = []
-			for d in frappe.db.get_values("Tickets TeamUser", {"parent": st[0]}, "user"):
+			for d in frappe.db.get_values("Cloud Employee", {"parent": st[0]}, "user"):
 				user_list[app].append(d[0])
 			"""
 			frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
@@ -178,4 +178,4 @@ def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 	for app in user_list:
 		#print("Send wechat notify : {0} to users {1} via app {2}".format(task_doc.as_json(), user_list[app], app))
 		from wechat.api import send_doc
-		send_doc(app, 'Tickets Task', ticket_doc.name, user_list[app])
+		send_doc(app, 'Tickets Ticket', ticket_doc.name, user_list[app])
