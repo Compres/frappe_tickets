@@ -135,7 +135,7 @@ class TicketsTicket(Document):
 				"color": "green",
 			},
 			"remark": {
-				"value": _("Task: {0}\nPrice: {1}\nInfo: {2}").format(self.task, self.cost, self.task_info)
+				"value": _("Task: {0}\nPrice: {1}\nInfo: {2}").format(self.task, self.cost, self.info)
 			}
 		}
 
