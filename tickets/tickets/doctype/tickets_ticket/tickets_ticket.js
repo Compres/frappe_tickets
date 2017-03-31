@@ -63,18 +63,20 @@ frappe.ui.form.on('Tickets Ticket', {
 		});
 	},
 	show_gen_entry: function(frm) {
-		var grid = frm.fields_dict["items"].grid;
-		grid.add_custom_button(__('Create Delivery Order'), function() {
-			frappe.model.with_doctype('Stock Delivery Order', function() {
-				var mr = frappe.model.get_new_doc('Stock Delivery Order');
-				mr.order_source_type = 'Stock Delivery Order';
-				mr.order_source_id = frm.doc.name;
-				mr.naming_series = 'TKT-';
-				frappe.set_route('Form', mr.doctype, mr.name);
+		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixing' && frm.doc.assigned_to_user==user) {
+			var grid = frm.fields_dict["items"].grid;
+			grid.add_custom_button(__('Create Delivery Order'), function () {
+				frappe.model.with_doctype('Stock Delivery Order', function () {
+					var mr = frappe.model.get_new_doc('Stock Delivery Order');
+					mr.order_source_type = 'Tickets Ticket';
+					mr.order_source_id = frm.doc.name;
+					mr.naming_series = 'TKT-';
+					frappe.set_route('Form', mr.doctype, mr.name);
+				});
 			});
-		});
-		grid.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
-		grid.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
+			grid.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
+			grid.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
+		}
 	},
 	ticket_event: function(frm, event) {
 		return frappe.call({
@@ -87,5 +89,5 @@ frappe.ui.form.on('Tickets Ticket', {
 					frm.events.refresh(frm);
 			}
 		})
-	},
+	}
 });
