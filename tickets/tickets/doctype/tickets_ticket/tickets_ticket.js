@@ -53,7 +53,7 @@ frappe.ui.form.on('Tickets Ticket', {
 			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
 			callback: function(r, rt) {
 				if(r.message) {
-					frm.fields_dict['province'].toggle(true);
+					frm.toggle_display("items", true);
 				}
 			}
 		});
