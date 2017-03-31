@@ -2,6 +2,17 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Tickets Ticket', {
+	setup: function(frm) {
+		frappe.call({
+			type: "GET",
+			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
+			callback: function(r, rt) {
+				if(r.message) {
+					frm.fields_dict['province'].toggle(true);
+				}
+			}
+		});
+	},
 	refresh: function(frm) {
 		frm.clear_custom_buttons();
 		if(frm.doc.docstatus == 1 && frm.doc.status=='New') {

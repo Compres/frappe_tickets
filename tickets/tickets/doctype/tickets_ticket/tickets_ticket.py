@@ -155,7 +155,6 @@ def get_permission_query_conditions(user):
 		sites='"' + '", "'.join(sites) + '"')
 
 
-
 def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 	from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
 	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_users
@@ -180,3 +179,8 @@ def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 		#print("Send wechat notify : {0} to users {1} via app {2}".format(task_doc.as_json(), user_list[app], app))
 		from wechat.api import send_doc
 		send_doc(app, 'Tickets Ticket', ticket_doc.name, user_list[app])
+
+
+@frappe.whitelist()
+def is_stock_installed():
+	return "tieta" in frappe.get_installed_apps()
