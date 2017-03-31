@@ -57,7 +57,7 @@ frappe.ui.form.on('Tickets Ticket', {
 				if (r.message) {
 					frm.toggle_display("item_list", true);
 					frm.toggle_display("items", true);
-					this.events.show_gen_entry();
+					frm.events.show_gen_entry();
 				}
 			}
 		});
