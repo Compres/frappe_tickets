@@ -52,9 +52,9 @@ frappe.ui.form.on('Tickets Ticket', {
 			type: "GET",
 			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
 			callback: function(r, rt) {
-				if(!r.message) {
-					frm.toggle_display("item_list", false);
-					frm.toggle_display("items", false);
+				if(r.message) {
+					frm.toggle_display("item_list", true);
+					frm.toggle_display("items", true);
 				}
 			}
 		});
