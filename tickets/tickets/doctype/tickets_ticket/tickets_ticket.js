@@ -63,7 +63,7 @@ frappe.ui.form.on('Tickets Ticket', {
 		});
 	},
 	show_gen_entry: function(frm) {
-		var grid = frm.fields_dict["devices"].grid;
+		var grid = frm.fields_dict["items"].grid;
 		grid.add_custom_button(__('Create Entry'), function() {});
 		grid.custom_buttons[__('Create Entry')].removeClass("btn-default");
 		grid.custom_buttons[__('Create Entry')].addClass("btn-primary");
