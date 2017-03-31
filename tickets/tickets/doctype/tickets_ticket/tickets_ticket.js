@@ -53,6 +53,7 @@ frappe.ui.form.on('Tickets Ticket', {
 			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
 			callback: function(r, rt) {
 				if(!r.message) {
+					frm.toggle_display("item_list", false);
 					frm.toggle_display("items", false);
 				}
 			}
