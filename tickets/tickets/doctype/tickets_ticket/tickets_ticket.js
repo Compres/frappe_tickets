@@ -64,8 +64,7 @@ frappe.ui.form.on('Tickets Ticket', {
 	},
 	show_gen_entry: function(frm) {
 		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixing' && frm.doc.assigned_to_user==user) {
-			var grid = frm.fields_dict["items"].grid;
-			grid.add_custom_button(__('Create Delivery Order'), function () {
+			frm.add_custom_button(__('Create Delivery Order'), function () {
 				frappe.model.with_doctype('Stock Delivery Order', function () {
 					var mr = frappe.model.get_new_doc('Stock Delivery Order');
 					mr.order_source_type = 'Tickets Ticket';
@@ -74,8 +73,8 @@ frappe.ui.form.on('Tickets Ticket', {
 					frappe.set_route('Form', mr.doctype, mr.name);
 				});
 			});
-			grid.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
-			grid.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
+			frm.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
+			frm.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
 		}
 	},
 	ticket_event: function(frm, event) {
