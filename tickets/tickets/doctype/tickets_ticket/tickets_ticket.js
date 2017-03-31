@@ -70,6 +70,16 @@ frappe.ui.form.on('Tickets Ticket', {
 					mr.order_source_type = 'Tickets Ticket';
 					mr.order_source_id = frm.doc.name;
 					mr.naming_series = 'TKT-';
+
+					var items = frm.doc.items;
+					items.forEach(function(item) {
+						for (var i=0; i<item.qty; i++) {
+							var mr_item = frappe.model.add_child(mr, 'items');
+							mr_item.item = item.item;
+							mr_item.remark = item.remark;
+						}
+					});
+
 					frappe.set_route('Form', mr.doctype, mr.name);
 				});
 			});
