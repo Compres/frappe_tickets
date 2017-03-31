@@ -3,15 +3,7 @@
 
 frappe.ui.form.on('Tickets Ticket', {
 	setup: function(frm) {
-		frappe.call({
-			type: "GET",
-			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
-			callback: function(r, rt) {
-				if(r.message) {
-					frm.fields_dict['province'].toggle(true);
-				}
-			}
-		});
+
 	},
 	refresh: function(frm) {
 		frm.clear_custom_buttons();
@@ -56,6 +48,15 @@ frappe.ui.form.on('Tickets Ticket', {
 				frm.custom_buttons[__("Reject")].addClass("btn-warning");
 			}
 		}
+		frappe.call({
+			type: "GET",
+			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
+			callback: function(r, rt) {
+				if(r.message) {
+					frm.fields_dict['province'].toggle(true);
+				}
+			}
+		});
 	},
 
 	ticket_event: function(frm, event) {
