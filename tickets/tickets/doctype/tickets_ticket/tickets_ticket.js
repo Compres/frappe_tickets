@@ -34,32 +34,40 @@ frappe.ui.form.on('Tickets Ticket', {
 			frm.custom_buttons[__("Fixed")].addClass("btn-success");
 		}
 		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixed') {
-			if(has_common(roles, ["Administrator", "System Manager", "IOT Manager"]) && !frm.doc.__islocal) {
-				frm.add_custom_button(__("Close"), function() {
+			if (has_common(roles, ["Administrator", "System Manager", "IOT Manager"]) && !frm.doc.__islocal) {
+				frm.add_custom_button(__("Close"), function () {
 					frm.events.ticket_event(frm, "ticket_close");
 				});
 				frm.custom_buttons[__("Close")].removeClass("btn-default");
 				frm.custom_buttons[__("Close")].addClass("btn-success");
 
-				frm.add_custom_button(__("Reject"), function() {
+				frm.add_custom_button(__("Reject"), function () {
 					frm.events.ticket_event(frm, "ticket_reject");
 				});
 				frm.custom_buttons[__("Reject")].removeClass("btn-default");
 				frm.custom_buttons[__("Reject")].addClass("btn-warning");
 			}
 		}
+	},
+	onload_post_render: function(frm) {
 		frappe.call({
 			type: "GET",
 			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
-			callback: function(r, rt) {
-				if(r.message) {
+			callback: function (r, rt) {
+				if (r.message) {
 					frm.toggle_display("item_list", true);
 					frm.toggle_display("items", true);
+					this.events.show_gen_entry();
 				}
 			}
 		});
 	},
-
+	show_gen_entry: function(frm) {
+		var grid = frm.fields_dict["devices"].grid;
+		grid.add_custom_button(__('Create Entry'), function() {});
+		grid.custom_buttons[__('Create Entry')].removeClass("btn-default");
+		grid.custom_buttons[__('Create Entry')].addClass("btn-primary");
+	},
 	ticket_event: function(frm, event) {
 		return frappe.call({
 			doc: frm.doc,
