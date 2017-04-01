@@ -65,6 +65,7 @@ frappe.ui.form.on('Tickets Ticket', {
 	show_gen_entry: function(frm) {
 		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixing' && frm.doc.assigned_to_user==user) {
 			frm.add_custom_button(__('Create Delivery Order'), function () {
+				// TODO: We will move this auto adding into tickets_ticket.py for avoiding permission stuff.
 				frappe.model.with_doctype('Stock Delivery Order', function () {
 					var mr = frappe.model.get_new_doc('Stock Delivery Order');
 					mr.order_source_type = 'Tickets Ticket';
