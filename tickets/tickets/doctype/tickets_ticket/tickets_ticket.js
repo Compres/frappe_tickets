@@ -32,7 +32,7 @@ frappe.ui.form.on('Tickets Ticket', {
 			});
 			frm.custom_buttons[__("Fixed")].removeClass("btn-default");
 			frm.custom_buttons[__("Fixed")].addClass("btn-success");
-			if (frm.custom_buttons.hasAttribute(__('Create Delivery Order'))) {
+			if (frm.custom_buttons[__('Create Delivery Order')]) {
 				frm.custom_buttons[__('Create Delivery Order')].removeClass("hidden");
 			}
 		}
