@@ -145,10 +145,10 @@ class TicketsTicket(Document):
 
 	def on_delivery_order_cancel(self):
 		self.delivery_order = None
+		self.delivery_warehouse = None
 		self.save()
 
 	def on_delivery_order_commit(self, order):
-		print('---------------------------------')
 		if self.delivery_order != order.name:
 			return
 		self.delivery_warehouse = order.warehouse
