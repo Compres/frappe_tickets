@@ -64,38 +64,24 @@ frappe.ui.form.on('Tickets Ticket', {
 	},
 	show_gen_entry: function(frm) {
 		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixing' && frm.doc.assigned_to_user==user) {
+			frm.add_custom_button(__('Create Delivery Order'), function () {
+				return frappe.call({
+					doc: frm.doc,
+					method: "create_delivery_order",
+					freeze: true,
+					callback: function (r) {
+						if (!r.exc) {
+							frm.refresh_fields();
+							frm.custom_buttons[__('Create Delivery Order')].addClass('hidden');
+						}
+					}
+				});
+			});
+			frm.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
+			frm.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
+
 			if (frm.doc.delivery_order) {
-				/*
-				frm.add_custom_button(__('Cancel Delivery Order'), function () {
-					return frappe.call({
-						doc: frm.doc,
-						method: "create_delivery_order",
-						freeze: true,
-						callback: function (r) {
-							if (!r.exc)
-								frm.refresh_fields();
-						}
-					});
-				});
-				frm.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
-				frm.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
-				*/
-			} else {
-				frm.add_custom_button(__('Create Delivery Order'), function () {
-					return frappe.call({
-						doc: frm.doc,
-						method: "create_delivery_order",
-						freeze: true,
-						callback: function (r) {
-							if (!r.exc) {
-								frm.refresh_fields();
-								frm.custom_buttons[__('Create Delivery Order')].addClass('hidden');
-							}
-						}
-					});
-				});
-				frm.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
-				frm.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
+				frm.custom_buttons[__('Create Delivery Order')].addClass("hidden");
 			}
 		}
 	},
