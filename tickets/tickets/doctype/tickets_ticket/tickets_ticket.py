@@ -125,7 +125,7 @@ class TicketsTicket(Document):
 
 		items = []
 		for item in self.get("items"):
-			for i in range(1, item.qty):
+			for i in range(0, item.qty):
 				items.append({"item": item.item, "remark": item.remark})
 
 		order = {
