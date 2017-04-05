@@ -48,8 +48,6 @@ frappe.ui.form.on('Tickets Ticket', {
 				frm.custom_buttons[__("Reject")].addClass("btn-warning");
 			}
 		}
-	},
-	onload_post_render: function(frm) {
 		frappe.call({
 			type: "GET",
 			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",

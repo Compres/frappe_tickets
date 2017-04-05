@@ -117,6 +117,10 @@ class TicketsTicket(Document):
 		frappe.msgprint(_("Ticket Fix Rejected"))
 
 	def create_delivery_order(self):
+		"""
+		Create delivery order for this ticket
+		:return: 
+		"""
 		if self.docstatus != 1:
 			throw(_("Cannot create delivery order for un-commited oder!"))
 
@@ -130,6 +134,9 @@ class TicketsTicket(Document):
 		for item in self.get("items"):
 			for i in range(0, item.qty):
 				items.append({"item": item.item, "remark": item.remark})
+
+		if len(items) == 0:
+			throw(_("Cannot create delivery order as this ticket has no item list"))
 
 		order = {
 			"order_source_type": 'Tickets Ticket',
