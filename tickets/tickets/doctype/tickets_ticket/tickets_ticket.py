@@ -79,7 +79,7 @@ class TicketsTicket(Document):
 		self.set('status', 'Fixing')
 		self.save()
 
-		frappe.msgprint(_("Your Got This Ticket"))
+		frappe.msgprint(_("You Got This Ticket"))
 
 	def ticket_fixed(self):
 		if self.docstatus == 2:

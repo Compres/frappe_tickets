@@ -32,6 +32,9 @@ frappe.ui.form.on('Tickets Ticket', {
 			});
 			frm.custom_buttons[__("Fixed")].removeClass("btn-default");
 			frm.custom_buttons[__("Fixed")].addClass("btn-success");
+			if (frm.custom_buttons.hasAttribute(__('Create Delivery Order'))) {
+				frm.custom_buttons[__('Create Delivery Order')].removeClass("hidden");
+			}
 		}
 		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixed') {
 			if (has_common(roles, ["Administrator", "System Manager", "IOT Manager"]) && !frm.doc.__islocal) {
@@ -48,6 +51,8 @@ frappe.ui.form.on('Tickets Ticket', {
 				frm.custom_buttons[__("Reject")].addClass("btn-warning");
 			}
 		}
+	},
+	onload_post_render: function(frm) {
 		frappe.call({
 			type: "GET",
 			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
