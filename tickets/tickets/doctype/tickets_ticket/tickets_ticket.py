@@ -148,6 +148,7 @@ class TicketsTicket(Document):
 		self.save()
 
 	def on_delivery_order_commit(self, order):
+		print('---------------------------------')
 		if self.delivery_order != order.name:
 			return
 		self.delivery_warehouse = order.warehouse
