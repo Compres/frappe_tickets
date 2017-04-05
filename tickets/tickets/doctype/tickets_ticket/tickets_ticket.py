@@ -145,7 +145,7 @@ class TicketsTicket(Document):
 			"doctype": "Stock Delivery Order",
 			"items": items,
 		}
-		doc = frappe.get_doc(order).insert()
+		doc = frappe.get_doc(order).insert(ignore_permissions=True)
 
 		doc.save()
 		self.delivery_order = doc.name
