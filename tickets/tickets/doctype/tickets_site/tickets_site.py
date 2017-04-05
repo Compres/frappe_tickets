@@ -33,6 +33,8 @@ def list_sites(user, check_enable=True):
 	from cloud.cloud.doctype.cloud_project_site.cloud_project_site import list_admin_sites
 
 	sites = list_admin_sites(user)
+	if len(sites) == 0:
+		return []
 	filters = {"site": ["in", sites]}
 	if check_enable:
 		filters["enabled"] = 1
@@ -60,6 +62,8 @@ def query_team(doctype, txt, searchfield, start, page_len, filters):
 @frappe.whitelist()
 def list_site_map():
 	sites = list_user_sites(frappe.session.user)
+	if len(sites) == 0:
+		return []
 
 	sites = frappe.get_all('Tickets Site', filters={"name": ["in", sites]},
 							fields=["name", "site_name", "longitude", "latitude", "address", "company"])

@@ -124,6 +124,8 @@ def get_permission_query_conditions(user):
 @frappe.whitelist()
 def list_task_map():
 	sites = list_sites(frappe.session.user)
+	if len(sites) == 0:
+		return []
 	tasks = frappe.get_all('Tickets Task', filters={"docstatus": ["in",[1, 2]], "site": ["in", sites]},
 							fields=["name", "task_name", "site", "priority", "total_cost", "status"])
 
