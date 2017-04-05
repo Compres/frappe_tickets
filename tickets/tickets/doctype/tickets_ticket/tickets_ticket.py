@@ -120,6 +120,9 @@ class TicketsTicket(Document):
 		if self.docstatus != 1:
 			throw(_("Cannot create delivery order for un-commited oder!"))
 
+		if self.delivery_order:
+			throw(_("Delivery order already created!"))
+
 		if not is_stock_installed():
 			throw(_("Stock App is not installed"))
 
