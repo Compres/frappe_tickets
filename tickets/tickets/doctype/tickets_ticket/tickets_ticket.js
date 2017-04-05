@@ -87,8 +87,10 @@ frappe.ui.form.on('Tickets Ticket', {
 						method: "create_delivery_order",
 						freeze: true,
 						callback: function (r) {
-							if (!r.exc)
+							if (!r.exc) {
 								frm.refresh_fields();
+								frm.custom_buttons[__('Create Delivery Order')].addClass('hidden');
+							}
 						}
 					});
 				});
