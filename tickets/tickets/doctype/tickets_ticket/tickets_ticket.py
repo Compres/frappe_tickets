@@ -116,6 +116,27 @@ class TicketsTicket(Document):
 
 		frappe.msgprint(_("Ticket Fix Rejected"))
 
+	def create_delivery_order(self):
+		if self.docstatus != 1:
+			throw(_("Cannot create delivery order for un-commited oder!"))
+
+		if not is_stock_installed():
+			throw(_("Stock App is not installed"))
+
+		order = {
+			"order_source_type": 'Tickets Ticket',
+			"order_source_id": self.name,
+			"naming_series": "TKT-",
+			"doctype": "Stock Delivery Order"
+		}
+		doc = frappe.get_doc(order).insert()
+		items = self.get("items")
+		for item in items:
+			doc.append("items", {"item": item.item, "remark": item.remark})
+		doc.save()
+
+		frappe.msgprint(doc.name)
+
 	def wechat_tmsg_data(self):
 		return {
 			"first": {
