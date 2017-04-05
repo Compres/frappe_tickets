@@ -188,7 +188,7 @@ class TicketsTicket(Document):
 		}
 
 	def wechat_tmsg_url(self):
-		return "/update-tickets-task?name=" + self.name
+		return "/desk#Form/Tickets Ticket/" + self.name
 
 
 def get_permission_query_conditions(user):
