@@ -31,8 +31,12 @@ def list_user_sites(user=None):
 
 def list_sites(user, check_enable=True):
 	from cloud.cloud.doctype.cloud_project_site.cloud_project_site import list_admin_sites
+	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_user_groups
 
-	sites = list_admin_sites(user)
+	sites = list_admin_sites(user, check_enable=check_enable)
+	for d in list_user_groups(frappe.session.user, check_enable=check_enable):
+		sites.append(d.name)
+
 	if len(sites) == 0:
 		return []
 	filters = {"site": ["in", sites]}
