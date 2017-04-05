@@ -64,39 +64,37 @@ frappe.ui.form.on('Tickets Ticket', {
 	},
 	show_gen_entry: function(frm) {
 		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixing' && frm.doc.assigned_to_user==user) {
-			frm.add_custom_button(__('Create Delivery Order'), function () {
+			if (frm.doc.delivery_order) {
 				/*
-				// TODO: We will move this auto adding into tickets_ticket.py for avoiding permission stuff.
-				frappe.model.with_doctype('Stock Delivery Order', function () {
-					var mr = frappe.model.get_new_doc('Stock Delivery Order');
-					mr.order_source_type = 'Tickets Ticket';
-					mr.order_source_id = frm.doc.name;
-					mr.naming_series = 'TKT-';
-
-					var items = frm.doc.items;
-					items.forEach(function(item) {
-						for (var i=0; i<item.qty; i++) {
-							var mr_item = frappe.model.add_child(mr, 'items');
-							mr_item.item = item.item;
-							mr_item.remark = item.remark;
+				frm.add_custom_button(__('Cancel Delivery Order'), function () {
+					return frappe.call({
+						doc: frm.doc,
+						method: "create_delivery_order",
+						freeze: true,
+						callback: function (r) {
+							if (!r.exc)
+								frm.refresh_fields();
 						}
 					});
-
-					frappe.set_route('Form', mr.doctype, mr.name);
 				});
+				frm.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
+				frm.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
 				*/
-				return frappe.call({
-					doc: frm.doc,
-					method: "create_delivery_order",
-					freeze: true,
-					callback: function(r) {
-						if(!r.exc)
-							frm.refresh_fields();
-					}
+			} else {
+				frm.add_custom_button(__('Create Delivery Order'), function () {
+					return frappe.call({
+						doc: frm.doc,
+						method: "create_delivery_order",
+						freeze: true,
+						callback: function (r) {
+							if (!r.exc)
+								frm.refresh_fields();
+						}
+					});
 				});
-			});
-			frm.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
-			frm.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
+				frm.custom_buttons[__('Create Delivery Order')].removeClass("btn-default");
+				frm.custom_buttons[__('Create Delivery Order')].addClass("btn-primary");
+			}
 		}
 	},
 	ticket_event: function(frm, event) {

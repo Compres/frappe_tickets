@@ -123,19 +123,35 @@ class TicketsTicket(Document):
 		if not is_stock_installed():
 			throw(_("Stock App is not installed"))
 
+		items = []
+		for item in self.get("items"):
+			for i in range(1, item.qty):
+				items.append({"item": item.item, "remark": item.remark})
+
 		order = {
 			"order_source_type": 'Tickets Ticket',
 			"order_source_id": self.name,
 			"naming_series": "TKT-",
-			"doctype": "Stock Delivery Order"
+			"doctype": "Stock Delivery Order",
+			"items": items,
 		}
 		doc = frappe.get_doc(order).insert()
-		items = self.get("items")
-		for item in items:
-			doc.append("items", {"item": item.item, "remark": item.remark})
+
 		doc.save()
+		self.delivery_order = doc.name
+		self.save()
 
 		frappe.msgprint(doc.name)
+
+	def on_delivery_order_cancel(self):
+		self.delivery_order = None
+		self.save()
+
+	def on_delivery_order_commit(self, order):
+		if self.delivery_order != order.name:
+			return
+		self.delivery_warehouse = order.warehouse
+		self.save()
 
 	def wechat_tmsg_data(self):
 		return {
