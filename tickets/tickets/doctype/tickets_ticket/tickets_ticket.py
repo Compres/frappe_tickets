@@ -205,7 +205,7 @@ def get_permission_query_conditions(user):
 		return """(`tabTickets Ticket`.site in ({sites}))""".format(
 			sites='"' + '", "'.join(sites) + '"')
 
-	return """(`tabTickets Ticket`.assigned_to_user = {0})""".format(user)
+	return """(`tabTickets Ticket`.assigned_to_user = '{0}')""".format(user)
 
 
 def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
