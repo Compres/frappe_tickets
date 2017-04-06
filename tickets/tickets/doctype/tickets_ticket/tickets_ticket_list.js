@@ -8,7 +8,8 @@ frappe.listview_settings['Tickets Ticket'] = {
 	},
 	onload: function(me) {
 		frappe.route_options = {
-			"status": ['in', "New,Fixing,Fixed"]
+			"status": ['in', "New,Fixing,Fixed"],
+			"docstatus": ['!=', 2],
 		};
 	},
 	refresh: function(me) {
