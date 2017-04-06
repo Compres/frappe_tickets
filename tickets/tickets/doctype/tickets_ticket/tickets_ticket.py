@@ -10,6 +10,12 @@ from frappe.model.document import Document
 from tickets.tickets.doctype.tickets_site.tickets_site import list_user_sites, list_admin_sites
 
 class TicketsTicket(Document):
+	def validate(self):
+		if self.site:
+			doc = frappe.get_doc("Tickets Site", self.site)
+			if doc:
+				self.site_address = doc.get_site_address()
+
 	def on_submit(self):
 		task = frappe.get_doc("Tickets Task", self.task)
 		task.append_tickets(self)
