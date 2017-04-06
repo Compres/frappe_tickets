@@ -21,5 +21,5 @@ frappe.listview_settings['Tickets Ticket'] = {
 			me.run();
 		}, ".assigned-to-me");
 	},
-	add_fields: ["task", "task_type"],
-}
+	add_fields: ["task", "task_type"]
+};
