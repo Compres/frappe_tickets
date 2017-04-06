@@ -7,7 +7,7 @@ import frappe
 from frappe import throw, _
 from frappe.utils.data import format_datetime
 from frappe.model.document import Document
-from tickets.tickets.doctype.tickets_site.tickets_site import list_sites
+from tickets.tickets.doctype.tickets_site.tickets_site import list_user_sites
 
 class TicketsTicket(Document):
 	def on_submit(self):
@@ -195,7 +195,7 @@ def get_permission_query_conditions(user):
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
-	sites = list_sites(user)
+	sites = list_user_sites(user)
 
 	# [frappe.db.escape(r) for r in frappe.get_roles(user)]
 

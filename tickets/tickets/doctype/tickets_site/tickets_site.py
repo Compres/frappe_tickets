@@ -16,6 +16,18 @@ class TicketsSite(Document):
 		return True
 
 
+def list_admin_sites(user, check_enable=True):
+	from cloud.cloud.doctype.cloud_project_site.cloud_project_site import list_admin_sites
+
+	sites = list_admin_sites(user, check_enable=check_enable)
+	if len(sites) == 0:
+		return []
+	filters = {"site": ["in", sites]}
+	if check_enable:
+		filters["enabled"] = 1
+	return [d[0] for d in frappe.db.get_values("Tickets Site", filters=filters)]
+
+
 def list_user_sites(user=None):
 	if not user:
 		user = frappe.session.user
@@ -26,33 +38,18 @@ def list_user_sites(user=None):
 		for d in frappe.db.get_values('Tickets SiteTeam', {'team': team}, "parent"):
 			sites.append(d[0])
 
+	for d in list_admin_sites(user):
+		sites.append(d)
+
 	return sites
 
 
-def list_sites(user, check_enable=True):
-	from cloud.cloud.doctype.cloud_project_site.cloud_project_site import list_admin_sites
-	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_user_groups
-
-	sites = list_admin_sites(user, check_enable=check_enable)
-	for d in list_user_groups(frappe.session.user, check_enable=check_enable):
-		sites.append(d.name)
-
-	if len(sites) == 0:
-		return []
-	filters = {"site": ["in", sites]}
-	if check_enable:
-		filters["enabled"] = 1
-	return [d[0] for d in frappe.db.get_values("Tickets Site", filters=filters)]
-
-
 def get_permission_query_conditions(user):
-	from cloud.cloud.doctype.cloud_project_site.cloud_project_site import list_admin_sites
-
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
 	return """(`tabTickets Site`.site in ({sites}))""".format(
-		sites='"' + '", "'.join(list_admin_sites(user)) + '"')
+		sites='"' + '", "'.join(list_user_sites(user)) + '"')
 
 
 def query_team(doctype, txt, searchfield, start, page_len, filters):

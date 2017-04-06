@@ -5,7 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-from tickets.tickets.doctype.tickets_site.tickets_site import list_sites
+from tickets.tickets.doctype.tickets_site.tickets_site import list_admin_sites
 
 class TicketsReport(Document):
 	def on_submit(self):
@@ -21,9 +21,9 @@ def get_permission_query_conditions(user):
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
-	sites = list_sites(user)
+	sites = list_admin_sites(user)
+	if len(sites) != 0:
+		return """(`tabTickets Report`.site in ({sites}))""".format(
+			sites='"' + '", "'.join(sites) + '"')
 
-	# [frappe.db.escape(r) for r in frappe.get_roles(user)]
-
-	return """(`tabTickets Report`.site in ({sites}))""".format(
-		sites='"' + '", "'.join(sites) + '"')
+	return """(`tabTickets Report`.owner = {0})""".format(user)
