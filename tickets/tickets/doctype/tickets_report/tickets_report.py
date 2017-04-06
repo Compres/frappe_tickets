@@ -26,4 +26,4 @@ def get_permission_query_conditions(user):
 		return """(`tabTickets Report`.site in ({sites}))""".format(
 			sites='"' + '", "'.join(sites) + '"')
 
-	return """(`tabTickets Report`.owner = {0})""".format(user)
+	return """(`tabTickets Report`.owner = '{0}')""".format(user)

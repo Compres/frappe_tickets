@@ -121,7 +121,7 @@ def get_permission_query_conditions(user):
 		return """(`tabTickets Task`.site in ({sites}))""".format(
 			sites='"' + '", "'.join(sites) + '"')
 
-	return
+	return """(`tabTickets Task`.owner = '{0}')""".format(user)
 
 
 @frappe.whitelist()
