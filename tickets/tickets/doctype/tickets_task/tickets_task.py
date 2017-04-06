@@ -8,7 +8,7 @@ import json
 from frappe.model.document import Document
 from frappe import throw, _
 from frappe.utils.data import format_datetime
-from tickets.tickets.doctype.tickets_site.tickets_site import list_user_sites
+from tickets.tickets.doctype.tickets_site.tickets_site import list_admin_sites
 
 
 class TicketsTask(Document):
@@ -115,7 +115,7 @@ def get_permission_query_conditions(user):
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
-	sites = list_user_sites(user)
+	sites = list_admin_sites(user)
 
 	if len(sites) != 0:
 		return """(`tabTickets Task`.site in ({sites}))""".format(
@@ -126,7 +126,7 @@ def get_permission_query_conditions(user):
 
 @frappe.whitelist()
 def list_task_map():
-	sites = list_user_sites(frappe.session.user)
+	sites = list_admin_sites(frappe.session.user)
 	if len(sites) == 0:
 		return []
 	tasks = frappe.get_all('Tickets Task', filters={"docstatus": ["in",[1, 2]], "site": ["in", sites]},

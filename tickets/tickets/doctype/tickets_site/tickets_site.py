@@ -28,14 +28,16 @@ def list_admin_sites(user, check_enable=True):
 	return [d[0] for d in frappe.db.get_values("Tickets Site", filters=filters)]
 
 
-def list_user_sites(user=None):
-	if not user:
-		user = frappe.session.user
+def list_user_sites(user=None, type=None):
+	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_user_groups
 
-	teams = [d[0] for d in frappe.db.get_values('Tickets TeamUser', {"user": user}, "parent")]
+	teams = list_user_groups(user)
 	sites = []
 	for team in teams:
-		for d in frappe.db.get_values('Tickets SiteTeam', {'team': team}, "parent"):
+		filters = {'team': team}
+		if type:
+			filters['type'] = type
+		for d in frappe.db.get_values('Tickets SiteTeam', filters, "parent"):
 			sites.append(d[0])
 
 	for d in list_admin_sites(user):
@@ -49,7 +51,7 @@ def get_permission_query_conditions(user):
 		return ""
 
 	return """(`tabTickets Site`.site in ({sites}))""".format(
-		sites='"' + '", "'.join(list_user_sites(user)) + '"')
+		sites='"' + '", "'.join(list_admin_sites(user)) + '"')
 
 
 def query_team(doctype, txt, searchfield, start, page_len, filters):

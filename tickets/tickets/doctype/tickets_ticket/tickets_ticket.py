@@ -7,7 +7,7 @@ import frappe
 from frappe import throw, _
 from frappe.utils.data import format_datetime
 from frappe.model.document import Document
-from tickets.tickets.doctype.tickets_site.tickets_site import list_user_sites
+from tickets.tickets.doctype.tickets_site.tickets_site import list_user_sites, list_admin_sites
 
 class TicketsTicket(Document):
 	def on_submit(self):
@@ -73,8 +73,11 @@ class TicketsTicket(Document):
 
 		if self.assigned_to_user and self.asigned_to_user != frappe.session.user:
 			throw(_("This tickets is assigned to {1}").format(self.assigned_to_user))
-		else:
-			self.assigned_to_user = frappe.session.user
+
+		if self.site not in list_user_sites(frappe.session.user, self.task_type):
+			throw(_("You have no permission to get this tickets"))
+
+		self.assigned_to_user = frappe.session.user
 
 		self.set('status', 'Fixing')
 		self.save()
@@ -195,12 +198,14 @@ def get_permission_query_conditions(user):
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
-	sites = list_user_sites(user)
+	sites = list_admin_sites(user)
 
 	# [frappe.db.escape(r) for r in frappe.get_roles(user)]
+	if len(sites) != 0:
+		return """(`tabTickets Ticket`.site in ({sites}))""".format(
+			sites='"' + '", "'.join(sites) + '"')
 
-	return """(`tabTickets Ticket`.site in ({sites}))""".format(
-		sites='"' + '", "'.join(sites) + '"')
+	return """(`tabTickets Ticket`.assigned_to_user = {0})""".format(user)
 
 
 def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
@@ -232,3 +237,4 @@ def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 @frappe.whitelist()
 def is_stock_installed():
 	return "tieta" in frappe.get_installed_apps()
+
