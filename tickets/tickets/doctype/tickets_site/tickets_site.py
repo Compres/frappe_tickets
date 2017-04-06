@@ -15,6 +15,9 @@ class TicketsSite(Document):
 		print('has_website_permission', self.name)
 		return True
 
+	def get_site_address(self):
+		return frappe.get_value("Cloud Project Site", self.site, 'address')
+
 
 def list_admin_sites(user, check_enable=True):
 	from cloud.cloud.doctype.cloud_project_site.cloud_project_site import list_admin_sites
