@@ -34,7 +34,7 @@ def list_user_sites(user=None, type=None):
 	teams = list_user_groups(user)
 	sites = []
 	for team in teams:
-		filters = {'team': team}
+		filters = {'team': team.name}
 		if type:
 			filters['type'] = type
 		for d in frappe.db.get_values('Tickets SiteTeam', filters, "parent"):
