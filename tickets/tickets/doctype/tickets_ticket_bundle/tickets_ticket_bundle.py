@@ -15,6 +15,7 @@ class TicketsTicketBundle(Document):
 			assert(doc.assigned_to_user is None)
 			assert(doc.doc_status == 1)
 			assert(doc.status == 'New')
+			assert(doc.planned_end_date <= self.planned_end_date)
 			cost += doc.cost
 
 		self.total_cost = cost
