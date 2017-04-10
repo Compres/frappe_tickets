@@ -2,6 +2,10 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Tickets Ticket Bundle', {
+	setup: function (frm) {
+		frm.fields_dict['tickets'].grid.get_field("ticket").get_query =
+			"tickets.tickets.doctype.tickets_ticket_bundle.tickets_ticket_bundle.ticket_query"
+	},
 	refresh: function(frm) {
 		frm.clear_custom_buttons();
 		if(frm.doc.docstatus == 1 && !frm.doc.assigned_to_user) {

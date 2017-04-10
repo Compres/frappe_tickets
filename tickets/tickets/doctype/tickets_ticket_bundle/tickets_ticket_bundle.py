@@ -52,3 +52,12 @@ class TicketsTicketBundle(Document):
 
 		self.total_cost = cost
 		self.save()
+
+
+def ticket_query(doctype, txt, searchfield, start, page_len, filters):
+	return frappe.db.sql("""select name, ticket_name from `tabTickets Ticket`
+		where docstatus = 1 and assigned_to_user is null
+		and %s like %s order by name limit %s, %s""" %
+		(searchfield, "%s", "%s", "%s"),
+		("%%%s%%" % txt, start, page_len), as_list=1)
+
