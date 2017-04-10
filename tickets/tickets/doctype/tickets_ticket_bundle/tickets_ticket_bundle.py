@@ -10,19 +10,19 @@ from frappe.model.document import Document
 class TicketsTicketBundle(Document):
 	def validate(self):
 		cost = 0
-		for ticket in self.get("tickets"):
-			doc = frappe.get_doc("Tickets Ticket", ticket)
+		for ticket in self.tickets:
+			doc = frappe.get_doc("Tickets Ticket", ticket.ticket)
 			assert(doc.assigned_to_user is None)
-			assert(doc.doc_status == 1)
+			assert(doc.docstatus == 1)
 			assert(doc.status == 'New')
-			assert(doc.planned_end_date <= self.planned_end_date)
+			assert(getdate(doc.planned_end_date) <= self.planned_end_date)
 			cost += doc.cost
 
 		self.total_cost = cost
 
 	def on_submit(self):
 		if self.assigned_to_user:
-			for ticket in self.get("tickets"):
+			for ticket in self.tickets:
 				doc = frappe.get_doc("Tickets Ticket", ticket)
 				doc.assigned_to_user = self.assigned_touser
 				doc.save()
@@ -30,15 +30,15 @@ class TicketsTicketBundle(Document):
 	def bundle_get(self):
 		self.assigned_to_user = frappe.session.user
 		for ticket in self.tickets:
-			doc = frappe.get_doc("Tickets Ticket", ticket)
+			doc = frappe.get_doc("Tickets Ticket", ticket.ticket)
 			doc.assigned_to_user = self.assigned_touser
 			doc.save()
 
 		self.save()
 
 	def bundle_fixed(self):
-		for ticket in self.get("tickets"):
-			doc = frappe.get_doc("Tickets Ticket", ticket)
+		for ticket in self.tickets:
+			doc = frappe.get_doc("Tickets Ticket", ticket.ticket)
 			assert(doc.status == "Fixed")
 
 		self.actual_end_date = getdate(nowdate())
@@ -46,8 +46,8 @@ class TicketsTicketBundle(Document):
 
 	def update_cost(self):
 		cost = 0
-		for ticket in self.get("tickets"):
-			doc = frappe.get_doc("Tickets Ticket", ticket)
+		for ticket in self.tickets:
+			doc = frappe.get_doc("Tickets Ticket", ticket.ticket)
 			cost += doc.cost
 
 		self.total_cost = cost
