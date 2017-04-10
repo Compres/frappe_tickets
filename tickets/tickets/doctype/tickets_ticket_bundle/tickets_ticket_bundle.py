@@ -10,7 +10,7 @@ from frappe.model.document import Document
 class TicketsTicketBundle(Document):
 	def validate(self):
 		cost = 0
-		for ticket in self.tickets:
+		for ticket in self.get("tickets"):
 			doc = frappe.get_doc("Tickets Ticket", ticket)
 			assert(doc.assigned_to_user is None)
 			assert(doc.doc_status == 1)
@@ -22,7 +22,7 @@ class TicketsTicketBundle(Document):
 
 	def on_submit(self):
 		if self.assigned_to_user:
-			for ticket in self.tickets:
+			for ticket in self.get("tickets"):
 				doc = frappe.get_doc("Tickets Ticket", ticket)
 				doc.assigned_to_user = self.assigned_touser
 				doc.save()
@@ -37,7 +37,7 @@ class TicketsTicketBundle(Document):
 		self.save()
 
 	def bundle_fixed(self):
-		for ticket in self.tickets:
+		for ticket in self.get("tickets"):
 			doc = frappe.get_doc("Tickets Ticket", ticket)
 			assert(doc.status == "Fixed")
 
@@ -46,7 +46,7 @@ class TicketsTicketBundle(Document):
 
 	def update_cost(self):
 		cost = 0
-		for ticket in self.tickets:
+		for ticket in self.get("tickets"):
 			doc = frappe.get_doc("Tickets Ticket", ticket)
 			cost += doc.cost
 
