@@ -3,6 +3,32 @@
 
 frappe.ui.form.on('Tickets Ticket Bundle', {
 	refresh: function(frm) {
-
+		frm.clear_custom_buttons();
+		if(frm.doc.docstatus == 1 && !frm.doc.assigned_to_user) {
+			frm.add_custom_button(__("Get It"), function() {
+				frm.events.bundle_event(frm, "bundle_get");
+			});
+			frm.custom_buttons[__("Get It")].removeClass("btn-default");
+			frm.custom_buttons[__("Get It")].addClass("btn-primary");
+		}
+		if(frm.doc.docstatus == 1 && frm.doc.assigned_to_user==user) {
+			frm.add_custom_button(__("Fixed"), function() {
+				frm.events.bundle_event(frm, "bundle_fixed");
+			});
+			frm.custom_buttons[__("Fixed")].removeClass("btn-default");
+			frm.custom_buttons[__("Fixed")].addClass("btn-success");
+		}
+	},
+	bundle_event: function(frm, event) {
+		return frappe.call({
+			doc: frm.doc,
+			method: event,
+			freeze: true,
+			callback: function(r) {
+				if(!r.exc)
+					frm.refresh_fields();
+					frm.events.refresh(frm);
+			}
+		});
 	}
 });

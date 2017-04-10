@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import throw, _
+from frappe.utils import getdate, nowdate
 from frappe.utils.data import format_datetime
 from frappe.model.document import Document
 from tickets.tickets.doctype.tickets_site.tickets_site import list_user_sites, list_admin_sites
@@ -98,6 +99,8 @@ class TicketsTicket(Document):
 
 		if self.assigned_to_user != frappe.session.user:
 			throw(_("This tickets is assigned to {1}").format(self.assigned_to_user))
+
+		self.set('actual_end_date', getdate(nowdate()))
 		self.set('status', 'Fixed')
 		self.save()
 
