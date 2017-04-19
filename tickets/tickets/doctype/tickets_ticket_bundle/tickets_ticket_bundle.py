@@ -25,7 +25,7 @@ class TicketsTicketBundle(Document):
 		if self.assigned_to_user:
 			for ticket in self.tickets:
 				doc = frappe.get_doc("Tickets Ticket", ticket)
-				doc.assigned_to_user = self.assigned_touser
+				doc.assigned_to_user = self.assigned_to_user
 				doc.save()
 
 		if self.wechat_notify == 1:
@@ -35,7 +35,9 @@ class TicketsTicketBundle(Document):
 		self.assigned_to_user = frappe.session.user
 		for ticket in self.tickets:
 			doc = frappe.get_doc("Tickets Ticket", ticket.ticket)
-			doc.assigned_to_user = self.assigned_touser
+			if doc.assigned_to_user:
+				throw(_("Ticket {0} is already assigned to {1}!").format(doc.name, doc.assigned_to_user))
+			doc.assigned_to_user = self.assigned_to_user
 			doc.save()
 
 		self.save()
@@ -43,7 +45,8 @@ class TicketsTicketBundle(Document):
 	def bundle_fixed(self):
 		for ticket in self.tickets:
 			doc = frappe.get_doc("Tickets Ticket", ticket.ticket)
-			assert(doc.status == "Fixed")
+			if doc.status != "Fixed":
+				throw(_("Ticket {0} is not fixed!").format(doc.name))
 
 		self.actual_end_date = getdate(nowdate())
 		self.save()
