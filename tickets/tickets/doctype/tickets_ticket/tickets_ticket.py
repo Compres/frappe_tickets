@@ -177,8 +177,8 @@ class TicketsTicket(Document):
 		self.save()
 
 	def wechat_tmsg_data(self):
-		remark = _("Task: {0}").format(self.task) + \
-				_("Price: {0}").format(self.cost) + \
+		remark = _("Task: {0}").format(self.task) + "\n" + \
+				_("Price: {0}").format(self.cost) + "\n" + \
 				_("Address: {0}").format(self.site_address)
 		return {
 			"first": {

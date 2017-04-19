@@ -27,8 +27,8 @@ class TicketsTask(Document):
 		return False
 
 	def wechat_tmsg_data(self):
-		remark = _("Site: {0}").format(self.site) + \
-				_("Prioirty: {0}").format(self.total_cost) + \
+		remark = _("Site: {0}").format(self.site) + "\n" + \
+				_("Prioirty: {0}").format(self.total_cost) + "\n" + \
 				_("Info: {0}").format(self.task_desc)
 		return {
 			"first": {
