@@ -177,6 +177,9 @@ class TicketsTicket(Document):
 		self.save()
 
 	def wechat_tmsg_data(self):
+		remark = _("Task: {0}").format(self.task) + \
+				_("Price: {0}").format(self.cost) + \
+				_("Address: {0}").format(self.site_address)
 		return {
 			"first": {
 				"value": _("New Ticket Created"),
@@ -195,7 +198,7 @@ class TicketsTicket(Document):
 				"color": "green",
 			},
 			"remark": {
-				"value": _("Task: {0}\nPrice: {1}\nAddress: {2}").format(self.task, self.cost, self.site_address)
+				"value": remark
 			}
 		}
 
