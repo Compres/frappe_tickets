@@ -1,11 +1,12 @@
 DocType: Tickets Ticket,Actual End Date,实际结束日期
+apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +182,Address: {0},地址: {0}
 DocType: Tickets Report,Amended From,修订源
 DocType: Tickets Ticket,Assigned To User,指派用户
 DocType: Tickets Ticket Bundle,Bundle Name,批量名称
 apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +36,Cannot append reports on un-submitted tickets,不能给未提交的工单增加报告
-apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +64,Cannot append tickets on un-submitted task,不能给为提交的任务增加工单
+apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +67,Cannot append tickets on un-submitted task,不能给为提交的任务增加工单
 apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +151,Cannot create delivery order as this ticket has no item list,工单不包含用料，不能创建出库单
-apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +137,Cannot create delivery order for un-commited oder!,工单为提交，不能穿件出库单
+apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +137,Cannot create delivery order for un-commited ticket!,工单未提交，不能创建出库单
 apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.js +43,Close,关闭
 DocType: Tickets Ticket,Closed,已关闭
 DocType: Tickets Ticket,Cost,费用
@@ -30,20 +31,23 @@ DocType: Tickets Task,High,高
 DocType: Tickets Task,IOT Device,IOT 设备
 DocType: Tickets Task,IOT Device Error,IOT 设备错误
 DocType: Tickets Ticket,IST-,
+apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +32,Info: {0},信息: {0}
 DocType: Tickets Ticket,Information,信息
 DocType: Tickets Ticket,Information Setttings,信息设定
 DocType: Tickets TicketItem,Item,产品
 DocType: Tickets Ticket,Item List,产品列表
-DocType: Tickets Ticket,Items,项目
+DocType: Tickets Ticket,Items,产品列表
 DocType: Tickets Task,Low,低
 DocType: Tickets Task,Medium,中
 DocType: Tickets Ticket,Naming Series,命名系列
 DocType: Tickets Ticket,New,新
-apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +32,New Task Created,成功创建新任务
+apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +35,New Task Created,成功创建新任务
 apps/tickets/tickets/tickets/doctype/tickets_ticket_bundle/tickets_ticket_bundle.py +63,New Ticket Bundle Created,成功创建批量订单
-apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +182,New Ticket Created,成功创建订单
+apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +185,New Ticket Created,成功创建订单
 apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket_list.js +17,Not Closed Tickets,工单是未完成状态
 DocType: Tickets Ticket,Planned End Date,计划的结束日期
+apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +181,Price: {0},价格: {0}
+apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +31,Prioirty: {0},优先级: {0}
 DocType: Tickets Task,Priority,优先
 DocType: Tickets Site,Published,发布时间
 DocType: Tickets TicketItem,QTY,数量
@@ -58,7 +62,7 @@ DocType: Tickets Site,Route URL,路由路径
 DocType: Tickets Report,Site,现场
 DocType: Tickets Ticket,Site Address,现场地址
 DocType: Tickets Site,Site Name,现场名称
-apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +48,Site: {0}\nPrioirty: {1}\nInfo: {2},现场: {0}\n优先级: {1}\n信息: {2}
+apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +30,Site: {0},现场: {0}
 DocType: Tickets Ticket,Status,状态
 apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +143,Stock App is not installed,未安装库存应用
 DocType: Tickets Report,TItle,标题
@@ -69,7 +73,7 @@ DocType: Tickets Task,Task Name,任务名称
 DocType: Tickets Task,Task Source,任务来源
 DocType: Tickets Task,Task Source Type,任务来源类型
 DocType: Tickets Task,Task Type,任务类型
-apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +198,Task: {0}\nPrice: {1}\nAddress: {2},任务: {0}\n价格: {1}\n地址: {2}
+apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +180,Task: {0},任务: {0}
 DocType: Tickets SiteTeam,Team,团队
 DocType: Tickets Site,Team Assigned,指定团队
 DocType: Tickets Site,Team Settings,团队设定
