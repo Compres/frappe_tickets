@@ -134,7 +134,7 @@ class TicketsTicket(Document):
 		:return: 
 		"""
 		if self.docstatus != 1:
-			throw(_("Cannot create delivery order for un-commited oder!"))
+			throw(_("Cannot create delivery order for un-commited ticket!"))
 
 		if self.delivery_order:
 			throw(_("Delivery order already created!"))
