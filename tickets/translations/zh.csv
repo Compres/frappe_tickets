@@ -43,7 +43,7 @@ DocType: Tickets Ticket,Naming Series,命名系列
 DocType: Tickets Ticket,New,新
 apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +35,New Task Created,成功创建新任务
 apps/tickets/tickets/tickets/doctype/tickets_ticket_bundle/tickets_ticket_bundle.py +63,New Ticket Bundle Created,成功创建批量订单
-apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +185,New Ticket Created,成功创建订单
+apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +185,New Ticket Created,有新的工单
 apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket_list.js +17,Not Closed Tickets,工单是未完成状态
 DocType: Tickets Ticket,Planned End Date,计划的结束日期
 apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +181,Price: {0},价格: {0}
