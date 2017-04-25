@@ -8,21 +8,16 @@ from frappe.model.document import Document
 
 
 class TicketsSite(Document):
-	def has_website_permission(self, ptype, verbose=False):
-		print('has_website_permission', self.name)
-		return True
-
-	def get_site_address(self):
-		return frappe.get_value("Cloud Project Site", self.site, 'address')
+		pass
 
 
 def list_admin_sites(user, check_enable=True):
-	from cloud.cloud.doctype.cloud_project_site.cloud_project_site import list_admin_sites
+	from cloud.cloud.doctype.cloud_project.cloud_project import list_user_projects
 
-	sites = list_admin_sites(user, check_enable=check_enable)
-	if len(sites) == 0:
+	projects = list_user_projects(user, check_enable=check_enable)
+	if len(projects) == 0:
 		return []
-	filters = {"site": ["in", sites]}
+	filters = {"project": ["in", projects]}
 	if check_enable:
 		filters["enabled"] = 1
 	return [d[0] for d in frappe.db.get_values("Tickets Site", filters=filters)]

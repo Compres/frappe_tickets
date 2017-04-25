@@ -13,9 +13,7 @@ from tickets.tickets.doctype.tickets_site.tickets_site import list_user_sites, l
 class TicketsTicket(Document):
 	def validate(self):
 		if self.site:
-			doc = frappe.get_doc("Tickets Site", self.site)
-			if doc:
-				self.site_address = doc.get_site_address()
+			self.site_address = frappe.get_value(self.site_type, self.site, "address_text")
 
 	def on_submit(self):
 		task = frappe.get_doc("Tickets Task", self.task)
