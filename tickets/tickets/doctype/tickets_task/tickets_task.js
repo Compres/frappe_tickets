@@ -8,13 +8,13 @@ frappe.ui.form.on('Tickets Task', {
 				filters: {"ignore_user_type": 1}
 			};
 		};*/
-		/* frm.fields_dict["task_source_type"].get_query = function(){
+		frm.fields_dict["site_type"].get_query = function(){
 			return {
 				filters: {
-					"name": ["in","IOT Device Error,Tickets Task,IOT Device"]
+					"name": ["in",["Cell Station","Cloud Project Site"]]
 				}
 			}
-		}; */
+		};
 	},
 	refresh: function(frm) {
 		if(frm.doc.docstatus == 1 && has_common(roles, ["Administrator", "Tickets Admin"])){
