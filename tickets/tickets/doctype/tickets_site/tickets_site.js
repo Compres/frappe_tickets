@@ -8,6 +8,11 @@ frappe.ui.form.on('Tickets Site', {
 				query:"tickets.tickets.doctype.tickets_site.tickets_site.query_team"
 			}
 		}
+		frm.fields_dict['site_type'].get_query = function(doc) {
+			return {
+				filters: {"name": ["in", ["Cell Station", "Cloud Project Site"]]}
+			};
+		}
 	},
 	refresh: function(frm) {
 
