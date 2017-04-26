@@ -12,7 +12,7 @@ from tickets.tickets.doctype.tickets_task.tickets_task import list_user_tasks, l
 
 
 class TicketsTicket(Document):
-	def validate(self):
+	def after_insert(self):
 		if self.site_type == 'Cell Station':
 			self.site_name = frappe.get_value(self.site_type, self.site, "station_name")
 		if self.site_type == 'Cloud Project Site':
@@ -180,6 +180,10 @@ class TicketsTicket(Document):
 	def __get_address_text(self):
 		return frappe.get_value(self.site_type, self.site, "address_text")
 
+	def get_region(self):
+		doc_name = frappe.get_value(self.site_type, self.site, "station_name")
+		return frappe.get_doc("RegionAddress", doc_name)
+
 	def wechat_tmsg_data(self):
 		remark = _("Task: {0}").format(self.task) + "\n" + \
 				_("Price: {0}").format(self.cost) + "\n" + \
@@ -255,3 +259,17 @@ def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
 def is_stock_installed():
 	return "tieta" in frappe.get_installed_apps()
 
+
+@frappe.whitelist()
+def list_ticket_map():
+	from cloud.cloud.doctype.cloud_project.cloud_project import list_user_projects
+	projects = list_admin_projects(frappe.session.user)
+	if len(projects) == 0:
+		return []
+	tasks = frappe.get_all('Tickets Task', filters={"docstatus": ["in",[1, 2]], "project": ["in", projects]},
+							fields=["name", "task_name", "site", "priority", "total_cost", "status"])
+
+	for task in tasks:
+		task.longitude = frappe.get_value(task.site_type, task.site, "longitude") or '116.3252'
+		task.latitude = frappe.get_value(task.site_type, task.site, "latitude") or '40.045103'
+	return tasks

@@ -12,7 +12,7 @@ def get_context(context):
 	# context.no_cache = 1
 	context.show_sidebar = True
 
-	context.title = _("Tickets Sites Map")
+	context.title = _("Tickets Ticket Map")
 	context.doc = {
-		'name': _("Tickets Sites Map")
+		'name': _("Tickets Ticket Map")
 	}

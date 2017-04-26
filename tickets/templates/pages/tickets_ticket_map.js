@@ -60,7 +60,7 @@ frappe.ready(function() {
 
 	frappe.call({
 		type: "GET",
-		method: "project.project.doctype.tickets_task.tickets_task.list_task_map",
+		method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.list_ticket_map",
 		callback: function(r) {
 			if(!r.exc) {
 				if(r._server_messages)

@@ -64,7 +64,7 @@ website_route_rules = [
 
 portal_menu_items = [
 	{"title": _("Tickets Tasks"), "route": "/tickets_tasks", "reference_doctype": "Tickets Task", "role": "Tickets User"},
-	{"title": _("Tickets Sites Map"), "route": "/tickets_site_map", "role": "Tickets User"}
+	{"title": _("Tickets Ticket Map"), "route": "/tickets_ticket_map", "role": "Tickets User"}
 ]
 
 # Installation

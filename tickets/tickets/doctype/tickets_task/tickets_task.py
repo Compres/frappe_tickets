@@ -8,11 +8,10 @@ import json
 from frappe.model.document import Document
 from frappe import throw, _
 from frappe.utils.data import format_datetime
-from tickets.tickets.doctype.tickets_site.tickets_site import list_admin_sites
 
 
 class TicketsTask(Document):
-	def validate(self):
+	def after_insert(self):
 		if self.site_type == 'Cell Station':
 			self.site_name = frappe.get_value(self.site_type, self.site, "station_name")
 		if self.site_type == 'Cloud Project Site':
@@ -70,7 +69,7 @@ class TicketsTask(Document):
 	def append_tickets(self, *tickets):
 		if self.docstatus != 1:
 			throw(_("Cannot append tickets on un-submitted task"))
-			
+
 		current_tickets = [d.ticket for d in self.get("tickets")]
 		for ticket in tickets:
 			if ticket.name in current_tickets:
@@ -123,25 +122,12 @@ def get_permission_query_conditions(user):
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
-	sites = list_admin_sites(user)
+	from cloud.cloud.doctype.cloud_project.cloud_project import list_admin_projects
+	projects = list_admin_projects(user)
 
-	if len(sites) != 0:
-		return """(`tabTickets Task`.owner = "{user}" or `tabTickets Task`.site in ({sites}))""".format(
+	if len(projects) != 0:
+		return """(`tabTickets Task`.owner = "{user}" or `tabTickets Task`.project in ({projects}))""".format(
 			user = user,
-			sites='"' + '", "'.join(sites) + '"')
+			projects='"' + '", "'.join(projects) + '"')
 
 	return """(`tabTickets Task`.owner = '{0}')""".format(user)
-
-
-@frappe.whitelist()
-def list_task_map():
-	sites = list_admin_sites(frappe.session.user)
-	if len(sites) == 0:
-		return []
-	tasks = frappe.get_all('Tickets Task', filters={"docstatus": ["in",[1, 2]], "site": ["in", sites]},
-							fields=["name", "task_name", "site", "priority", "total_cost", "status"])
-
-	for task in tasks:
-		task.longitude = frappe.get_value('Tickets Site', task.site, "longitude") or '116.3252'
-		task.latitude = frappe.get_value('Tickets Site', task.site, "latitude") or '40.045103'
-	return tasks
