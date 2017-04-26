@@ -13,6 +13,7 @@
  "engine": "InnoDB", 
  "fields": [
   {
+   "allow_bulk_edit": 0, 
    "allow_on_submit": 0, 
    "bold": 0, 
    "collapsible": 0, 
@@ -43,6 +44,7 @@
    "unique": 0
   }, 
   {
+   "allow_bulk_edit": 0, 
    "allow_on_submit": 0, 
    "bold": 0, 
    "collapsible": 0, 
@@ -83,10 +85,10 @@
  "issingle": 0, 
  "istable": 1, 
  "max_attachments": 0, 
- "modified": "2017-04-21 10:16:22.971616", 
+ "modified": "2017-04-26 09:53:43.245244", 
  "modified_by": "Administrator", 
  "module": "Tickets", 
- "name": "Tickets SiteTeam", 
+ "name": "Tickets RegionTeam", 
  "name_case": "", 
  "owner": "Administrator", 
  "permissions": [], 
