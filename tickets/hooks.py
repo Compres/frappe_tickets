@@ -103,9 +103,9 @@ permission_query_conditions = {
 # Hook on document methods and events
 
 doc_events = {
-	"User": {
-		"after_insert": "tickets.controllers.user_hooks.after_insert",
-	},
+	# "User": {
+	# 	"after_insert": "tickets.controllers.user_hooks.after_insert",
+	# },
 	"Cloud Company": {
 		"on_admin_insert": "tickets.controllers.company_hooks.on_admin_insert",
 		"on_admin_remove": "tickets.controllers.company_hooks.on_admin_remove",
