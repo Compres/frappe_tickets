@@ -181,8 +181,8 @@ class TicketsTicket(Document):
 		return frappe.get_value(self.site_type, self.site, "address_text")
 
 	def get_region_address(self):
-		doc_name = frappe.get_value(self.site_type, self.site, "station_name")
-		return frappe.get_doc("RegionAddress", doc_name)
+		region = frappe.get_value("Region Address", {"parent": self.site, "parenttype": self.site_type}, "name")
+		return frappe.get_doc("Region Address", region)
 
 	def has_get_perm(self, user):
 		region = self.get_region_address()
@@ -242,20 +242,19 @@ def get_permission_query_conditions(user):
 def get_users_by_region(user_list, region, ticket_doc):
 	from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
 	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_users
-
 	# Get all teams for that site
-	for st in frappe.db.get_values("Tickets Region", {"region": ticket_doc.site, "type": ticket_doc.task_type}, "team"):
-		app = get_wechat_app(frappe.db.get_value("Cloud Company Group", st[0], "company"))
-		if app:
-			if not user_list.has_key(app):
-				user_list[app] = []
-			for d in list_users(st[0]):
-				user_list[app].append(d.name)
+	for rgn in frappe.db.get_values("Tickets Region", {"region": region, "enabled": 1}, "name"):
+		for st in frappe.db.get_values("Tickets RegionTeam", {"parent": rgn[0], "type": ticket_doc.task_type}, "team"):
+			app = get_wechat_app(frappe.db.get_value("Cloud Company Group", st[0], "company"))
+			if app:
+				if not user_list.has_key(app):
+					user_list[app] = []
+				for d in list_users(st[0]):
+					user_list[app].append(d.name)
 	return user_list
 
 
 def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
-
 	ticket_doc = ticket_doc or frappe.get_doc("Tickets Ticket", ticket_name)
 	region = ticket_doc.get_region_address()
 
