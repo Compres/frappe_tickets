@@ -17,19 +17,6 @@ class TicketsTask(Document):
 		if self.site_type == 'Cloud Project Site':
 			self.site_name = frappe.get_value(self.site_type, self.site, "site_name")
 
-	def has_website_permission(self, ptype, verbose=False):
-		user = frappe.session.user
-		if self.fixed_by == user:
-			return True
-
-		teams = [d[0] for d in frappe.db.get_values('Tickets SiteTeam', {"parent": self.site}, "team")]
-
-		for team in teams:
-			if frappe.get_value('Tickets TeamUser', {"parent": team, "user": user}):
-				return True
-
-		return False
-
 	def wechat_tmsg_data(self):
 		remark = _("Site: {0}").format(self.site) + "\n" + \
 				_("Prioirty: {0}").format(self.total_cost) + "\n" + \
@@ -90,30 +77,12 @@ class TicketsTask(Document):
 		self.update_cost()
 
 
-def get_task_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified desc"):
-	from cloud.cloud.doctype.cloud_company_group.cloud_company import list_user_groups
-	groups = [d.name for d in list_user_groups(frappe.session.user)]
-	user_groups='"' + '", "'.join(groups) + '"'
-	return frappe.db.sql('''select distinct task.*
-		from `tabTickets Task` task, `tabTickets SiteTeam` site_team
-		where task.docstatus != 2
-			and task.site = site_team.parent
-			and site_team.team in %(groups)s)
-			order by task.{0}
-			limit {1}, {2}
-		'''.format(order_by, limit_start, limit_page_length),
-			{'groups':user_groups},
-			as_dict=True,
-			update={'doctype':'Tickets Task'})
-
-
 def get_list_context(context=None):
 	return {
 		"show_sidebar": True,
 		"show_search": True,
 		"no_breadcrumbs": True,
 		"title": _("Tickets Tasks"),
-		"get_list": get_task_list,
 		"row_template": "templates/generators/tickets_task_row.html",
 	}
 
