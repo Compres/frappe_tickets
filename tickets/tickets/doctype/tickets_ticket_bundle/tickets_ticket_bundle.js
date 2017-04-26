@@ -3,8 +3,16 @@
 
 frappe.ui.form.on('Tickets Ticket Bundle', {
 	setup: function (frm) {
-		frm.fields_dict['tickets'].grid.get_field("ticket").get_query =
-			"tickets.tickets.doctype.tickets_ticket_bundle.tickets_ticket_bundle.ticket_query"
+		frm.fields_dict['tickets'].grid.get_field("ticket").get_query = function(doc) {
+			return {
+				filters: {
+					"docstatus": 1,
+					"assigned_to_user": null,
+					"status": "New",
+					"task_type": doc.tickets_type
+				}
+			}
+		}
 	},
 	refresh: function(frm) {
 		frm.clear_custom_buttons();

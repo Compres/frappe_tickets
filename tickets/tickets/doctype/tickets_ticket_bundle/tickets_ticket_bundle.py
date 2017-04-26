@@ -88,14 +88,6 @@ class TicketsTicketBundle(Document):
 		return "/desk#Form/Tickets Ticket Bundle/" + self.name
 
 
-def ticket_query(doctype, txt, searchfield, start, page_len, filters):
-	return frappe.db.sql("""select name, ticket_name from `tabTickets Ticket`
-		where docstatus = 1 and assigned_to_user is null and status = 'New'
-		and %s like %s order by name limit %s, %s""" %
-		(searchfield, "%s", "%s", "%s"),
-		("%%%s%%" % txt, start, page_len), as_list=1)
-
-
 def wechat_notify(bundle=None):
 	from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
 	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_users
