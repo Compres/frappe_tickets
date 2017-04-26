@@ -60,6 +60,7 @@ class TicketsTicketBundle(Document):
 		self.total_cost = cost
 		self.save()
 
+
 	def wechat_tmsg_data(self):
 		return {
 			"first": {
@@ -100,15 +101,9 @@ def wechat_notify(bundle=None):
 	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_users
 	from wechat.api import send_doc
 
-	teams = None
-	for ticket in bundle.tickets:
-		ticket_doc = frappe.get_doc("Tickets Ticket", ticket.ticket)
-
-		# Get all teams for that site
-		tlist = [st[0] for st in frappe.db.get_values("Tickets SiteTeam",
-						{"parent": ticket_doc.site, "type": ticket_doc.task_type}, "team")]
-		org_tlist = teams or tlist
-		teams = [val for val in tlist if val in org_tlist]
+	# Get all teams for that site
+	teams = [st[0] for st in frappe.db.get_values("Tickets RegionTeam",
+					{"parent": bundle.tickets_region, "type": bundle.tickets_type}, "team")]
 
 	user_list = {}
 	for team in teams:

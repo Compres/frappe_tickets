@@ -179,12 +179,12 @@ class TicketsTicket(Document):
 	def __get_address_text(self):
 		return frappe.get_value(self.site_type, self.site, "address_text")
 
-	def get_region(self):
+	def get_region_address(self):
 		doc_name = frappe.get_value(self.site_type, self.site, "station_name")
 		return frappe.get_doc("RegionAddress", doc_name)
 
 	def has_get_perm(self, user):
-		region = self.get_region()
+		region = self.get_region_address()
 		from tickets.tickets.doctype.tickets_region.test_tickets_region import list_user_regions
 		list = list_user_regions(frappe.session.user)
 		for d in list:
@@ -238,26 +238,32 @@ def get_permission_query_conditions(user):
 	return """(`tabTickets Ticket`.assigned_to_user = '{0}')""".format(user)
 
 
-def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
+def get_users_by_region(user_list, region, ticket_doc):
 	from cloud.cloud.doctype.cloud_company.cloud_company import get_wechat_app
 	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_users
 
-	ticket_doc = ticket_doc or frappe.get_doc("Tickets Ticket", ticket_name)
-
-	user_list = {}
 	# Get all teams for that site
-	for st in frappe.db.get_values("Tickets SiteTeam", {"parent": ticket_doc.site, "type": ticket_doc.task_type}, "team"):
+	for st in frappe.db.get_values("Tickets Region", {"region": ticket_doc.site, "type": ticket_doc.task_type}, "team"):
 		app = get_wechat_app(frappe.db.get_value("Cloud Company Group", st[0], "company"))
 		if app:
 			if not user_list.has_key(app):
 				user_list[app] = []
 			for d in list_users(st[0]):
 				user_list[app].append(d.name)
-			"""
-			frappe.sendmail(recipients=email_account.get_unreplied_notification_emails(),
-				content=comm.content, subject=comm.subject, doctype= comm.reference_doctype,
-				name=comm.reference_name)
-			"""
+	return user_list
+
+
+def wechat_notify_by_ticket_name(ticket_name, ticket_doc=None):
+
+	ticket_doc = ticket_doc or frappe.get_doc("Tickets Ticket", ticket_name)
+	region = ticket_doc.get_region_address()
+
+	user_list = {}
+	user_list = get_users_by_region(user_list, region.town, ticket_doc)
+	user_list = get_users_by_region(user_list, region.county, ticket_doc)
+	user_list = get_users_by_region(user_list, region.city, ticket_doc)
+	user_list = get_users_by_region(user_list, region.province, ticket_doc)
+
 	for app in user_list:
 		#print("Send wechat notify : {0} to users {1} via app {2}".format(task_doc.as_json(), user_list[app], app))
 		from wechat.api import send_doc
