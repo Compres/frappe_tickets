@@ -5,6 +5,7 @@ frappe.ui.form.on('Tickets Ticket Bundle', {
 	setup: function (frm) {
 		frm.fields_dict['tickets'].grid.get_field("ticket").get_query = function(doc) {
 			return {
+				searchfield:"ticket_name",
 				filters: {
 					"docstatus": 1,
 					"assigned_to_user": null,

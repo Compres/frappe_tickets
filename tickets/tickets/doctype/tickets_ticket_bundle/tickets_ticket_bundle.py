@@ -17,6 +17,8 @@ class TicketsTicketBundle(Document):
 				throw(_("Ticket {0} is already assigned to user {1}").format(ticket.ticket, doc.assigned_to_user))
 			if getdate(doc.planned_end_date) > getdate(self.planned_end_date):
 				throw(_("Ticket {0} planned date is late than bundle's {1}").format(doc.planned_end_date, self.planned_end_date))
+			if doc.task_type != self.tickets_type:
+				throw(_("Ticket {0} type is different with bundle's {1}").format(doc.task_type, self.tickets_type))
 			cost += doc.cost
 
 		self.total_cost = cost
