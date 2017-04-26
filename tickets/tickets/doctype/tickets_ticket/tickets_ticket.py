@@ -11,7 +11,8 @@ from frappe.model.document import Document
 
 
 class TicketsTicket(Document):
-	def after_insert(self):
+	def validate(self):
+		self.project = frappe.get_value(self.site_type, self.site, "project")
 		if self.site_type == 'Cell Station':
 			self.site_name = frappe.get_value(self.site_type, self.site, "station_name")
 		if self.site_type == 'Cloud Project Site':
