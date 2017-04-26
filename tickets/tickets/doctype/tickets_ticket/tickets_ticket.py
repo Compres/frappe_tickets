@@ -8,7 +8,6 @@ from frappe import throw, _
 from frappe.utils import getdate, nowdate
 from frappe.utils.data import format_datetime
 from frappe.model.document import Document
-from tickets.tickets.doctype.tickets_task.tickets_task import list_user_tasks, list_admin_tasks
 
 
 class TicketsTicket(Document):
@@ -82,7 +81,7 @@ class TicketsTicket(Document):
 		if self.assigned_to_user and self.asigned_to_user != frappe.session.user:
 			throw(_("This tickets is assigned to {1}").format(self.assigned_to_user))
 
-		if self.task not in list_user_tasks(frappe.session.user, self.task_type):
+		if not self.has_get_perm():
 			throw(_("You have no permission to get this tickets"))
 
 		self.assigned_to_user = frappe.session.user
@@ -184,6 +183,15 @@ class TicketsTicket(Document):
 		doc_name = frappe.get_value(self.site_type, self.site, "station_name")
 		return frappe.get_doc("RegionAddress", doc_name)
 
+	def has_get_perm(self, user):
+		region = self.get_region()
+		from tickets.tickets.doctype.tickets_region.test_tickets_region import list_user_region
+		list = list_user_region(frappe.session.user)
+		for d in list:
+			if region.is_region_of(d):
+				return True
+		return False
+
 	def wechat_tmsg_data(self):
 		remark = _("Task: {0}").format(self.task) + "\n" + \
 				_("Price: {0}").format(self.cost) + "\n" + \
@@ -218,13 +226,14 @@ def get_permission_query_conditions(user):
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
-	sites = list_admin_sites(user)
+	from cloud.cloud.doctype.cloud_project.cloud_project import list_user_projects
+	projects = list_user_projects(user)
 
 	# [frappe.db.escape(r) for r in frappe.get_roles(user)]
-	if len(sites) != 0:
-		return """(`tabTickets Ticket`.assigned_to_user = "{user}" or `tabTickets Ticket`.site in ({sites}))""".format(
+	if len(projects) != 0:
+		return """(`tabTickets Ticket`.assigned_to_user = "{user}" or `tabTickets Ticket`.project in ({projects}))""".format(
 			user = user,
-			sites='"' + '", "'.join(sites) + '"')
+			projects='"' + '", "'.join(projects) + '"')
 
 	return """(`tabTickets Ticket`.assigned_to_user = '{0}')""".format(user)
 
@@ -263,7 +272,7 @@ def is_stock_installed():
 @frappe.whitelist()
 def list_ticket_map():
 	from cloud.cloud.doctype.cloud_project.cloud_project import list_user_projects
-	projects = list_admin_projects(frappe.session.user)
+	projects = list_user_projects(frappe.session.user)
 	if len(projects) == 0:
 		return []
 	tasks = frappe.get_all('Tickets Task', filters={"docstatus": ["in",[1, 2]], "project": ["in", projects]},
