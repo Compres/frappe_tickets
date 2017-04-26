@@ -21,10 +21,11 @@ def get_permission_query_conditions(user):
 	if 'Tickets Manager' in frappe.get_roles(user):
 		return ""
 
-	sites = list_admin_sites(user)
-	if len(sites) != 0:
-		return """(`tabTickets Report`.owner = '{user}' or `tabTickets Report`.site in ({sites}))""".format(
+	from cloud.cloud.doctype.cloud_project.cloud_project import list_user_projects
+	projects = list_user_projects(frappe.session.user)
+	if len(projects) != 0:
+		return """(`tabTickets Report`.owner = '{user}' or `tabTickets Report`.project in ({projects}))""".format(
 			user = user,
-			sites='"' + '", "'.join(sites) + '"')
+			projects='"' + '", "'.join(projects) + '"')
 
 	return """(`tabTickets Report`.owner = '{0}')""".format(user)
