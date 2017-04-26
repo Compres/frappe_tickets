@@ -56,3 +56,10 @@ def query_team(doctype, txt, searchfield, start, page_len, filters):
 		and %s like %s order by name limit %s, %s""" %
 		(searchfield, "%s", "%s", "%s"),
 		("%%%s%%" % txt, start, page_len), as_list=1)
+
+
+def query_region(doctype, txt, searchfield, start, page_len, filters):
+	return frappe.db.sql("""select name, concat_ws(" | ", region_name, description) from `tabRegion`
+		where %s like %s order by name limit %s, %s""" %
+		(searchfield, "%s", "%s", "%s"),
+		("%%%s%%" % txt, start, page_len), as_list=1)

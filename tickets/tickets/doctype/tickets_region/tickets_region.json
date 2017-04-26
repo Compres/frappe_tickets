@@ -9,7 +9,7 @@
  "custom": 0, 
  "docstatus": 0, 
  "doctype": "DocType", 
- "document_type": "Document", 
+ "document_type": "Setup", 
  "editable_grid": 1, 
  "engine": "InnoDB", 
  "fields": [
@@ -209,7 +209,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2017-04-26 10:41:41.814120", 
+ "modified": "2017-04-26 11:05:54.196478", 
  "modified_by": "Administrator", 
  "module": "Tickets", 
  "name": "Tickets Region", 
