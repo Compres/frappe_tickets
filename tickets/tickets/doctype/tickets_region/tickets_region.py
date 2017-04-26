@@ -10,7 +10,7 @@ class TicketsRegion(Document):
 	pass
 
 
-def list_admin_sites(user, check_enable=True, region=None):
+def list_admin_regions(user, check_enable=True, region=None):
 	from cloud.cloud.doctype.cloud_project.cloud_project import list_user_projects
 	projects = list_user_projects(user, check_enable=check_enable)
 
@@ -21,7 +21,7 @@ def list_admin_sites(user, check_enable=True, region=None):
 		filters["enabled"] = 1
 	if region:
 		filters["region"] = region
-	return [d[0] for d in frappe.db.get_values("Tickets Site", filters=filters)]
+	return [d[0] for d in frappe.db.get_values("Tickets Region", filters=filters)]
 
 
 def list_user_regions(user=None, type=None, region=None):

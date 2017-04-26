@@ -17,7 +17,7 @@
  "is_standard": 1, 
  "login_required": 1, 
  "max_attachment_size": 0, 
- "modified": "2017-03-17 17:23:58.823880", 
+ "modified": "2017-04-26 11:26:46.135754", 
  "modified_by": "Administrator", 
  "module": "Tickets", 
  "name": "update-tickets-task", 
@@ -41,36 +41,24 @@
    "reqd": 1
   }, 
   {
-   "fieldname": "site", 
-   "fieldtype": "Link", 
+   "fieldname": "site_name", 
+   "fieldtype": "Data", 
    "hidden": 0, 
-   "label": "Site", 
+   "label": "Site Name", 
    "max_length": 0, 
    "max_value": 0, 
-   "options": "Tickets Site", 
-   "read_only": 1, 
-   "reqd": 1
-  }, 
-  {
-   "fieldname": "price", 
-   "fieldtype": "Float", 
-   "hidden": 0, 
-   "label": "Price", 
-   "max_length": 0, 
-   "max_value": 0, 
-   "read_only": 1, 
+   "read_only": 0, 
    "reqd": 0
   }, 
   {
-   "default": "New", 
-   "fieldname": "status", 
-   "fieldtype": "Select", 
+   "default": "0.0", 
+   "fieldname": "total_cost", 
+   "fieldtype": "Data", 
    "hidden": 0, 
-   "label": "Status", 
+   "label": "Total Cost", 
    "max_length": 0, 
    "max_value": 0, 
-   "options": "New\nOpen\nFixed\nClosed", 
-   "read_only": 0, 
+   "read_only": 1, 
    "reqd": 0
   }, 
   {
@@ -80,17 +68,18 @@
    "label": "Task Description", 
    "max_length": 0, 
    "max_value": 0, 
-   "read_only": 1, 
+   "read_only": 0, 
    "reqd": 1
   }, 
   {
-   "fieldname": "result_report", 
-   "fieldtype": "Text Editor", 
+   "fieldname": "tickets", 
+   "fieldtype": "Table", 
    "hidden": 0, 
-   "label": "Result Report", 
+   "label": "Tickets", 
    "max_length": 0, 
    "max_value": 0, 
-   "read_only": 0, 
+   "options": "Tickets TaskTicket", 
+   "read_only": 1, 
    "reqd": 0
   }
  ]

@@ -93,7 +93,7 @@ portal_menu_items = [
 
 permission_query_conditions = {
 	"Tickets Task": "tickets.tickets.doctype.tickets_task.tickets_task.get_permission_query_conditions",
-	"Tickets Site": "tickets.tickets.doctype.tickets_site.tickets_site.get_permission_query_conditions",
+	"Tickets Region": "tickets.tickets.doctype.tickets_region.tickets_region.get_permission_query_conditions",
 	"Tickets Ticket": "tickets.tickets.doctype.tickets_ticket.tickets_ticket.get_permission_query_conditions",
 	"Tickets Report": "tickets.tickets.doctype.tickets_report.tickets_report.get_permission_query_conditions",
 }
