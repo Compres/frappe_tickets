@@ -8,12 +8,15 @@ from frappe import throw, _
 from frappe.utils import getdate, nowdate
 from frappe.utils.data import format_datetime
 from frappe.model.document import Document
-from tickets.tickets.doctype.tickets_site.tickets_site import list_user_sites, list_admin_sites
+from tickets.tickets.doctype.tickets_task.tickets_task import list_user_tasks, list_admin_tasks
+
 
 class TicketsTicket(Document):
 	def validate(self):
-		if self.site:
-			self.site_address = frappe.get_value(self.site_type, self.site, "address_text")
+		if self.site_type == 'Cell Station':
+			self.site_name = frappe.get_value(self.site_type, self.site, "station_name")
+		if self.site_type == 'Cloud Project Site':
+			self.site_name = frappe.get_value(self.site_type, self.site, "site_name")
 
 	def on_submit(self):
 		task = frappe.get_doc("Tickets Task", self.task)
@@ -79,7 +82,7 @@ class TicketsTicket(Document):
 		if self.assigned_to_user and self.asigned_to_user != frappe.session.user:
 			throw(_("This tickets is assigned to {1}").format(self.assigned_to_user))
 
-		if self.site not in list_user_sites(frappe.session.user, self.task_type):
+		if self.task not in list_user_tasks(frappe.session.user, self.task_type):
 			throw(_("You have no permission to get this tickets"))
 
 		self.assigned_to_user = frappe.session.user
@@ -174,10 +177,13 @@ class TicketsTicket(Document):
 		self.delivery_warehouse = order.warehouse
 		self.save()
 
+	def __get_address_text(self):
+		return frappe.get_value(self.site_type, self.site, "address_text")
+
 	def wechat_tmsg_data(self):
 		remark = _("Task: {0}").format(self.task) + "\n" + \
 				_("Price: {0}").format(self.cost) + "\n" + \
-				_("Address: {0}").format(self.site_address)
+				_("Address: {0}").format(self.__get_address_text())
 		return {
 			"first": {
 				"value": _("New Ticket Created"),
@@ -212,7 +218,8 @@ def get_permission_query_conditions(user):
 
 	# [frappe.db.escape(r) for r in frappe.get_roles(user)]
 	if len(sites) != 0:
-		return """(`tabTickets Ticket`.site in ({sites}))""".format(
+		return """(`tabTickets Ticket`.assigned_to_user = "{user}" or `tabTickets Ticket`.site in ({sites}))""".format(
+			user = user,
 			sites='"' + '", "'.join(sites) + '"')
 
 	return """(`tabTickets Ticket`.assigned_to_user = '{0}')""".format(user)

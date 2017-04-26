@@ -23,7 +23,8 @@ def get_permission_query_conditions(user):
 
 	sites = list_admin_sites(user)
 	if len(sites) != 0:
-		return """(`tabTickets Report`.site in ({sites}))""".format(
+		return """(`tabTickets Report`.owner = '{user}' or `tabTickets Report`.site in ({sites}))""".format(
+			user = user,
 			sites='"' + '", "'.join(sites) + '"')
 
 	return """(`tabTickets Report`.owner = '{0}')""".format(user)

@@ -11,7 +11,7 @@ class TicketsSite(Document):
 		pass
 
 
-def list_admin_sites(user, check_enable=True):
+def list_admin_sites(user, check_enable=True, region=None):
 	from cloud.cloud.doctype.cloud_project.cloud_project import list_user_projects
 
 	projects = list_user_projects(user, check_enable=check_enable)
@@ -20,10 +20,12 @@ def list_admin_sites(user, check_enable=True):
 	filters = {"project": ["in", projects]}
 	if check_enable:
 		filters["enabled"] = 1
+	if region:
+		filters["region"] = region
 	return [d[0] for d in frappe.db.get_values("Tickets Site", filters=filters)]
 
 
-def list_user_sites(user=None, type=None):
+def list_user_sites(user=None, type=None, region=None):
 	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_user_groups
 
 	teams = list_user_groups(user)
@@ -32,10 +34,12 @@ def list_user_sites(user=None, type=None):
 		filters = {'team': team.name}
 		if type:
 			filters['type'] = type
+		if region:
+			filters["region"] = region
 		for d in frappe.db.get_values('Tickets SiteTeam', filters, "parent"):
 			sites.append(d[0])
 
-	for d in list_admin_sites(user):
+	for d in list_admin_sites(user, region=region):
 		sites.append(d)
 
 	return sites

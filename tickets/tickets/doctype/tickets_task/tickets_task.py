@@ -12,6 +12,11 @@ from tickets.tickets.doctype.tickets_site.tickets_site import list_admin_sites
 
 
 class TicketsTask(Document):
+	def validate(self):
+		if self.site_type == 'Cell Station':
+			self.site_name = frappe.get_value(self.site_type, self.site, "station_name")
+		if self.site_type == 'Cloud Project Site':
+			self.site_name = frappe.get_value(self.site_type, self.site, "site_name")
 
 	def has_website_permission(self, ptype, verbose=False):
 		user = frappe.session.user
@@ -121,7 +126,8 @@ def get_permission_query_conditions(user):
 	sites = list_admin_sites(user)
 
 	if len(sites) != 0:
-		return """(`tabTickets Task`.site in ({sites}))""".format(
+		return """(`tabTickets Task`.owner = "{user}" or `tabTickets Task`.site in ({sites}))""".format(
+			user = user,
 			sites='"' + '", "'.join(sites) + '"')
 
 	return """(`tabTickets Task`.owner = '{0}')""".format(user)
