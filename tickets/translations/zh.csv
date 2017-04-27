@@ -64,7 +64,7 @@ apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.js +22,Report
 DocType: Tickets Ticket,Reports,报告
 DocType: Tickets Task,Site,现场
 DocType: Tickets Task,Site Name,现场名称
-DocType: Tickets Task,Site Type,
+DocType: Tickets Task,Site Type,现场类型
 apps/tickets/tickets/tickets/doctype/tickets_task/tickets_task.py +22,Site: {0},现场: {0}
 DocType: Tickets Ticket,Status,状态
 apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +144,Stock App is not installed,未安装库存应用
@@ -88,14 +88,14 @@ apps/tickets/tickets/tickets/doctype/tickets_ticket/tickets_ticket.py +108,Ticke
 DocType: Tickets Task,Ticket List,工单列表
 DocType: Tickets Ticket,Ticket Name,工单名称
 apps/tickets/tickets/tickets/doctype/tickets_ticket_bundle/tickets_ticket_bundle.py +17,Ticket {0} is already assigned to user {1},工单{0}已经指派给用户{1}
-apps/tickets/tickets/tickets/doctype/tickets_ticket_bundle/tickets_ticket_bundle.py +41,Ticket {0} is already assigned to {1}!,
+apps/tickets/tickets/tickets/doctype/tickets_ticket_bundle/tickets_ticket_bundle.py +41,Ticket {0} is already assigned to {1}!,工单{0}已经指派给用户{1}
 apps/tickets/tickets/tickets/doctype/tickets_ticket_bundle/tickets_ticket_bundle.py +51,Ticket {0} is not fixed!,
 apps/tickets/tickets/tickets/doctype/tickets_ticket_bundle/tickets_ticket_bundle.py +19,Ticket {0} planned date is late than bundle's {1},工单{0}计划完成日期晚于批量订单的计划完成日期{1}
-apps/tickets/tickets/tickets/doctype/tickets_ticket_bundle/tickets_ticket_bundle.py +21,Ticket {0} type is different with bundle's {1},
+apps/tickets/tickets/tickets/doctype/tickets_ticket_bundle/tickets_ticket_bundle.py +21,Ticket {0} type is different with bundle's {1},工单{0}类型不同于批量订单的类型{1}
 DocType: Tickets Region,Tickets,工单
 DocType: Tickets Region,Tickets Admin,工单企业管理员
 DocType: Tickets Region,Tickets Manager,工单管理员
-DocType: Tickets Region,Tickets Region,
+DocType: Tickets Region,Tickets Region,工单区域
 DocType: Tickets RegionTeam,Tickets RegionTeam,
 DocType: Tickets Report,Tickets Report,工单报告
 DocType: Tickets Task,Tickets Task,工单任务
@@ -104,7 +104,7 @@ apps/tickets/tickets/hooks.py +60,Tickets Tasks,工单任务列表
 DocType: Tickets Ticket,Tickets Ticket,工单
 DocType: Tickets Ticket Bundle,Tickets Ticket Bundle,批量工单
 DocType: Tickets Ticket BundleTicket,Tickets Ticket BundleTicket,
-apps/tickets/tickets/hooks.py +67,Tickets Ticket Map,
+apps/tickets/tickets/hooks.py +67,Tickets Ticket Map,工单地图
 DocType: Tickets TicketItem,Tickets TicketItem,
 DocType: Tickets TicketReport,Tickets TicketReport,
 DocType: Tickets Ticket Bundle,Tickets Type,工单类型
