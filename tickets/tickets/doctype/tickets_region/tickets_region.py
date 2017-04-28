@@ -7,7 +7,8 @@ import frappe
 from frappe.model.document import Document
 
 class TicketsRegion(Document):
-	pass
+	def validate(self):
+		self.region_name_text = frappe.get_value("Region", self.region, "region_name")
 
 
 def list_admin_regions(user, check_enable=True, region=None):
