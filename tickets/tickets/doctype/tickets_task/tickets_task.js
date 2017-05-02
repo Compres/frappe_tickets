@@ -29,15 +29,11 @@ frappe.ui.form.on('Tickets Task', {
 					mr.site = frm.doc.site;
 					frappe.set_route('Form', mr.doctype, mr.name);
 				});
-			});
-			frm.custom_buttons[__("Create Ticket")].removeClass("btn-default");
-			frm.custom_buttons[__("Create Ticket")].addClass("btn-primary");
+			}).removeClass("btn-default").addClass("btn-primary");
 
 			frm.add_custom_button(__("Update Cost"), function() {
 				frm.events.update_cost(frm);
-			});
-			frm.custom_buttons[__("Update Cost")].removeClass("btn-default");
-			frm.custom_buttons[__("Update Cost")].addClass("btn-warning");
+			}).removeClass("btn-default").addClass("btn-warning");
 		}
 	},
 
