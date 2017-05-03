@@ -186,7 +186,7 @@ class TicketsTicket(Document):
 
 	def has_get_perm(self, user=None):
 		region = self.get_region_address()
-		from tickets.tickets.doctype.tickets_region.test_tickets_region import list_user_regions
+		from tickets.tickets.doctype.tickets_region.tickets_region import list_user_regions
 		list = list_user_regions(user or frappe.session.user)
 		for d in list:
 			if region.is_region_of(d):
