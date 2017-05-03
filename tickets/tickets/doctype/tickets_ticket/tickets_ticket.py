@@ -145,8 +145,11 @@ class TicketsTicket(Document):
 
 		items = []
 		for item in self.get("items"):
-			for i in range(0, item.qty):
-				items.append({"item": item.item, "remark": item.remark})
+			if frappe.get_value("Stock Item", item.item, "has_serial_no") == 1:
+				for i in range(0, item.qty):
+					items.append({"item": item.item, "qty": 1, "remark": item.remark})
+			else:
+				items.append({"item": item.item, "qty": item.qty, "remark": item.remark})
 
 		if len(items) == 0:
 			throw(_("Cannot create delivery order as this ticket has no item list"))
