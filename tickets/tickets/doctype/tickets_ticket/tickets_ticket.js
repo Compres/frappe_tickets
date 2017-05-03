@@ -28,10 +28,21 @@ frappe.ui.form.on('Tickets Ticket', {
 				frm.events.ticket_event(frm, "ticket_fixed");
 			}).removeClass("btn-default").addClass("btn-success");
 
-			if (frm.custom_buttons[__('Create Delivery Order')]) {
-				frm.custom_buttons[__('Create Delivery Order')].removeClass("hidden");
+			var btn = frm.custom_buttons[__('Create Delivery Order')];
+			if(btn) {
+				btn.removeClass("hidden");
 			} else {
-				frm.events.onload_post_render(frm);
+				frappe.call({
+					type: "GET",
+					method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
+					callback: function (r, rt) {
+						if (r.message) {
+							frm.toggle_display("item_list", true);
+							frm.toggle_display("items", true);
+							frm.events.show_gen_entry(frm);
+						}
+					}
+				});
 			}
 		}
 		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixed') {
@@ -46,37 +57,22 @@ frappe.ui.form.on('Tickets Ticket', {
 			}
 		}
 	},
-	onload_post_render: function(frm) {
-		frappe.call({
-			type: "GET",
-			method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
-			callback: function (r, rt) {
-				if (r.message) {
-					frm.toggle_display("item_list", true);
-					frm.toggle_display("items", true);
-					frm.events.show_gen_entry(frm);
-				}
-			}
-		});
-	},
 	show_gen_entry: function(frm) {
 		if(frm.doc.docstatus == 1 && frm.doc.status=='Fixing' && frm.doc.assigned_to_user==user) {
-			frm.add_custom_button(__('Create Delivery Order'), function () {
-				return frappe.call({
-					doc: frm.doc,
-					method: "create_delivery_order",
-					freeze: true,
-					callback: function (r) {
-						if (!r.exc) {
-							frm.refresh_fields();
-							frm.custom_buttons[__('Create Delivery Order')].addClass('hidden');
+			if (!frm.doc.delivery_order) {
+				frm.add_custom_button(__('Create Delivery Order'), function () {
+					return frappe.call({
+						doc: frm.doc,
+						method: "create_delivery_order",
+						freeze: true,
+						callback: function (r) {
+							if (!r.exc) {
+								frm.custom_buttons[__('Create Delivery Order')].addClass('hidden');
+								frm.refresh_fields();
+							}
 						}
-					}
-				});
-			}).removeClass("btn-default").addClass("btn-primary");
-
-			if (frm.doc.delivery_order) {
-				frm.custom_buttons[__('Create Delivery Order')].addClass("hidden");
+					});
+				}).removeClass("btn-default").addClass("btn-primary");
 			}
 		}
 	},
