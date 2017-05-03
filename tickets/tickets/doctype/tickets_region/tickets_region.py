@@ -35,7 +35,7 @@ def list_user_regions(user=None, type=None):
 		if type:
 			filters['type'] = type
 		for d in frappe.db.get_values('Tickets RegionTeam', filters, "parent"):
-			regions.append(frappe.get_value('Ticket Region', d[0], 'region'))
+			regions.append(frappe.get_value('Tickets Region', d[0], 'region'))
 
 	return regions
 
