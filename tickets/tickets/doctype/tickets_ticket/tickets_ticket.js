@@ -16,6 +16,7 @@ frappe.ui.form.on('Tickets Ticket', {
 			frm.add_custom_button(__("Create Report"), function() {
 				 frappe.model.with_doctype('Tickets Report', function() {
 					var mr = frappe.model.get_new_doc('Tickets Report');
+					mr.project = frm.doc.project;
 					mr.ticket = frm.doc.name;
 					mr.title = __("Report for ") + frm.doc.name;
 					mr.site = frm.doc.site;
