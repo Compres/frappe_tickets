@@ -25,7 +25,7 @@ def list_admin_regions(user, check_enable=True, region=None):
 	return [d[0] for d in frappe.db.get_values("Tickets Region", filters=filters)]
 
 
-def list_user_regions(user=None, type=None, region=None):
+def list_user_regions(user=None, type=None):
 	from cloud.cloud.doctype.cloud_company_group.cloud_company_group import list_user_groups
 	teams = list_user_groups(user)
 
@@ -34,10 +34,8 @@ def list_user_regions(user=None, type=None, region=None):
 		filters = {'team': team.name}
 		if type:
 			filters['type'] = type
-		if region:
-			filters["region"] = region
 		for d in frappe.db.get_values('Tickets RegionTeam', filters, "parent"):
-			regions.append(d[0])
+			regions.append(frappe.get_value('Ticket Region', d[0], 'region'))
 
 	return regions
 
