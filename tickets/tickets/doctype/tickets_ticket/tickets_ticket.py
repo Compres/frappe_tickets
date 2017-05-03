@@ -158,6 +158,7 @@ class TicketsTicket(Document):
 			"order_source_type": 'Tickets Ticket',
 			"order_source_id": self.name,
 			"naming_series": "TKT-",
+			"company": frappe.get_value("Cloud Project", self.project, "company"),
 			"doctype": "Stock Delivery Order",
 			"items": items,
 		}
