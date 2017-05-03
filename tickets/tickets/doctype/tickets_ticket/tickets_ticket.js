@@ -29,9 +29,7 @@ frappe.ui.form.on('Tickets Ticket', {
 			}).removeClass("btn-default").addClass("btn-success");
 
 			var btn = frm.custom_buttons[__('Create Delivery Order')];
-			if(btn) {
-				btn.removeClass("hidden");
-			} else {
+			if(!btn) {
 				frappe.call({
 					type: "GET",
 					method: "tickets.tickets.doctype.tickets_ticket.tickets_ticket.is_stock_installed",
@@ -67,7 +65,6 @@ frappe.ui.form.on('Tickets Ticket', {
 						freeze: true,
 						callback: function (r) {
 							if (!r.exc) {
-								frm.custom_buttons[__('Create Delivery Order')].addClass('hidden');
 								frm.refresh_fields();
 							}
 						}
