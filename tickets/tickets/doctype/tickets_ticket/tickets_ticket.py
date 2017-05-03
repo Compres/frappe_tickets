@@ -184,10 +184,10 @@ class TicketsTicket(Document):
 		region = frappe.get_value("Region Address", {"parent": self.site, "parenttype": self.site_type}, "name")
 		return frappe.get_doc("Region Address", region)
 
-	def has_get_perm(self, user):
+	def has_get_perm(self, user=None):
 		region = self.get_region_address()
 		from tickets.tickets.doctype.tickets_region.test_tickets_region import list_user_regions
-		list = list_user_regions(frappe.session.user)
+		list = list_user_regions(user or frappe.session.user)
 		for d in list:
 			if region.is_region_of(d):
 				return True
