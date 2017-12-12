@@ -204,19 +204,19 @@ class TicketsTicket(Document):
 		return {
 			"first": {
 				"value": _("New Ticket Created"),
-				"color": "red"
+				"color": "#800000"
 			},
 			"keyword1": {
 				"value": self.name,  # 编号
-				"color": "blue"
+				"color": "#000080"
 			},
 			"keyword2": {
 				"value": self.ticket_name,  # 标题
-				"color": "blue"
+				"color": "#000080"
 			},
 			"keyword3": {
 				"value": format_datetime(self.planned_end_date),  # 时间
-				"color": "green",
+				"color": "#008000",
 			},
 			"remark": {
 				"value": remark

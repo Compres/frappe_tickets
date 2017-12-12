@@ -25,19 +25,19 @@ class TicketsTask(Document):
 		return {
 			"first": {
 				"value": _("New Task Created"),
-				"color": "red"
+				"color": "#800000"
 			},
 			"keyword1": {
 				"value": self.name,  # 编号
-				"color": "blue"
+				"color": "#000080"
 			},
 			"keyword2": {
 				"value": self.task_name,  # 标题
-				"color": "blue"
+				"color": "#000080"
 			},
 			"keyword3": {
 				"value": format_datetime(self.modified),  # 时间
-				"color": "green",
+				"color": "#008000",
 			},
 			"remark": {
 				"value": remark

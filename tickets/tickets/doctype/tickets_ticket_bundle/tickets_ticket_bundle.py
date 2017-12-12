@@ -67,19 +67,19 @@ class TicketsTicketBundle(Document):
 		return {
 			"first": {
 				"value": _("New Ticket Bundle Created"),
-				"color": "red"
+				"color": "#800000"
 			},
 			"keyword1": {
 				"value": self.name,  # 编号
-				"color": "blue"
+				"color": "#000080"
 			},
 			"keyword2": {
 				"value": self.bundle_name,  # 标题
-				"color": "blue"
+				"color": "#000080"
 			},
 			"keyword3": {
 				"value": self.planned_end_date,  # 时间
-				"color": "green",
+				"color": "#008000",
 			},
 			"remark": {
 				"value": _("Total Cost: {0}").format(self.total_cost)
