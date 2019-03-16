@@ -251,7 +251,7 @@ def get_users_by_region(user_list, region, ticket_doc):
 		for st in frappe.db.get_values("Tickets RegionTeam", {"parent": rgn[0], "type": ticket_doc.task_type}, "team"):
 			app = get_wechat_app(frappe.db.get_value("Cloud Company Group", st[0], "company"))
 			if app:
-				if not user_list.has_key(app):
+				if app not in user_list:
 					user_list[app] = []
 				for d in list_users(st[0]):
 					user_list[app].append(d.name)

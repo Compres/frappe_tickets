@@ -103,9 +103,9 @@ def wechat_notify(bundle=None):
 	for team in teams:
 		app = get_wechat_app(frappe.db.get_value("Cloud Company Group", team, "company"))
 		if app:
-			if not user_list.has_key(app):
+			if app not in user_list:
 				user_list[app] = []
-			for d in list_users(st[0]):
+			for d in list_users(team):
 				user_list[app].append(d.name)
 
 	for app in user_list:
