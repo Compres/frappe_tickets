@@ -23,7 +23,7 @@ class TicketsTicket(Document):
 		task.append_tickets(self)
 		if self.wechat_notify == 1:
 			frappe.enqueue('tickets.tickets.doctype.tickets_ticket.tickets_ticket.wechat_notify_by_ticket_name',
-							ticket_name = self.name, ticket_doc=self)
+							ticket_name = self.name, ticket_doc=self, enqueue_after_commit=True)
 
 	def on_cancel(self):
 		task = frappe.get_doc("Tickets Task", self.task)

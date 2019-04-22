@@ -31,7 +31,8 @@ class TicketsTicketBundle(Document):
 				doc.save()
 
 		if self.wechat_notify == 1:
-			frappe.enqueue('tickets.tickets.doctype.tickets_ticket_bundle.tickets_ticket_bundle.wechat_notify', bundle=self)
+			frappe.enqueue('tickets.tickets.doctype.tickets_ticket_bundle.tickets_ticket_bundle.wechat_notify',
+							bundle=self, enqueue_after_commit=True)
 
 	def bundle_get(self):
 		self.assigned_to_user = frappe.session.user
